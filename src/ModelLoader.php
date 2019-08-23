@@ -2,6 +2,8 @@
 
 namespace VictorYoalli\LaravelCodeGenerator;
 
+use VictorYoalli\LaravelCodeGenerator\Structure\Model;
+
 class ModelLoader
 {
     private $model = null;
@@ -33,7 +35,8 @@ class ModelLoader
                 return false;
             }
 
-            $this->model = $this->app->make($model_name);
+            $model = $this->app->make($model_name);
+            $this->model = new Model($model);
         } catch (\Exception $e) {
             print_r('Exception: ' . $e->getMessage() . "\nCould not analyze class $this->model.");
         }
