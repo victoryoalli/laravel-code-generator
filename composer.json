@@ -34,7 +34,8 @@
                 "VictorYoalli\\LaravelCodeGenerator\\LaravelCodeGeneratorServiceProvider"
             ],
             "aliases": {
-                "LaravelCodeGenerator": "VictorYoalli\\LaravelCodeGenerator\\LaravelCodeGenerator"
+                "LaravelCodeGenerator": "VictorYoalli\\LaravelCodeGenerator\\LaravelCodeGenerator",
+                "LCG": "VictorYoalli\\LaravelCodeGenerator\\Helper"
             }
         }
     }

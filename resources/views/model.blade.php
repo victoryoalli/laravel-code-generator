@@ -1,4 +1,4 @@
-{!! $PHP_START !!}
+{!! LCG::PHP_SOL !!}
 namespace App;
 /*
 {{$VIEW_NAME}}
