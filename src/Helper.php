@@ -25,6 +25,7 @@ class Helper // extends Facade
 
     public static function human($text)
     {
+        $text = self::camel($text);
         return preg_replace('/(?!^)[A-Z]{2,}(?=[A-Z][a-z])|[A-Z][a-z]/', ' $0', $text);
     }
 
@@ -33,23 +34,32 @@ class Helper // extends Facade
         return Str::slug(self::human($text));
     }
 
-    public static function camel($text){
+    public static function title($text){
+        return Str::title(self::human($text));
+    }
+
+    public static function camel($text)
+    {
         return Str::camel($text);
     }
 
-    public static function plural($text){
+    public static function plural($text)
+    {
         return Str::plural($text);
     }
 
-    public static function is_camel($text){
-        return preg_match('/^[a-z]+((\d)|([A-Z0-9][a-z0-9]+))*([A-Z])?$/',$text)>0;
+    public static function is_camel($text)
+    {
+        return preg_match('/^[a-z]+((\d)|([A-Z0-9][a-z0-9]+))*([A-Z])?$/', $text) > 0;
     }
 
-    public static function is_pascal($text){
-        return preg_match('/^([A-Z][a-z0-9]+)((\d)|([A-Z0-9][a-z0-9]+))*([A-Z])?$/',$text)>0;
+    public static function is_pascal($text)
+    {
+        return preg_match('/^([A-Z][a-z0-9]+)((\d)|([A-Z0-9][a-z0-9]+))*([A-Z])?$/', $text) > 0;
     }
 
-    public static function is_slug($text){
-        return \preg_match('/^[a-z][-a-z0-9]*$/',$text)>0;
+    public static function is_slug($text)
+    {
+        return \preg_match('/^[a-z][-a-z0-9]*$/', $text) > 0;
     }
 }

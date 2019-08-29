@@ -7,8 +7,6 @@ use VictorYoalli\LaravelCodeGenerator\Structure\Model;
 class ModelLoader
 {
     private $model = null;
-    private $table = null;
-    private $columns = null;
 
     public function __construct($app)
     {
