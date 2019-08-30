@@ -44,7 +44,7 @@ class LaravelCodeGeneratorServiceProvider extends ServiceProvider
         });
         $this->app->singleton(CodeGenerator::class, function ($app) {
             $files = $app->make(Filesystem::class);
-            return new CodeGenerator($app,$app['files']);
+            return new CodeGenerator($app, $app['files']);
         });
         $this->app->singleton(ModelLoader::class, function ($app) {
             return new ModelLoader($app);

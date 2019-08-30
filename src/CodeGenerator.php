@@ -11,6 +11,7 @@ class CodeGenerator
     protected $view;
     public $files;
 
+    // public function __construct($app, Filesystem $files)
     public function __construct($app, Filesystem $files)
     {
         //parent::__construct();
