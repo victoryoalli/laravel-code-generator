@@ -6,16 +6,17 @@ use VictorYoalli\LaravelCodeGenerator\Structure\Model;
 
 class ModelRelation
 {
-    private $_type;
-    private $_model;
+    public $type;
+    public $model;
     public $local_key;
     public $foreign_key;
     public $name;
 
     public function __construct($name, $type, $model, $localKey = null, $foreignKey)
     {
+        $model = app($model);
+        $this->model = new Model($model,false);
         $this->_type = $type;
-        $this->_model = $model;
         $this->local_key = $localKey;
         $this->foreign_key = $foreignKey;
         $this->name = $name;
@@ -23,8 +24,6 @@ class ModelRelation
 
     public function getModel()
     {
-        $model = app($this->_model);
-        return new Model($model,false);
     }
 
     public function getModelNodeName()
@@ -46,11 +45,11 @@ class ModelRelation
     }
 
     public function belongsTo(){
-        return ($this->_type === 'belongsTo');
+        return ($this->_type === 'BelongsTo');
     }
 
     public function belongsToMany(){
-        return ($this->_type === 'belongsToMany');
+        return ($this->_type === 'BelongsToMany');
     }
 
 
