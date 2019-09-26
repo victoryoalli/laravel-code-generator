@@ -10,16 +10,17 @@ class Model
     private $_schema;
     private $_table;
     public $name;
-    public $full_name;
+    public $complete_name;
     public $attributes;
     public $table;
+    public $relations;
 
     public function __construct(IlluminateModel $model)
     {
         //parent::__construct();
         $this->_model = $model;
 
-        $this->full_name = get_class($this->_model);
+        $this->complete_name = get_class($this->_model);
         $this->name = class_basename($this->_model);
 
         $connection = $this->_model->getConnection();

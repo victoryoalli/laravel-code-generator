@@ -1,8 +1,5 @@
 {!! LCG::PHP_SOL !!}
 namespace App;
-/*
-{{$VIEW_NAME}}
-*/
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;

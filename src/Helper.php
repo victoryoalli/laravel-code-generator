@@ -23,6 +23,11 @@ class Helper // extends Facade
         return preg_match($regex, $text) > 0;
     }
 
+    public static function replace($pattern, $replacement, $subject)
+    {
+        return preg_replace($pattern, $replacement, $subject);
+    }
+
     public static function human($text)
     {
         $text = self::camel($text);
@@ -34,13 +39,19 @@ class Helper // extends Facade
         return Str::slug(self::human($text));
     }
 
-    public static function title($text){
+    public static function title($text)
+    {
         return Str::title(self::human($text));
     }
 
     public static function camel($text)
     {
         return Str::camel($text);
+    }
+
+    public static function pascal($text)
+    {
+        return ucfirst(Str::camel($text));
     }
 
     public static function plural($text)

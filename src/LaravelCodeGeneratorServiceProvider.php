@@ -23,11 +23,10 @@ class LaravelCodeGeneratorServiceProvider extends ServiceProvider
         $this->app->view->addExtension('blade.js', 'blade');
         $this->app->view->addExtension('blade.vue', 'blade');
         $this->app->view->addExtension('blade.jsx', 'blade');
-        $this->app->view->composer('*', function ($view) {
-            $view_name = str_replace('.', '-', $view->getName());
-            // print_r(pathinfo($view->getPath()));
-            $this->app->view->share('VIEW_NAME', $view_name);
-        });
+        // $this->app->view->composer('*', function ($view) {
+        //     $view_name = str_replace('.', '-', $view->getName());
+        //     $this->app->view->share('VIEW_NAME', $view_name);
+        // });
 
         if ($this->app->runningInConsole()) {
             $this->commands([

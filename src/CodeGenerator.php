@@ -27,12 +27,6 @@ class CodeGenerator
     public function create(Model $model, string $template)
     {
         $result = $this->render($model, $template);
-        // print $result . "\n";
         return $result;
-        // $filename = preg_replace('/\./', '/', $template);
-        // $filename = preg_replace('/model/', $model->name, $filename);
-        // $filename = preg_replace('/\.blade\./', '', $filename);
-        // print $filename . "\n";
-        // $files->put($filename, $result);
     }
 }
