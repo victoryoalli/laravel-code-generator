@@ -23,7 +23,7 @@ class CodeGenerator
         return $this->view->make('laravel-code-generator::' . $template, compact(['model']))->render();
     }
 
-    public function create(Model $model, string $template)
+    public function generate(Model $model, string $template, string $outputFile = '')
     {
         $result = $this->render($model, $template);
         return $result;

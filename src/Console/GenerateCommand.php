@@ -6,13 +6,12 @@ use Illuminate\Console\Command;
 use VictorYoalli\LaravelCodeGenerator\CodeGenerator;
 use VictorYoalli\LaravelCodeGenerator\Helper;
 use VictorYoalli\LaravelCodeGenerator\ModelLoader;
-use VictorYoalli\LaravelCodeGenerator\Template;
 
 class GenerateCommand extends Command
 {
-    protected $signature = 'code:generate {model} {--s|set= : Select your set of templates} {--t|template=} ';
+    protected $signature = 'code:generate {model} {--t|template=} {--m|map=map.php : Map file}';
 
-    protected $description = '';
+    protected $description = 'A Laravel Code Generator based on your Models.';
 
     public function __construct()
     {
@@ -24,41 +23,19 @@ class GenerateCommand extends Command
         $model = $this->argument('model');
 
         $template = $this->option('template');
-        $templateSet = $this->option('set');
 
         if (empty($model)) {
             return;
         }
         $m = $loader->load($model);
 
-        if (empty($template) && empty($templateSet)) {
+        if (empty($template)) {
             $template = empty($template) ? '<missing>' : $template;
             print "Template: {$template}\n";
             return;
-        } elseif (empty($templateSet)) {
-            // $m = $loader->load($model);
-            $result = $generator->create($m, $template);
+        } else {
+            $result = $generator->generate($m, $template);
             print $result . "\n";
-        } elseif (!empty($templateSet)) {
-            $config = config("laravel-code-generator.{$templateSet}");
-            // print_r( $config);
-            foreach ($config as $key => $value) {
-                $sourceDirectory = resource_path('views/vendor/laravel-code-generator') . DIRECTORY_SEPARATOR . "{$key}";
-                $outputDirectory = config("laravel-code-generator.{$templateSet}.{$key}");
-                print $sourceDirectory . "\n";
-                print $outputDirectory . "\n";
-                $tree = Template::structure($sourceDirectory, null, $outputDirectory);
-                dump($tree);
-                foreach ($tree as $filename => $out) {
-                    if (!is_array($tree[$filename])) {
-                        print "QQQ {$filename}\n";
-                        print "{$filename} => " . self::newFilename($m->name, $out) . "\n";
-                        $result = $generator->create($m, self::getTemplateName($key . '.' . $filename));
-                        print $result . "\n";
-                    }
-                }
-                return;
-            }
         }
     }
 

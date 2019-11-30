@@ -13,7 +13,7 @@ composer require --dev victoryoalli/laravel-code-generator
 ## Usage
 
 ```php
-php artisan lcg:generate
+php artisan code:generate
 ```
 
 

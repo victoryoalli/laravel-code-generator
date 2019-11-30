@@ -8,6 +8,6 @@ class LaravelCodeGeneratorFacade extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'laravel-code-generator';
+        return 'code-generator';
     }
 }

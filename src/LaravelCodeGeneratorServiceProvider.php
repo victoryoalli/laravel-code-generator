@@ -36,7 +36,7 @@ class LaravelCodeGeneratorServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'laravel-code-generator');
-        $this->app->singleton('laravel-code-generator', function () {
+        $this->app->singleton('code-generator', function () {
             return new CodeGenerator;
         });
     }
