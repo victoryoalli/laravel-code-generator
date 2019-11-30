@@ -4,10 +4,10 @@ namespace VictorYoalli\LaravelCodeGenerator;
 
 use Illuminate\Support\Facades\Facade;
 
-class LaravelCodeGenerator extends Facade
+class LaravelCodeGeneratorFacade extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'LaravelCodeGenerator';
+        return 'laravel-code-generator';
     }
 }

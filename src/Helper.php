@@ -8,8 +8,10 @@ use Illuminate\Support\Str;
 class Helper // extends Facade
 {
     const PHP_SOL = '<?php';
+    const AMPER_DOUBLE_CURLY_OPEN = '@{{';
     const DOUBLE_CURLY_OPEN = '{{';
     const DOUBLE_CURLY_CLOSE = '}}';
+    const ACC_OPEN = self::AMPER_DOUBLE_CURLY_OPEN;
     const CC_OPEN = self::DOUBLE_CURLY_OPEN;
     const CC_CLOSE = self::DOUBLE_CURLY_CLOSE;
 

@@ -9,9 +9,12 @@
             "email": "victoryoalli@gmail.com"
         }
     ],
+    "homepage": "https://github.com/victoryoalli/laravel-code-generator",
     "require": {
+        "php": "^7.1",
         "illuminate/console": "^5.5",
         "illuminate/filesystem": "^5.5",
+        "illuminate/support": "^5.5",
         "doctrine/dbal": "^2.9"
     },
     "require-dev": {
@@ -34,7 +37,7 @@
                 "VictorYoalli\\LaravelCodeGenerator\\LaravelCodeGeneratorServiceProvider"
             ],
             "aliases": {
-                "LaravelCodeGenerator": "VictorYoalli\\LaravelCodeGenerator\\LaravelCodeGenerator",
+                "LaravelCodeGenerator": "VictorYoalli\\LaravelCodeGenerator\\LaravelCodeGeneratorFacade",
                 "LCG": "VictorYoalli\\LaravelCodeGenerator\\Helper"
             }
         }

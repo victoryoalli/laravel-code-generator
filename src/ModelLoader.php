@@ -8,9 +8,9 @@ class ModelLoader
 {
     private $model = null;
 
-    public function __construct($app)
+    public function __construct()
     {
-        $this->app = $app;
+        $this->app = app();
     }
 
     public function load(string $model_name, $recursive = true)
