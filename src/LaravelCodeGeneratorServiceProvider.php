@@ -39,5 +39,11 @@ class LaravelCodeGeneratorServiceProvider extends ServiceProvider
         $this->app->singleton('code-generator', function () {
             return new CodeGenerator;
         });
+        $this->app->singleton('model-loader', function () {
+            return new ModelLoader;
+        });
+        $this->app->singleton('code-helper', function () {
+            return new Helper;
+        });
     }
 }

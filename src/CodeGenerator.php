@@ -23,9 +23,19 @@ class CodeGenerator
         return $this->view->make('laravel-code-generator::' . $template, compact(['model']))->render();
     }
 
-    public function generate(Model $model, string $template, string $outputFile = '')
+    public function generate(Model $model, string $template, string $outputFile = null, bool $overwrite = true)
     {
-        $result = $this->render($model, $template);
-        return $result;
+        $filepath = base_path($outputFile);
+        $dirname = dirname($filepath);
+        if (!file_exists($dirname)) {
+            mkdir($dirname, 0755, true);
+        }
+        if (!file_exists($filepath) || $overwrite) {
+            $result = $this->render($model, $template);
+            file_put_contents($outputFile, $result);
+            return $outputFile;
+        } elseif ($outputFile == null) {
+            return $result;
+        }
     }
 }

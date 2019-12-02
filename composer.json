@@ -37,9 +37,9 @@
                 "VictorYoalli\\LaravelCodeGenerator\\LaravelCodeGeneratorServiceProvider"
             ],
             "aliases": {
-                "CodeGenerator": "VictorYoalli\\LaravelCodeGenerator\\LaravelCodeGeneratorFacade",
-                "ModelLoader": "VictorYoalli\\LaravelCodeGenerator\\ModelLoader",
-                "CodeGeneratorHelper": "VictorYoalli\\LaravelCodeGenerator\\Helper"
+                "CodeGenerator": "VictorYoalli\\LaravelCodeGenerator\\Facades\\CodeGenerator",
+                "ModelLoader": "VictorYoalli\\LaravelCodeGenerator\\Facades\\ModelLoader",
+                "CodeHelper": "VictorYoalli\\LaravelCodeGenerator\\Facades\\CodeHelper"
             }
         }
     }
