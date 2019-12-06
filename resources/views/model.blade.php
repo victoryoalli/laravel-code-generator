@@ -1,4 +1,4 @@
-{!! LCG::PHP_SOL !!}
+{!! CodeHelper::PHP_SOL !!}
 namespace App;
 
 use Illuminate\Notifications\Notifiable;

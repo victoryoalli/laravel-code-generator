@@ -10,10 +10,20 @@ Use composer to install Laravel Code Generator.
 composer require --dev victoryoalli/laravel-code-generator
 ```
 
+```bash
+php artisan vendor:publish --provider="VictorYoalli\LaravelCodeGenerator" --tag=views,config --force
+```
+
 ## Usage
 
+#### Basic Usage
 ```php
-php artisan code:generate
+php artisan code:generate 'App\Model' -t 'path/to/template.blade.php' -o 'path/to/output.php'
+```
+
+#### Example
+```php
+php artisan code:generate 'App\User' -t 'path/to/template.blade.php' -o 'path/to/output.php'
 ```
 
 

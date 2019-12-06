@@ -8,7 +8,7 @@ use VictorYoalli\LaravelCodeGenerator\ModelLoader;
 
 class GenerateCommand extends Command
 {
-    protected $signature = 'code:generate {model} {--t|template= : template location} {--f|outfile= : Output file location}';
+    protected $signature = 'code:generate {model} {--t|template= : template location} {--o|outfile= : Output file location}';
 
     protected $description = 'A Laravel Code Generator based on your Models.';
 
