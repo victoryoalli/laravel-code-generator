@@ -8,7 +8,7 @@ use VictorYoalli\LaravelCodeGenerator\ModelLoader;
 
 class GenerateCommand extends Command
 {
-    protected $signature = 'code:generate {model} {--t|template= : template location} {--o|outfile= : Output file location}';
+    protected $signature = 'code:generate {model} {--t|template= : template location} {--o|outfile= : Output file location} {--f|force : force overwrite}';
 
     protected $description = 'A Laravel Code Generator based on your Models.';
 
@@ -23,6 +23,7 @@ class GenerateCommand extends Command
 
         $template = $this->option('template');
         $outputFile = $this->option('outfile');
+        $force = $this->option('force');
 
         if (empty($model)) {
             return;
@@ -33,7 +34,7 @@ class GenerateCommand extends Command
             $template = empty($template) ? '<missing>' : $template;
             return;
         } else {
-            $result = $generator->generate($m, $template, $outputFile);
+            $result = $generator->generate($m, $template, $outputFile, $force);
             print $result . "\n";
         }
     }

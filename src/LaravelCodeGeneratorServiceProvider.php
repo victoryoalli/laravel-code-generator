@@ -23,9 +23,10 @@ class LaravelCodeGeneratorServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__ . '/../config/config.php' => config_path('laravel-code-generator.php'),
             ], 'config');
-            $this->app->view->addExtension('blade.js', 'blade');
-            $this->app->view->addExtension('blade.vue', 'blade');
-            $this->app->view->addExtension('blade.jsx', 'blade');
+
+            // $this->app->view->addExtension('blade.js', 'blade');
+            // $this->app->view->addExtension('blade.vue', 'blade');
+            // $this->app->view->addExtension('blade.jsx', 'blade');
 
             $this->commands([
                 GenerateCommand::class,

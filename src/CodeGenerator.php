@@ -13,9 +13,12 @@ class CodeGenerator
     public function __construct()
     {
         $app = app();
-        $files = app(Filesystem::class);
         $this->view = $app['view'];
-        $this->files = $files;
+        $extensions = config('laravel-code-generator.extensions');
+        foreach ($extensions as $ext) {
+            $this->view->addExtension("blade.{$ext}", 'blade');
+        }
+        $this->files = app(Filesystem::class);
     }
 
     public function render(Model $model, string $template)
@@ -35,6 +38,7 @@ class CodeGenerator
             file_put_contents($outputFile, $result);
             return $outputFile;
         } elseif ($outputFile == null) {
+            $result = $this->render($model, $template);
             return $result;
         }
     }
