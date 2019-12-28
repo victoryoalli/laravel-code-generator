@@ -1,85 +1,90 @@
-{!!CodeHelper::PHPSOL()!!}
+{!! CodeHelper::PHPSOL() !!}
 
 namespace App\Http\Controllers;
 
-use App\Models\{{$model->name}};
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use {{$model->complete_name}};
 
-class {{$model->name}}Controller extends Controller
+class {{$model->name}}Controller
 {
-    /**
-    * Display a listing of the resource.
-    *
-    * @return \Illuminate\Http\Response
-    */
     public function index()
     {
-        return view('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.index');
+        ${{CodeHelper::camel(CodeHelper::plural($model->name))}} = {{$model->name}}::all();
+        return view('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.index', compact('{{CodeHelper::camel(CodeHelper::plural($model->name))}}'));
     }
 
-    /**
-    * Show the form for creating a new resource.
-    *
-    * @return \Illuminate\Http\Response
-    */
+    public function show(Request $request, {{$model->name}} ${{CodeHelper::camel($model->name)}})
+    {
+        return view('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.show', compact('{{CodeHelper::camel($model->name)}}'));
+    }
+
     public function create()
     {
         return view('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.create');
     }
 
-    /**
-    * Store a newly created resource in storage.
-    *
-    * @param \Illuminate\Http\Request $request
-    * @return \Illuminate\Http\Response
-    */
     public function store(Request $request)
     {
-        abort(404);
+        $data = $request->all();
+        $validator = Validator::make($data, [
+        @foreach($model->table->columns as $col)
+        @if(!CodeHelper::contains('/id$/',$col->name) && !CodeHelper::contains('/_at$/',$col->name))
+
+        '{{$col->name}}' => [
+        @if(!$col->nullable)
+            'required',
+        @endif
+        ],
+        @endif
+        @endforeach
+
+        ]);
+        if ($validator->fails()) {
+            return redirect()->route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.create')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+        {{$model->name}}::create($data);
+        return redirect()->route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.index')->with('status', '{{$model->name}} created!');
     }
 
-    /**
-    * Display the specified resource.
-    *
-    * @param \App\Models\{{$model->name}} ${{CodeHelper::camel($model->name)}}
-    * @return \Illuminate\Http\Response
-    */
-    public function show({{$model->name}} ${{CodeHelper::camel($model->name)}})
+    public function edit(Request $request, {{$model->name}} ${{CodeHelper::camel($model->name)}})
     {
-        return view('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.show');
+        return view('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.edit', compact('{{CodeHelper::camel($model->name)}}'));
     }
 
-    /**
-    * Show the form for editing the specified resource.
-    *
-    * @param \App\Models\{{$model->name}} ${{CodeHelper::camel($model->name)}}
-    * @return \Illuminate\Http\Response
-    */
-    public function edit({{$model->name}} ${{CodeHelper::camel($model->name)}})
-    {
-        return view('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.edit');
-    }
-
-    /**
-    * Update the specified resource in storage.
-    *
-    * @param \Illuminate\Http\Request $request
-    * @param \App\Models\{{$model->name}} ${{CodeHelper::camel($model->name)}}
-    * @return \Illuminate\Http\Response
-    */
     public function update(Request $request, {{$model->name}} ${{CodeHelper::camel($model->name)}})
     {
-        return {{$model->name}}::update($request->all());
+        $data = $request->all();
+        $validator = Validator::make($data, [
+        @foreach($model->table->columns as $col)
+        @if(!CodeHelper::contains('/id$/',$col->name) && !CodeHelper::contains('/_at$/',$col->name))
+
+        '{{$col->name}}' => [
+        @if(!$col->nullable)
+            'required',
+        @endif
+        ],
+        @endif
+        @endforeach
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.edit', ['{{CodeHelper::camel($model->name)}}' => ${{CodeHelper::camel($model->name)}}])
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
+        ${{CodeHelper::camel(CodeHelper::plural($model->name))}}->fill($data);
+        ${{CodeHelper::camel(CodeHelper::plural($model->name))}}->save();
+        return redirect()->route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.index')->with('status', '{{$model->name}} updated!');
     }
 
-    /**
-    * Remove the specified resource from storage.
-    *
-    * @param \App\Models\{{$model->name}} ${{CodeHelper::camel($model->name)}}
-    * @return \Illuminate\Http\Response
-    */
-    public function destroy({{$model->name}} ${{CodeHelper::camel($model->name)}})
+    public function destroy(Request $request, {{$model->name}} ${{CodeHelper::camel($model->name)}})
     {
-        abort(404);
+        ${{CodeHelper::camel($model->name)}}->delete();
+        return redirect()->route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.index')->with('status', '{{$model->name}} destroyed!');
     }
 }

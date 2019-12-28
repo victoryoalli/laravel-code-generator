@@ -47,7 +47,7 @@ return [
 ```php
 php artisan code:generate 'App\Model' -t 'template' -o 'path/to/output.php'
 ```
-Will look for the template located at: `resources/vendor/laravel-code-generator/template.blade.php`
+Will look for the template: `resources/vendor/laravel-code-generator/template.blade.php`
 
 ## Structure
 * **Model** *(object)*
@@ -170,7 +170,7 @@ class UserController extends Controller
 `PHPSOL()`: PHP Start Of Line
 
 ```php
-{{CodeHelper::PHPSOL()}}
+{!!CodeHelper::PHPSOL()!!}
 ```
 Will produce
 ```php
@@ -371,7 +371,7 @@ class CodeGeneratorCommand extends Command
 
 ### Usage
 ```bash
-php artisan code:generator 'App\User' -f
+php artisan code:generator 'App\Models\User' -f
 ```
 
 ## Contributing
