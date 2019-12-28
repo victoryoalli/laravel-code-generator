@@ -49,8 +49,8 @@ return [
 
 #### Command Basic Usage
 ```php
-php artisan code:generate 'App\Model' -t 'schema' //prints to command line
-php artisan code:generate 'App\Model' -t 'schema' -o 'path/to/output.php'
+php artisan code:generate 'App\User' -t 'schema' //prints to command line
+php artisan code:generate 'App\User' -t 'schema' -o 'path/to/output.php'
 ```
 Will look for the template: `resources/vendor/laravel-code-generator/template.blade.php`
 
