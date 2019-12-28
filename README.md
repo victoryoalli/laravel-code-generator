@@ -31,6 +31,8 @@ return [
      * .blade.jsx
      * .blade.vue
      * .blade.html
+     * .blade.txt
+     * .blade.json
      */
     'extensions' => [
         'js',
