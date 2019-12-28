@@ -11,7 +11,7 @@
 
     @@endif
 
-    <form action="{{CodeHelper::doubleCurlyOpen()}}route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.update',['{{CodeHelper::camel($model->name)}}'=>'${{CodeHelper::camel($model->name)}}']){{CodeHelper::doubleCurlyClose()}}" method="POST">
+    <form action="{{CodeHelper::doubleCurlyOpen()}}route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.update',['{{CodeHelper::camel($model->name)}}'=>${{CodeHelper::camel($model->name)}}->id])" method="POST">
         @@csrf
         @@method('PUT')
         @foreach($model->table->columns as $column)
@@ -33,7 +33,7 @@
         @endif
         @endforeach
         <div>
-            <button class="btn btn-primary" type="submit">Create</button>
+            <button class="btn btn-primary" type="submit">Save</button>
             <a href="{{CodeHelper::doubleCurlyOpen()}}route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.index'){{CodeHelper::doubleCurlyClose()}}">Back</a>
         </div>
     </form>
