@@ -2,11 +2,11 @@
 @@section('content')
 <div class="container">
 
-    @if (session('status'))
+    @@if (session('status'))
     <div class="alert alert-success">
-        {{ session('status') }}
+        @{{ session('status') }}
     </div>
-    @endif
+    @@endif
     <h1> {{CodeHelper::title(CodeHelper::plural($model->name))}} </h1>
     <div>
         <a href="{{CodeHelper::doubleCurlyOpen()}}route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.create'){{CodeHelper::doubleCurlyClose()}}">New</a>
