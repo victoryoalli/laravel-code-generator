@@ -27,7 +27,7 @@
             @endif
             >
             @@if($errors->has('{{$column->name}}'))
-            <p class="text-danger">{{CodeHelper::doubleCurlyOpen()}}$errors->first('{{$column->name}}'){{CodeHelper::doubleCurlyOpen()}}</p>
+            <p class="text-danger">{{CodeHelper::doubleCurlyOpen()}}$errors->first('{{$column->name}}'){{CodeHelper::doubleCurlyClose()}}</p>
             @@endif
         </div>
         @endif

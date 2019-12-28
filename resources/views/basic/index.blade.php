@@ -44,7 +44,7 @@
                 </td>
                 @foreach($model->table->columns as $column)
                 @if(!CodeHelper::contains('/id$/',$column->name)&&!CodeHelper::contains('/_at$/',$column->name))
-                <td>{{ $column->name }}</td>
+                <td>{{CodeHelper::doubleCurlyOpen()}}${{CodeHelper::slug($model->name)}}->{{ $column->name }}{{CodeHelper::doubleCurlyClose()}}</td>
                 @endif
                 @endforeach
 

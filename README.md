@@ -52,7 +52,7 @@ return [
 php artisan code:generate 'App\User' -t 'schema' //prints to command line
 php artisan code:generate 'App\User' -t 'schema' -o 'user-schema.json'
 ```
-Will look for the template located at `resources/vendor/laravel-code-generator` in this case would be the file schema.blade.json where the relative path is `resources/vendor/laravel-code-generator\schema.blade.json`
+Will look for the template located at `resources/vendor/laravel-code-generator` in this case would be the file``schema.blade.json` where the relative path is `resources/vendor/laravel-code-generator\schema.blade.json`
 
 ## Structure
 * **Model** *(object)*
