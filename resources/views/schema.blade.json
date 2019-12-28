@@ -1,0 +1,37 @@
+{
+    "name":"{{$model->name}}",
+    "complete_name":"{{str_replace("\\","\\\\",$model->complete_name)}}",
+    "table":{
+        "name":"{{$model->table->name}}",
+        "colums":[
+        @foreach($model->table->columns as $col)
+            { "name":"{{$col->name}}", "type":"{{$col->type}}", "length":"{{$col->length}}", "nullable":"{{$col->nullable}}", "autoincrement":"{{$col->autoincrement}}", "default":"{{$col->default}}" }@if(!$loop->last),
+            @endif
+        @endforeach
+        ]
+    },
+    "relations": [
+        @foreach($model->relations as $r)
+        {
+            "name":"{{$r->name}}",
+            "type":"{{$r->type}}",
+            "local_key" : "{{$r->local_key}}",
+            "foreign_key": "{{$r->foreign_key}}",
+            "model": {
+                "name":"{{$r->model->name}}",
+                "table":{
+                    "name":"{{$r->model->table->name}}",
+                    "colums": [
+                @foreach($model->table->columns as $col)
+                { "name":"{{$col->name}}", "type":"{{$col->type}}", "length":"{{$col->length}}", "nullable":"{{$col->nullable}}", "autoincrement":"{{$col->autoincrement}}", "default":"{{$col->default}}" } @if(!$loop->last) ,
+                @endif
+                @endforeach
+            ]
+                }
+            }
+        }@if(!$loop->last) ,
+                @endif
+
+        @endforeach
+    ]
+}

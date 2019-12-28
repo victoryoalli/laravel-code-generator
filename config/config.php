@@ -14,5 +14,7 @@ return [
         'jsx',
         'vue',
         'html',
+        'txt',
+        'json',
     ]
 ];

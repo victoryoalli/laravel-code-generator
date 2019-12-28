@@ -16,7 +16,7 @@ class ModelRelation
     {
         $model = app($model);
         $this->model = new Model($model,false);
-        $this->_type = $type;
+        $this->type = $type;
         $this->local_key = $localKey;
         $this->foreign_key = $foreignKey;
         $this->name = $name;

@@ -17,7 +17,7 @@ class Column
         //parent::__construct();
         $this->_column = $column;
         $this->name = $this->_column->getName();
-        $this->type = $this->_column->getType();
+        $this->type = str_replace("\\","",$this->_column->getType());
         $this->length = $this->_column->getLength();
         $this->nullable = !$this->_column->getNotNull();
         $this->autoincrement = $this->_column->getAutoincrement();

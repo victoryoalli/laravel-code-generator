@@ -64,7 +64,7 @@ Will look for the template: `resources/vendor/laravel-code-generator/template.bl
   * nullable *(boolean)*
   * autoincrement *(boolean)*
   * default *(string)*
-* **Relation**
+* **Relations** *(array)*
   * models *(array)*
 
 ## Templates
