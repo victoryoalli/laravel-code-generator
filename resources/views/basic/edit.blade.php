@@ -11,7 +11,7 @@
 
     @@endif
 
-    <form action="{{CodeHelper::doubleCurlyOpen()}}route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.store'){{CodeHelper::doubleCurlyClose()}}" method="POST">
+    <form action="{{CodeHelper::doubleCurlyOpen()}}route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.update',['{{CodeHelper::camel($model->name)}}'=>'${{CodeHelper::camel($model->name)}}']){{CodeHelper::doubleCurlyClose()}}" method="POST">
         @@csrf
         @@method('PUT')
         @foreach($model->table->columns as $column)

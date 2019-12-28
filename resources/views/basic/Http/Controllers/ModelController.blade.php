@@ -77,8 +77,8 @@ class {{$model->name}}Controller
                         ->withInput();
         }
 
-        ${{CodeHelper::camel(CodeHelper::plural($model->name))}}->fill($data);
-        ${{CodeHelper::camel(CodeHelper::plural($model->name))}}->save();
+        ${{CodeHelper::camel($model->name)}}->fill($data);
+        ${{CodeHelper::camel($model->name)}}->save();
         return redirect()->route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.index')->with('status', '{{$model->name}} updated!');
     }
 
