@@ -37,20 +37,20 @@
                     document.getElementById('delete-{{CodeHelper::slug($model->name)}}-{{CodeHelper::doubleCurlyOpen()}}${{CodeHelper::camel($model->name)}}->id{{CodeHelper::doubleCurlyClose()}}').submit();">
                         {{ __('Delete') }}
                     </a>
-                    <form id="delete-setting-{{CodeHelper::doubleCurlyOpen()}}${{CodeHelper::camel($model->name)}}->id{{CodeHelper::doubleCurlyClose()}}" action="{{CodeHelper::doubleCurlyOpen()}}route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.destroy',['{{CodeHelper::camel($model->name)}}'=>${{CodeHelper::camel($model->name)}}]){{CodeHelper::doubleCurlyClose()}}" method="POST" style="display: none;">
+                    <form id="delete-{{CodeHelper::slug($model->name)}}-{{CodeHelper::doubleCurlyOpen()}}${{CodeHelper::camel($model->name)}}->id{{CodeHelper::doubleCurlyClose()}}" action="{{CodeHelper::doubleCurlyOpen()}}route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.destroy',['{{CodeHelper::camel($model->name)}}'=>${{CodeHelper::camel($model->name)}}]){{CodeHelper::doubleCurlyClose()}}" method="POST" style="display: none;">
                         @@csrf
                         @@method('DELETE')
                     </form>
                 </td>
                 @foreach($model->table->columns as $column)
                 @if(!CodeHelper::contains('/id$/',$column->name)&&!CodeHelper::contains('/_at$/',$column->name))
-                <td>{{CodeHelper::doubleCurlyOpen()}}${{CodeHelper::slug($model->name)}}->{{ $column->name }}{{CodeHelper::doubleCurlyClose()}}</td>
+                <td>{{CodeHelper::doubleCurlyOpen()}}${{CodeHelper::camel($model->name)}}->{{$column->name}}{{CodeHelper::doubleCurlyClose()}}</td>
                 @endif
                 @endforeach
 
             </tr>
             @@empty
-            <p>No settings</p>
+            <p>No {{CodeHelper::title(CodeHelper::plural($model->name))}}</p>
             @@endforelse
         </tbody>
     </table>
