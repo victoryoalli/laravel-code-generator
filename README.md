@@ -49,7 +49,8 @@ return [
 
 #### Command Basic Usage
 ```php
-php artisan code:generate 'App\Model' -t 'template' -o 'path/to/output.php'
+php artisan code:generate 'App\Model' -t 'schema' //prints to command line
+php artisan code:generate 'App\Model' -t 'schema' -o 'path/to/output.php'
 ```
 Will look for the template: `resources/vendor/laravel-code-generator/template.blade.php`
 
@@ -361,13 +362,12 @@ class CodeGeneratorCommand extends Command
         $folder = CodeHelper::plural(CodeHelper::slug($m->name));
         $force = $this->option('force');
 
-        print CodeGenerator::generate($m, 'js/components/model', "resources/js/components/{$m->name}.vue", $force) . "\n";
-        print CodeGenerator::generate($m, 'js/components/modelList', "resources/js/components/{$m->name}List.vue", $force) . "\n";
-        print CodeGenerator::generate($m, 'js/components/modelEditor', "resources/js/components/{$m->name}Editor.vue", $force) . "\n";
-        print CodeGenerator::generate($m, 'js/models/model', "resources/js/models/{$m->name}.js", $force) . "\n";
-        print CodeGenerator::generate($m, 'Controllers/modelController', "app/Http/Controllers/{$m->name}Controller.php", $force) . "\n";
-        print CodeGenerator::generate($m, 'Controllers/API/modelController', "app/Http/Controllers/API/{$m->name}Controller.php", $force) . "\n";
-        print CodeGenerator::generate($m, 'views/models/index', "resources/views/{$folder}/index.blade.php", $force) . "\n";
+        print "file generated: ".CodeGenerator::generate($m, 'basic/Http/Controllers/ModelController', "app/Http/Controllers/{$m->name}Controller.php", $force) . "\n";
+        print "file generated: ".CodeGenerator::generate($m, 'basic/Http/Controllers/API/ModelController', "app/Http/Controllers/API/{$m->name}Controller.php", $force) . "\n";
+        print "file generated: ".CodeGenerator::generate($m, 'basic/create', "resources/views/{$folder}/create.blade.php", $force) . "\n";
+        print "file generated: ".CodeGenerator::generate($m, 'basic/edit', "resources/views/{$folder}/edit.blade.php", $force) . "\n";
+        print "file generated: ".CodeGenerator::generate($m, 'basic/index', "resources/views/{$folder}/index.blade.php", $force) . "\n";
+        print "file generated: ".CodeGenerator::generate($m, 'basic/show', "resources/views/{$folder}/show.blade.php", $force) . "\n";
     }
 }
 
