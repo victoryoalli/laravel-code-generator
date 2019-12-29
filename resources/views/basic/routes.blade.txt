@@ -1,5 +1,6 @@
-// {{CodeHelper::title($model->name)}} Routes for web.php
+
+# {{CodeHelper::title($model->name)}} Routes for web.php
 Route::resource('{{CodeHelper::slug(CodeHelper::plural($model->name))}}', '{{$model->name}}Controller');
 
-// {{CodeHelper::title($model->name)}} Routes for api.php
+# {{CodeHelper::title($model->name)}} Routes for api.php
 Route::apiResource('{{CodeHelper::slug(CodeHelper::plural($model->name))}}', 'API/{{$model->name}}Controller');

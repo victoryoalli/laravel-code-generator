@@ -70,7 +70,11 @@ Will look for the template located at `resources/vendor/laravel-code-generator` 
   * autoincrement *(boolean)*
   * default *(string)*
 * **Relations** *(array)*
-  * models *(array)*
+  * name *(string)*
+  * type *(string)*
+  * local_key *(string)*
+  * foreign_key *(string)*
+  * model *(array)*
 
 ## Templates
 Once you publish the default templates you can modify or create new ones. Templates can be found and should be located at `resources/views/vendor/laravel-code-generator`.
@@ -177,9 +181,21 @@ class UserController extends Controller
 ```php
 {!!CodeHelper::PHPSOL()!!}
 ```
-Will produce
+Will print
 ```php
 <?php
+```
+
+`arroba()` arroba @
+
+```php
+{{CodeHelper::arroba()}}foreach($foos as $foo)
+{{CodeHelper::arroba()}}endforeach
+```
+Will print
+```php
+@foreach($foos as $foo)
+@endforeach
 ```
 
 
@@ -187,7 +203,7 @@ Will produce
 ```php
 {{CodeHelper::doubleCurlyOpen()}}
 ```
-Will produce:
+Will print:
 ```php
 {{
 ```
@@ -197,7 +213,7 @@ Will produce:
 ```php
 {{CodeHelper::doubleCurlyClose()}}
 ```
-Will produce:
+Will print:
 ```php
 }}
 ```
@@ -212,7 +228,7 @@ Will produce:
     it´s not a date
 @endif
 ```
-Will produce:
+Will print:
 ```
     it's a date!
 ```
@@ -222,10 +238,12 @@ Will produce:
 ```php
 {{CodeHelper::replace('/_id$/','','field_id')}}
 ```
-Will produce:
+Will print:
 ```php
 
 ```
+
+
 
 
 `human($text)`: Converts text to readable words.
@@ -235,12 +253,14 @@ Will produce:
 {{CodeHelper::human('helloWorld')}}!
 ```
 
-Will produce:
+Will print:
 ```php
 hello world!
 
 hello world!
 ```
+
+
 
 `title($text)`: Converts text to capitalize readable words.
 ```php
@@ -249,7 +269,7 @@ hello world!
 {{CodeHelper::human('helloWorld')}}!
 ```
 
-Will produce:
+Will print:
 ```php
 Hello World!
 
@@ -266,12 +286,14 @@ Hello World!
 {{CodeHelper::slug('Hello World')}!
 ```
 
-Will produce:
+Will print:
 ```php
 hello-world
 
 hello-world
 ```
+
+
 
 
 `camel($text)`: Converts text camel case.
@@ -281,12 +303,30 @@ hello-world
 {{CodeHelper::camel('Hello World')}!
 ```
 
-Will produce:
+Will print:
 ```php
 helloWorld
 
 helloWorld
 ```
+
+
+`snake($text)`: Converts text snake case.
+```php
+{{CodeHelper::snake('helloWorld')}}
+
+{{CodeHelper::snake('Hello World')}!
+```
+
+Will print:
+```php
+hello_world
+
+hello_world
+```
+
+
+
 
 
 `pascal($text)`: Converts text pascal case.
@@ -296,12 +336,30 @@ helloWorld
 {{CodeHelper::camel('Hello World')}!
 ```
 
-Will produce:
+Will print:
 ```php
 HelloWorld
 
 HelloWorld
 ```
+
+
+
+`singular($text)`: Converts text pascal case.
+```php
+{{CodeHelper::singular('people')}}
+
+{{CodeHelper::singular('dogs')}!
+```
+
+Will print:
+```php
+person
+
+dog
+```
+
+
 
 
 `plural($text)`: Converts text pascal case.
@@ -311,7 +369,7 @@ HelloWorld
 {{CodeHelper::plural('helloWorld')}!
 ```
 
-Will produce:
+Will print:
 ```php
 hello_worlds
 
@@ -319,12 +377,14 @@ helloWorlds
 ```
 
 
+
+
 ## Multiple files generation example
 
 ### Instructions
 Create a Custom Command
 ```bash
-php artisan make:command CodeGeneratorCommand --command='code:generator'
+php art an make:command CodeGeneratorCommand --command='code:generator'
 ```
 
 ```php

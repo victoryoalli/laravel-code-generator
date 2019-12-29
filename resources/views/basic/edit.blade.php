@@ -14,10 +14,32 @@
     <form action="{{CodeHelper::doubleCurlyOpen()}}route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.update',['{{CodeHelper::camel($model->name)}}'=>${{CodeHelper::camel($model->name)}}->id]){{CodeHelper::doubleCurlyClose()}}" method="POST">
         @@csrf
         @@method('PUT')
+        @foreach($model->relations as $rel)
+        @if($rel->type === 'BelongsTo')
+        <div class="form-group">
+            <label for="{{$rel->local_key}}">{{CodeHelper::title($rel->name)}}</label>
+            <select class="form-control" name="{{$rel->local_key}}" id="{{$rel->local_key}}">
+                {{CodeHelper::arroba()}}foreach((\{{$rel->model->complete_name}}::all() ?? [] ) as ${{$rel->name}})
+                <option value="{{CodeHelper::doubleCurlyOpen()}}${{$rel->name}}->id{{CodeHelper::doubleCurlyClose()}}"
+                    {{CodeHelper::arroba()}}if(${{CodeHelper::camel($model->name)}}->{{$rel->local_key}} == old('{{$rel->local_key}}', ${{$rel->name}}->id))
+                    selected="selected"
+                    @@endif
+                >{{CodeHelper::doubleCurlyOpen()}}${{$rel->name}}->name{{CodeHelper::doubleCurlyClose()}}</option>
+
+                @@endforeach
+            </select>
+        </div>
+        @endif
+        @endforeach
+
+
         @foreach($model->table->columns as $column)
         @if(!CodeHelper::contains('/id$/',$column->name) && !CodeHelper::contains('/_at$/',$column->name))
         <div class="form-group">
             <label for="{{$column->name}}">{{CodeHelper::title($column->name)}}</label>
+        @if($column->type=='Text')
+            <textarea class="form-control {{$column->type}}"  name="{{$column->name}}" id="{{$column->name}}" cols="30" rows="10">{{CodeHelper::doubleCurlyOpen()}}old('{{$column->name}}',${{CodeHelper::camel($model->name)}}->{{$column->name}}){{CodeHelper::doubleCurlyClose()}}</textarea>
+        @else
             <input class="form-control {{$column->type}}" type="text" name="{{$column->name}}" id="{{$column->name}}" value="{{CodeHelper::doubleCurlyOpen()}}old('{{$column->name}}',${{CodeHelper::camel($model->name)}}->{{$column->name}}){{CodeHelper::doubleCurlyClose()}}"
             @if($column->type == '\String')
             maxlength="{{$column->length}}"
@@ -26,6 +48,7 @@
             required="required"
             @endif
             >
+        @endif
             @@if($errors->has('{{$column->name}}'))
             <p class="text-danger">{{CodeHelper::doubleCurlyOpen()}}$errors->first('{{$column->name}}'){{CodeHelper::doubleCurlyClose()}}</p>
             @@endif

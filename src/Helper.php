@@ -29,6 +29,11 @@ class Helper
         return self::CC_CLOSE;
     }
 
+    public function arroba()
+    {
+        return '@';
+    }
+
     public function e($text)
     {
         return $text;
@@ -70,9 +75,19 @@ class Helper
         return ucfirst(Str::camel($text));
     }
 
+    public function snake($text)
+    {
+        return Str::snake($text);
+    }
+
     public function plural($text)
     {
         return Str::plural($text);
+    }
+
+    public function singular($text)
+    {
+        return Str::singular($text);
     }
 
     public function is_camel($text)
