@@ -8,11 +8,11 @@
 
     <div class="form-group">
         <label for="value">{{CodeHelper::title($column->name)}}</label>
-        <p>{{CodeHelper::doubleCurlyOpen()}}${{CodeHelper::camel($model->name)}}->{{$column->name}}{{CodeHelper::doubleCurlyClose()}}</p>
+        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{CodeHelper::doubleCurlyOpen()}}${{CodeHelper::camel($model->name)}}->{{$column->name}}{{CodeHelper::doubleCurlyClose()}}">
     </div>
     @endif
     @endforeach
 
-    <a href="{{CodeHelper::doubleCurlyOpen()}}route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.index'){{CodeHelper::doubleCurlyClose()}}">Back</a>
+    <a href="@{{ url()->previous() }}">Back</a>
 </div>
 @@endsection

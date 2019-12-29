@@ -33,7 +33,7 @@
         @endforeach
         <div>
             <button class="btn btn-primary" type="submit">Create</button>
-            <a href="{{CodeHelper::doubleCurlyOpen()}}route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.index'){{CodeHelper::doubleCurlyClose()}}">Back</a>
+            <a href="@{{ url()->previous() }}">Back</a>
         </div>
     </form>
 
