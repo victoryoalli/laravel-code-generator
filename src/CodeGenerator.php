@@ -21,11 +21,29 @@ class CodeGenerator
         $this->files = app(Filesystem::class);
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param Model $model
+     * @param string $template
+     * @return void
+     */
     public function render(Model $model, string $template)
     {
         return $this->view->make('laravel-code-generator::' . $template, compact(['model']))->render();
     }
 
+    /**
+     * Generates code based on your model and a template.
+     * Outfile is optional. If you ommit it, the function will return the code generated as a string.
+     * otherwise will return the name of the file generated.
+     * You can overwrite a file if it exists setting $overwrite = true;
+     * @param Model $model
+     * @param string $template
+     * @param string $outputFile
+     * @param boolean $overwrite
+     * @return void
+     */
     public function generate(Model $model, string $template, string $outputFile = null, bool $overwrite = true)
     {
         if ($outputFile === null) {

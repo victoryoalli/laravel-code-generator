@@ -12,7 +12,7 @@ composer require --dev victoryoalli/laravel-code-generator
 
 You can publish views and config with:
 ```bash
-php artisan vendor:publish --provider="VictorYoalli\LaravelCodeGenerator" --tag=views,config --force
+php artisan vendor:publish --provider="VictorYoalli\LaravelCodeGenerator\LaravelCodeGeneratorServiceProvider" --tag=views,config --force
 ```
 
 
@@ -331,9 +331,9 @@ hello_world
 
 `pascal($text)`: Converts text pascal case.
 ```php
-{{CodeHelper::camel('hello_world')}}
+{{CodeHelper::pascal('hello_world')}}
 
-{{CodeHelper::camel('Hello World')}!
+{{CodeHelper::pascal('Hello World')}!
 ```
 
 Will print:
@@ -446,6 +446,14 @@ class CodeGeneratorCommand extends Command
 ```bash
 php artisan code:generator 'App\Models\User' -f
 ```
+
+## CodeGenerator::generate Facade
+
+```php
+    $filename = CodeGenerator::generate('App\Models\User', 'basic/show', "resources/views/{$folder}/show.blade.php", false);
+    $generatedCodeString = CodeGenerator::generate($m, 'basic/routes' );
+```
+
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

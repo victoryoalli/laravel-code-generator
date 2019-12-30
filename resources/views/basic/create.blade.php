@@ -3,15 +3,15 @@
 <div class="container">
     <h1> {{CodeHelper::title($model->name)}} Create </h1>
     @@if ($errors->any())
-    <ul class="alert alert-danger">
+    <ul>
         @@foreach ($errors->all() as $error)
-        <li>@{{ $error }}</li>
+        <li class="text-danger">@{{ $error }}</li>
         @@endforeach
-    </ul>
+    </ul
 
     @@endif
 
-    <form action="{{CodeHelper::doubleCurlyOpen()}}route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.store'){{CodeHelper::doubleCurlyClose()}}" method="POST">
+    <form action="{{CodeHelper::doubleCurlyOpen()}}route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.store'){{CodeHelper::doubleCurlyClose()}}" method="POST" novalidate>
         @@csrf
         @foreach($model->relations as $rel)
         @if($rel->type === 'BelongsTo')
@@ -19,8 +19,8 @@
             <label for="{{$rel->local_key}}">{{CodeHelper::title($rel->name)}}</label>
             <select class="form-control" name="{{$rel->local_key}}" id="{{$rel->local_key}}">
                 {{CodeHelper::arroba()}}foreach((\{{$rel->model->complete_name}}::all() ?? [] ) as ${{$rel->name}})
-                <option value="{{CodeHelper::doubleCurlyOpen()}}${{$rel->name}}->id{{CodeHelper::doubleCurlyClose()}}">{{CodeHelper::doubleCurlyOpen()}}${{$rel->name}}->{{collect($rel->model->columns)->first(function($col){
-                    return $col == 'String'; })}}{{CodeHelper::doubleCurlyClose()}}</option>
+                <option value="{{CodeHelper::doubleCurlyOpen()}}${{$rel->name}}->id{{CodeHelper::doubleCurlyClose()}}">{{CodeHelper::doubleCurlyOpen()}}${{$rel->name}}->{{collect($rel->model->table->columns)->filter(function($col,$key) {
+                    return $col->type == 'String'; })->map(function($col){ return $col->name;})->first()}}{{CodeHelper::doubleCurlyClose()}}</option>
                 @@endforeach
             </select>
         </div>

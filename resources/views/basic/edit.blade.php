@@ -3,15 +3,15 @@
 <div class="container">
     <h1> {{CodeHelper::title($model->name)}} Edit </h1>
     @@if ($errors->any())
-    <ul class="alert alert-danger">
+    <ul>
         @@foreach ($errors->all() as $error)
-        <li>@{{ $error }}</li>
+        <li class="text-danger">@{{ $error }}</li>
         @@endforeach
     </ul>
 
     @@endif
 
-    <form action="{{CodeHelper::doubleCurlyOpen()}}route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.update',['{{CodeHelper::camel($model->name)}}'=>${{CodeHelper::camel($model->name)}}->id]){{CodeHelper::doubleCurlyClose()}}" method="POST">
+    <form action="{{CodeHelper::doubleCurlyOpen()}}route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.update',['{{CodeHelper::camel($model->name)}}'=>${{CodeHelper::camel($model->name)}}->id]){{CodeHelper::doubleCurlyClose()}}" method="POST" novalidate>
         @@csrf
         @@method('PUT')
         @foreach($model->relations as $rel)
@@ -24,7 +24,8 @@
                     {{CodeHelper::arroba()}}if(${{CodeHelper::camel($model->name)}}->{{$rel->local_key}} == old('{{$rel->local_key}}', ${{$rel->name}}->id))
                     selected="selected"
                     @@endif
-                >{{CodeHelper::doubleCurlyOpen()}}${{$rel->name}}->name{{CodeHelper::doubleCurlyClose()}}</option>
+                >{{CodeHelper::doubleCurlyOpen()}}${{$rel->name}}->{{collect($rel->model->table->columns)->filter(function($col,$key) {
+                    return $col->type == 'String'; })->map(function($col){ return $col->name;})->first()}}{{CodeHelper::doubleCurlyClose()}}</option>
 
                 @@endforeach
             </select>
