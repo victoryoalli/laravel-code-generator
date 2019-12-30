@@ -384,7 +384,7 @@ helloWorlds
 ### Instructions
 Create a Custom Command
 ```bash
-php art an make:command CodeGeneratorCommand --command='code:generator'
+php artisan make:command CodeGeneratorCommand --command='code:generator'
 ```
 
 ```php
@@ -405,6 +405,13 @@ class CodeGeneratorCommand extends Command
      * @var string
      */
     protected $signature = 'code:generator {model : Model with namespace} {--f|force : Overwrite files if exists}';
+
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $description = 'Generates multiple files from an input model.';
 
 
     /**
@@ -428,6 +435,8 @@ class CodeGeneratorCommand extends Command
         print "file generated: ".CodeGenerator::generate($m, 'basic/edit', "resources/views/{$folder}/edit.blade.php", $force) . "\n";
         print "file generated: ".CodeGenerator::generate($m, 'basic/index', "resources/views/{$folder}/index.blade.php", $force) . "\n";
         print "file generated: ".CodeGenerator::generate($m, 'basic/show', "resources/views/{$folder}/show.blade.php", $force) . "\n";
+        print CodeGenerator::generate($m, 'basic/routes' ) . "\n";
+
     }
 }
 

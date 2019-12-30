@@ -19,7 +19,8 @@
             <label for="{{$rel->local_key}}">{{CodeHelper::title($rel->name)}}</label>
             <select class="form-control" name="{{$rel->local_key}}" id="{{$rel->local_key}}">
                 {{CodeHelper::arroba()}}foreach((\{{$rel->model->complete_name}}::all() ?? [] ) as ${{$rel->name}})
-                <option value="{{CodeHelper::doubleCurlyOpen()}}${{$rel->name}}->id{{CodeHelper::doubleCurlyClose()}}">{{CodeHelper::doubleCurlyOpen()}}${{$rel->name}}->name{{CodeHelper::doubleCurlyClose()}}</option>
+                <option value="{{CodeHelper::doubleCurlyOpen()}}${{$rel->name}}->id{{CodeHelper::doubleCurlyClose()}}">{{CodeHelper::doubleCurlyOpen()}}${{$rel->name}}->{{collect($rel->model->columns)->first(function($col){
+                    return $col == 'String'; })}}{{CodeHelper::doubleCurlyClose()}}</option>
                 @@endforeach
             </select>
         </div>

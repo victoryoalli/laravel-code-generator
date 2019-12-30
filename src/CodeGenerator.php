@@ -28,23 +28,18 @@ class CodeGenerator
 
     public function generate(Model $model, string $template, string $outputFile = null, bool $overwrite = true)
     {
-        if($outputFile === null){
-            print $this->render($model,$template);
-            return;
+        if ($outputFile === null) {
+            return $this->render($model, $template);
         }
         $filepath = base_path($outputFile);
         $dirname = dirname($filepath);
-        if (!file_exists($dirname)) {
-            mkdir($dirname, 0755, true);
-        }
         if (!file_exists($filepath) || $overwrite) {
+            if (!file_exists($dirname)) {
+                mkdir($dirname, 0755, true);
+            }
             $result = $this->render($model, $template);
             file_put_contents($outputFile, $result);
             return $outputFile;
         }
-        // elseif ($outputFile == null) {
-        //     $result = $this->render($model, $template);
-        //     return $result;
-        // }
     }
 }
