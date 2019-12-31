@@ -12,7 +12,11 @@ composer require --dev victoryoalli/laravel-code-generator
 
 You can publish views and config with:
 ```bash
-php artisan vendor:publish --provider="VictorYoalli\LaravelCodeGenerator\LaravelCodeGeneratorServiceProvider" --tag=views,config --force
+## views at: resources/views/vendor/laravel-code-generator
+php artisan vendor:publish --provider="VictorYoalli\LaravelCodeGenerator\LaravelCodeGeneratorServiceProvider" --tag="views"
+
+## config file: config/laravel-code-generator.php
+php artisan vendor:publish --provider="VictorYoalli\LaravelCodeGenerator\LaravelCodeGeneratorServiceProvider" --tag="config"
 ```
 
 
