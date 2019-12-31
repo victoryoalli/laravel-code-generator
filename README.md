@@ -4,6 +4,8 @@
 
 Laravel Code Generator is a PHP Laravel Package that uses Blade template engine to generate code for you.
 
+The difference between other code generators is that this one will generate the code exactly as you want it to be, same design, same lines of code.
+
 ## Installation
 
 Use composer to install Laravel Code Generator.
@@ -12,18 +14,187 @@ Use composer to install Laravel Code Generator.
 composer require --dev victoryoalli/laravel-code-generator
 ```
 
-You can publish views and config with:
+## Usage
+
+### Single file generation
+```php
+php artisan code:generate 'App\User' -t 'schema' //prints to command line
+php artisan code:generate 'App\User' -t 'schema' -o 'user-schema.json'
+```
+
+**Example Output**
+```json
+{
+  "name": "User",
+  "complete_name": "App\\Models\\User",
+  "table": {
+    "name": "users",
+    "colums": [
+      {
+        "name": "id",
+        "type": "BigInt",
+        "length": "",
+        "nullable": "",
+        "autoincrement": "1",
+        "default": ""
+      },
+      {
+        "name": "name",
+        "type": "String",
+        "length": "255",
+        "nullable": "",
+        "autoincrement": "",
+        "default": ""
+      },
+      {
+        "name": "email",
+        "type": "String",
+        "length": "255",
+        "nullable": "",
+        "autoincrement": "",
+        "default": ""
+      },
+      {
+        "name": "email_verified_at",
+        "type": "DateTime",
+        "length": "0",
+        "nullable": "1",
+        "autoincrement": "",
+        "default": ""
+      },
+      {
+        "name": "password",
+        "type": "String",
+        "length": "255",
+        "nullable": "",
+        "autoincrement": "",
+        "default": ""
+      },
+      {
+        "name": "remember_token",
+        "type": "String",
+        "length": "100",
+        "nullable": "1",
+        "autoincrement": "",
+        "default": ""
+      },
+      {
+        "name": "created_at",
+        "type": "DateTime",
+        "length": "0",
+        "nullable": "1",
+        "autoincrement": "",
+        "default": ""
+      },
+      {
+        "name": "updated_at",
+        "type": "DateTime",
+        "length": "0",
+        "nullable": "1",
+        "autoincrement": "",
+        "default": ""
+      }
+    ]
+  },
+  "relations": []
+}
+```
+
+### Multiple file generator
+
+First create a custom command like this example
+
+###
+Create a Custom Command
+```bash
+php artisan make:command CodeGeneratorCommand --command='code:generator'
+```
+
+```php
+<?php
+
+namespace App\Console\Commands;
+
+use Illuminate\Console\Command;
+use VictorYoalli\LaravelCodeGenerator\Facades\CodeGenerator;
+use VictorYoalli\LaravelCodeGenerator\Facades\CodeHelper;
+use VictorYoalli\LaravelCodeGenerator\Facades\ModelLoader;
+
+class CodeGeneratorCommand extends Command
+{
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'code:generator {model : Model with namespace} {--f|force : Overwrite files if exists}';
+
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $description = 'Generates multiple files from an input model.';
+
+
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+        $model = $this->argument('model');
+        if (!$model) {
+            return;
+        }
+        $m = ModelLoader::load($model);
+        $folder = CodeHelper::plural(CodeHelper::slug($m->name));
+        $force = $this->option('force');
+
+        print "File created: ".CodeGenerator::generate($m, 'basic/Http/Controllers/ModelController', "app/Http/Controllers/{$m->name}Controller.php", $force) . "\n";
+        print "File created: ".CodeGenerator::generate($m, 'basic/Http/Controllers/API/ModelController', "app/Http/Controllers/API/{$m->name}Controller.php", $force) . "\n";
+        print "File created: ".CodeGenerator::generate($m, 'basic/create', "resources/views/{$folder}/create.blade.php", $force) . "\n";
+        print "File created: ".CodeGenerator::generate($m, 'basic/edit', "resources/views/{$folder}/edit.blade.php", $force) . "\n";
+        print "File created: ".CodeGenerator::generate($m, 'basic/index', "resources/views/{$folder}/index.blade.php", $force) . "\n";
+        print "File created: ".CodeGenerator::generate($m, 'basic/show', "resources/views/{$folder}/show.blade.php", $force) . "\n";
+        print CodeGenerator::generate($m, 'basic/routes' ) . "\n";
+
+    }
+}
+
+```
+
+#### Execute custom command
+```bash
+php artisan code:generator 'App\Models\User' -f
+```
+
+## Templates & Customization
+
+Templates are located at `resources/vendor/laravel-code-generator`.
+For example once you publish the views the file `schema.blade.json`  will be located at the relative path is `resources/vendor/laravel-code-generator\schema.blade.json` .
+
+The path `resources/views/vendor/laravel-code-generator` is where you can create your own new templates, or custimize the existing ones.
+
+#### Publish template views & Config
+
+You can publish :
 ```bash
 ## views at: resources/views/vendor/laravel-code-generator
 php artisan vendor:publish --provider="VictorYoalli\LaravelCodeGenerator\LaravelCodeGeneratorServiceProvider" --tag="views"
+```
 
+or the config file
+```php
 ## config file: config/laravel-code-generator.php
 php artisan vendor:publish --provider="VictorYoalli\LaravelCodeGenerator\LaravelCodeGeneratorServiceProvider" --tag="config"
 ```
 
-
 This is the contents of the published config file
 `config/laravel-code-generator.php`:
+
+By default you can use as templates files with following extensions, if you need to generate or use different files as templates you can added to the config file.
 
 ```php
 <?php
@@ -50,16 +221,6 @@ return [
     ]
 ];
 ```
-
-## Usage
-
-#### Command Basic Usage
-```php
-php artisan code:generate 'App\User' -t 'schema' //prints to command line
-php artisan code:generate 'App\User' -t 'schema' -o 'user-schema.json'
-```
-Will look for the template located at `resources/vendor/laravel-code-generator` in this case would be the file``schema.blade.json` where the relative path is `resources/vendor/laravel-code-generator\schema.blade.json`
-
 ## Structure
 * **Model** *(object)*
   * name *(string)*
@@ -81,9 +242,6 @@ Will look for the template located at `resources/vendor/laravel-code-generator` 
   * local_key *(string)*
   * foreign_key *(string)*
   * model *(array)*
-
-## Templates
-Once you publish the default templates you can modify or create new ones. Templates can be found and should be located at `resources/views/vendor/laravel-code-generator`.
 
 #### Example
 ```php
@@ -134,7 +292,6 @@ class {{$model->name}}Controller extends Controller
 
 ```
 
-
 #### Output Sample
 
 ```php
@@ -179,6 +336,7 @@ class UserController extends Controller
     }
 
 ```
+
 
 ## Helpers
 
@@ -248,8 +406,6 @@ Will print:
 ```php
 
 ```
-
-
 
 
 `human($text)`: Converts text to readable words.
@@ -383,82 +539,15 @@ helloWorlds
 ```
 
 
-
-
-## Multiple files generation example
-
-### Instructions
-Create a Custom Command
-```bash
-php artisan make:command CodeGeneratorCommand --command='code:generator'
-```
-
-```php
-<?php
-
-namespace App\Console\Commands;
-
-use Illuminate\Console\Command;
-use VictorYoalli\LaravelCodeGenerator\Facades\CodeGenerator;
-use VictorYoalli\LaravelCodeGenerator\Facades\CodeHelper;
-use VictorYoalli\LaravelCodeGenerator\Facades\ModelLoader;
-
-class CodeGeneratorCommand extends Command
-{
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'code:generator {model : Model with namespace} {--f|force : Overwrite files if exists}';
-
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $description = 'Generates multiple files from an input model.';
-
-
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
-    {
-        $model = $this->argument('model');
-        if (!$model) {
-            return;
-        }
-        $m = ModelLoader::load($model);
-        $folder = CodeHelper::plural(CodeHelper::slug($m->name));
-        $force = $this->option('force');
-
-        print "file generated: ".CodeGenerator::generate($m, 'basic/Http/Controllers/ModelController', "app/Http/Controllers/{$m->name}Controller.php", $force) . "\n";
-        print "file generated: ".CodeGenerator::generate($m, 'basic/Http/Controllers/API/ModelController', "app/Http/Controllers/API/{$m->name}Controller.php", $force) . "\n";
-        print "file generated: ".CodeGenerator::generate($m, 'basic/create', "resources/views/{$folder}/create.blade.php", $force) . "\n";
-        print "file generated: ".CodeGenerator::generate($m, 'basic/edit', "resources/views/{$folder}/edit.blade.php", $force) . "\n";
-        print "file generated: ".CodeGenerator::generate($m, 'basic/index', "resources/views/{$folder}/index.blade.php", $force) . "\n";
-        print "file generated: ".CodeGenerator::generate($m, 'basic/show', "resources/views/{$folder}/show.blade.php", $force) . "\n";
-        print CodeGenerator::generate($m, 'basic/routes' ) . "\n";
-
-    }
-}
-
-```
-
-### Usage
-```bash
-php artisan code:generator 'App\Models\User' -f
-```
-
 ## CodeGenerator::generate Facade
+
+This is how you can use the Facade when you want to create your own Code Generator.
 
 ```php
     $filename = CodeGenerator::generate('App\Models\User', 'basic/show', "resources/views/{$folder}/show.blade.php", false);
     $generatedCodeString = CodeGenerator::generate($m, 'basic/routes' );
 ```
+
 
 
 ## Contributing
