@@ -1,6 +1,6 @@
 
 
-# ![Laravel Code Generator](laravel-codegenerator.png) Laravel Code Generator
+# ![Laravel Code Generator](laravel-codegenerator.png)
 
 Laravel Code Generator is a PHP Laravel Package that uses Blade template engine to generate code for you.
 
