@@ -165,7 +165,7 @@ class CodeGeneratorCommand extends Command
 
 ```
 
-#### Advanced a Custom Command
+#### Advanced Custom Command
 
 ```php
 
@@ -194,6 +194,7 @@ class CodeGeneratorCommand extends Command
             '{--F|force : Overwrite files if exists} ' .
             '{--w|views : View files} ' .
             '{--a|api : Creates API Controller} ' .
+            '{--r|routes : Display Routes} ' .
             '{--f|factory : Factory} ' .
             '{--test : Feacture Test} ' .
             '{--A|all : All Files}';
@@ -217,11 +218,12 @@ class CodeGeneratorCommand extends Command
 
         $views = $this->option('views');
         $api = $this->option('api');
+        $routes = $this->option('routes');
         $factory = $this->option('factory');
         $test = $this->option('test');
         $all = $this->option('all');
         if ($all) {
-            $views = $api = $factory = $test = $all;
+            $views = $routes = $api = $factory = $test = $all;
         }
 
         printif('Web Controller', CodeGenerator::generate($m, 'basic/Http/Controllers/ModelController', "app/Http/Controllers/{$m->name}Controller.php", $force));
@@ -242,10 +244,11 @@ class CodeGeneratorCommand extends Command
         if ($test) {
             printif('Feature Test Controller', CodeGenerator::generate($m, 'basic/tests/Feature/Http/Controllers/ModelControllerTest', "tests/Feature/Http/Controllers/{$m->name}ControllerTest.php", $force));
         }
-        print CodeGenerator::generate($m, 'basic/routes') . "\n";
+        if ($routes) {
+            print CodeGenerator::generate($m, 'basic/routes') . "\n";
+        }
     }
 }
-
 
 
 ```
