@@ -165,6 +165,12 @@ class CodeGeneratorCommand extends Command
 
 ```
 
+#### Execute command
+```bash
+php artisan code:generator 'App\Models\User' -f
+```
+
+
 #### Advanced Custom Command
 
 ```php
@@ -255,7 +261,7 @@ class CodeGeneratorCommand extends Command
 
 #### Execute custom command
 ```bash
-php artisan code:generator 'App\Models\User' -f
+php artisan code:generator 'App\Models\User' -FA
 ```
 
 ## Templates & Customization
