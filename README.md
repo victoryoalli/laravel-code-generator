@@ -110,68 +110,7 @@ First create a custom command like this example
 php artisan make:command CodeGeneratorCommand --command='code:generator'
 ```
 
-```php
-<?php
-
-namespace App\Console\Commands;
-
-use Illuminate\Console\Command;
-use VictorYoalli\LaravelCodeGenerator\Facades\CodeGenerator;
-use VictorYoalli\LaravelCodeGenerator\Facades\CodeHelper;
-use VictorYoalli\LaravelCodeGenerator\Facades\ModelLoader;
-
-class CodeGeneratorCommand extends Command
-{
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'code:generator {model : Model with namespace} {--f|force : Overwrite files if exists}';
-
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $description = 'Generates multiple files from an input model.';
-
-
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
-    {
-        $model = $this->argument('model');
-        if (!$model) {
-            return;
-        }
-        $m = ModelLoader::load($model);
-        $folder = CodeHelper::plural(CodeHelper::slug($m->name));
-        $force = $this->option('force');
-
-        print "File created: ".CodeGenerator::generate($m, 'basic/Http/Controllers/ModelController', "app/Http/Controllers/{$m->name}Controller.php", $force) . "\n";
-        print "File created: ".CodeGenerator::generate($m, 'basic/Http/Controllers/API/ModelController', "app/Http/Controllers/API/{$m->name}Controller.php", $force) . "\n";
-        print "File created: ".CodeGenerator::generate($m, 'basic/create', "resources/views/{$folder}/create.blade.php", $force) . "\n";
-        print "File created: ".CodeGenerator::generate($m, 'basic/edit', "resources/views/{$folder}/edit.blade.php", $force) . "\n";
-        print "File created: ".CodeGenerator::generate($m, 'basic/index', "resources/views/{$folder}/index.blade.php", $force) . "\n";
-        print "File created: ".CodeGenerator::generate($m, 'basic/show', "resources/views/{$folder}/show.blade.php", $force) . "\n";
-        print CodeGenerator::generate($m, 'basic/routes' ) . "\n";
-
-    }
-}
-
-```
-
-#### Execute command
-```bash
-php artisan code:generator 'App\Models\User' -f
-```
-
-
-#### Advanced Custom Command
+#### Custom Command
 
 ```php
 
@@ -197,13 +136,14 @@ class CodeGeneratorCommand extends Command
      * @var string
      */
     protected $signature = 'code:generator {model : Model with namespace} ' .
-            '{--F|force : Overwrite files if exists} ' .
             '{--w|views : View files} ' .
+            '{--c|controller : Controller} ' .
             '{--a|api : Creates API Controller} ' .
             '{--r|routes : Display Routes} ' .
             '{--f|factory : Factory} ' .
-            '{--test : Feacture Test} ' .
-            '{--A|all : All Files}';
+            '{--t|tests : Feacture Test} ' .
+            '{--A|all : All Files}'.
+            '{--F|force : Overwrite files if exists} ' ;
 
     protected $description = 'Multiple files generation';
 
@@ -223,16 +163,20 @@ class CodeGeneratorCommand extends Command
         $force = $this->option('force');
 
         $views = $this->option('views');
+        $controller = $this->option('controller');
         $api = $this->option('api');
         $routes = $this->option('routes');
         $factory = $this->option('factory');
-        $test = $this->option('test');
+        $tests = $this->option('tests');
         $all = $this->option('all');
         if ($all) {
-            $views = $routes = $api = $factory = $test = $all;
+            $views = $routes = $api = $controller = $factory = $tests = $all;
         }
 
-        printif('Web Controller', CodeGenerator::generate($m, 'basic/Http/Controllers/ModelController', "app/Http/Controllers/{$m->name}Controller.php", $force));
+        if($controller)
+        {
+            printif('Web Controller', CodeGenerator::generate($m, 'basic/Http/Controllers/ModelController', "app/Http/Controllers/{$m->name}Controller.php", $force));
+        }
         if ($api) {
             printif('API Controller', CodeGenerator::generate($m, 'basic/Http/Controllers/API/ModelController', "app/Http/Controllers/API/{$m->name}Controller.php", $force));
         }
@@ -247,8 +191,9 @@ class CodeGeneratorCommand extends Command
         if ($factory) {
             printif('Factory ', CodeGenerator::generate($m, 'basic/database/factories/ModelFactory', "database/factories/{$m->name}Factory.php", $force));
         }
-        if ($test) {
+        if ($tests) {
             printif('Feature Test Controller', CodeGenerator::generate($m, 'basic/tests/Feature/Http/Controllers/ModelControllerTest', "tests/Feature/Http/Controllers/{$m->name}ControllerTest.php", $force));
+            printif('Feature Test Controller', CodeGenerator::generate($m, 'basic/tests/Feature/Http/Controllers/API/ModelControllerTest', "tests/Feature/Http/Controllers/API/{$m->name}ControllerTest.php", $force));
         }
         if ($routes) {
             print CodeGenerator::generate($m, 'basic/routes') . "\n";

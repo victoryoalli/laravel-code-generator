@@ -45,7 +45,7 @@ class {{$model->name}}Controller
        return ${{CodeHelper::camel($model->name)}};
     }
 
-    public function update(Request $request, Setting $setting)
+    public function update(Request $request, {{$model->name}} ${{CodeHelper::camel($model->name)}})
     {
         $data = $request->all();
         $validator = Validator::make($data, [

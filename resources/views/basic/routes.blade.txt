@@ -3,4 +3,4 @@
 Route::resource('{{CodeHelper::slug(CodeHelper::plural($model->name))}}', '{{$model->name}}Controller');
 
 # {{CodeHelper::title($model->name)}} Routes for api.php
-Route::apiResource('{{CodeHelper::slug(CodeHelper::plural($model->name))}}', 'API/{{$model->name}}Controller');
+Route::apiResource('{{CodeHelper::slug(CodeHelper::plural($model->name))}}', 'API\{{$model->name}}Controller');
