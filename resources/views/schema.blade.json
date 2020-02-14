@@ -1,6 +1,6 @@
 {
     "name":"{{$model->name}}",
-    "namespace":"{{$model->namespace}}",
+    "namespace":"{{str_replace("\\","\\\\",$model->namespace)}}",
     "complete_name":"{{str_replace("\\","\\\\",$model->complete_name)}}",
     "table":{
         "name":"{{$model->table->name}}",

@@ -4,10 +4,22 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Controller;
+use {{$model->namespace}}\User;
 use {{$model->complete_name}};
 
-class {{$model->name}}Controller
+class {{$model->name}}Controller extends Controller
 {
+@if($options->auth)
+    public function __construct()
+    {
+        //parent::__construct();
+        $this->middleware('auth');
+
+    }
+@endif
+
+
     public function index()
     {
         ${{CodeHelper::camel(CodeHelper::plural($model->name))}} = {{$model->name}}::all();
