@@ -13,38 +13,37 @@ class {{$model->name}}ControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_{{CodeHelper::snake($model->name)}}_and_redirects()
+    public function it_stores_{{CodeHelper::snake($model->name)}}_api()
     {
         $this->withoutExceptionHandling();
         ${{CodeHelper::camel($model->name)}} = factory({{$model->name}}::class)->make();
         $data = ${{CodeHelper::camel($model->name)}}->attributesToArray();
-        //$response = $this->post(route('{{CodeHelper::plural(CodeHelper::slug($model->name))}}.store'), $data);
-        //$response->assertRedirect(route('{{CodeHelper::plural(CodeHelper::slug($model->name))}}.index'));
-        //$response->assertSessionHas('status', '{{$model->name}} created!');
+        $response = $this->json('POST','api/{{CodeHelper::plural(CodeHelper::slug($model->name))}}',$data);
+        $response->assertStatus(201)->assertJson(['created_at'=>true]);
     }
 
     /**
      * @test
      */
-    public function it_updates_{{CodeHelper::snake($model->name)}}_and_redirects()
+    public function it_updates_{{CodeHelper::snake($model->name)}}_api()
     {
         $this->withoutExceptionHandling();
         ${{CodeHelper::camel($model->name)}} = factory({{$model->name}}::class)->create();
         $data = factory({{$model->name}}::class)->make()->attributesToArray();
-        //$response = $this->put(route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.update', ['{{CodeHelper::snake($model->name)}}' => ${{CodeHelper::camel($model->name)}}]), $data);
-        //$response->assertRedirect(route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.index'));
-        //$response->assertSessionHas('status', '{{$model->name}} updated!');
+        $response = $this->json('PUT','api/{{CodeHelper::plural(CodeHelper::slug($model->name))}}/'.${{CodeHelper::camel($model->name)}}->id,$data);
+        $response->assertStatus(200)->assertJson(['updated_at'=>true]);
     }
 
     /**
      * @test
      */
-    public function it_destroys_{{CodeHelper::snake($model->name)}}_and_redirects()
+    public function it_destroys_{{CodeHelper::snake($model->name)}}_api()
     {
         $this->withoutExceptionHandling();
         ${{CodeHelper::camel($model->name)}} = factory({{$model->name}}::class)->create();
-        //$response = $this->delete(route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.destroy', ['{{CodeHelper::snake($model->name)}}' => ${{CodeHelper::camel($model->name)}}]));
-        //$response->assertRedirect(route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.index'));
-        //$response->assertSessionHas('status', '{{$model->name}} destroyed!');
+        $response = $this->json('DELETE','api/{{CodeHelper::plural(CodeHelper::slug($model->name))}}/'.${{CodeHelper::camel($model->name)}}->id);
+        $response->assertStatus(200)->assertJson(['deleted_at'=>true]);
+        ${{CodeHelper::camel($model->name)}}->refresh();
+        $this->assertSoftDeleted('{{CodeHelper::plural(CodeHelper::snake($model->name))}}',${{CodeHelper::camel($model->name)}}->toArray());
     }
 }
