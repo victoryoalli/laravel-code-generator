@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use {{$model->namespace}}\User;
 use {{$model->complete_name}};
+@if($options->request)
+use App\Http\Requests\{{$model->name}}PostRequest;
+@endif
 
 class {{$model->name}}Controller extends Controller
 {
@@ -31,54 +34,16 @@ class {{$model->name}}Controller extends Controller
         return ${{CodeHelper::camel($model->name)}};
     }
 
-    public function store(Request $request)
+    public function store({{$model->name}}PostRequest $request)
     {
-        $data = $request->all();
-        $validator = Validator::make($data, [
-        @foreach($model->table->columns as $col)
-        @if(!CodeHelper::contains('/id$/',$col->name) && !CodeHelper::contains('/_at$/',$col->name))
-
-        '{{$col->name}}' => [
-        @if(!$col->nullable)
-            'required',
-        @endif
-        ],
-        @endif
-        @endforeach
-
-        ]);
-        if ($validator->fails()) {
-            return redirect()->route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.create')
-                        ->withErrors($validator)
-                        ->withInput();
-        }
+        $data = $request->validated();
         ${{CodeHelper::camel($model->name)}} = {{$model->name}}::create($data);
-
-       return ${{CodeHelper::camel($model->name)}};
+        return ${{CodeHelper::camel($model->name)}};
     }
 
-    public function update(Request $request, {{$model->name}} ${{CodeHelper::camel($model->name)}})
+    public function update({{$model->name}}PostRequest $request, {{$model->name}} ${{CodeHelper::camel($model->name)}})
     {
-        $data = $request->all();
-        $validator = Validator::make($data, [
-        @foreach($model->table->columns as $col)
-        @if(!CodeHelper::contains('/id$/',$col->name) && !CodeHelper::contains('/_at$/',$col->name))
-
-        '{{$col->name}}' => [
-        @if(!$col->nullable)
-            'required',
-        @endif
-        ],
-        @endif
-        @endforeach
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.edit', ['{{CodeHelper::camel($model->name)}}' => ${{CodeHelper::camel($model->name)}}])
-                        ->withErrors($validator)
-                        ->withInput();
-        }
-
+        $data = $request->validated();
         ${{CodeHelper::camel($model->name)}}->fill($data);
         ${{CodeHelper::camel($model->name)}}->save();
 
