@@ -9,7 +9,7 @@ use Faker\Generator as Faker;
 
 $columns  = collect($model->table->columns);
 $columns = $columns->filter(function($c){
-    return ($c->name != 'id' && $c->name != 'created_at' && $c->name != 'updated_at');
+    return ($c->name != 'id' && $c->name != 'created_at' && $c->name != 'updated_at' && $c->name != 'deleted_at');
 });
 
 function fakerType($column){
