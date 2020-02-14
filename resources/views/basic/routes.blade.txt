@@ -1,4 +1,3 @@
-
 # {{CodeHelper::title($model->name)}} Routes for web.php
 Route::resource('{{CodeHelper::slug(CodeHelper::plural($model->name))}}', '{{$model->name}}Controller');
 

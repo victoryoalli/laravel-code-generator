@@ -28,9 +28,10 @@ class CodeGenerator
      * @param string $template
      * @return void
      */
-    public function render(Model $model, string $template)
+    public function render(Model $model, string $template, array $options = [])
     {
-        return $this->view->make('laravel-code-generator::' . $template, compact(['model']))->render();
+        $options = (object) $options;
+        return $this->view->make('laravel-code-generator::' . $template, compact(['model', 'options']))->render();
     }
 
     /**
@@ -44,10 +45,10 @@ class CodeGenerator
      * @param boolean $overwrite
      * @return void
      */
-    public function generate(Model $model, string $template, string $outputFile = null, bool $overwrite = true)
+    public function generate(Model $model, string $template, string $outputFile = null, bool $overwrite = true, array $options = [])
     {
         if ($outputFile === null) {
-            return $this->render($model, $template);
+            return $this->render($model, $template, $options);
         }
         $filepath = base_path($outputFile);
         $dirname = dirname($filepath);
@@ -55,7 +56,7 @@ class CodeGenerator
             if (!file_exists($dirname)) {
                 mkdir($dirname, 0755, true);
             }
-            $result = $this->render($model, $template);
+            $result = $this->render($model, $template, $options);
             file_put_contents($outputFile, $result);
             return $outputFile;
         }

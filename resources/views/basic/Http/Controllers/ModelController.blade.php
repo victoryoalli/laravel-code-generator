@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use {{$model->complete_name}};
 
+
 class {{$model->name}}Controller
 {
     public function index()
