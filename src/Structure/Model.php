@@ -10,6 +10,7 @@ class Model
     private $_schema;
     private $_table;
     public $name;
+    public $namespace;
     public $complete_name;
     public $attributes;
     public $table;
@@ -22,6 +23,7 @@ class Model
 
         $this->complete_name = get_class($this->_model);
         $this->name = class_basename($this->_model);
+        $this->namespace = str_replace("\\","\\\\",str_replace("\\{$this->name}",'',$this->complete_name));
 
         $connection = $this->_model->getConnection();
         $table_name = $connection->getTablePrefix() . $this->_model->getTable();
