@@ -26,13 +26,13 @@ class {{$model->name}}PostRequest extends FormRequest
         return [
 @foreach($model->table->columns as $col)
 @if(!CodeHelper::contains('/^id$/',$col->name) && !CodeHelper::contains('/_at$/',$col->name))
-        '{{$col->name}}' => [
+            '{{$col->name}}' => [
 @if(!$col->nullable)
-            'required',
+                'required',
 @else
-            'present',
+                'present',
 @endif
-        ],
+            ],
 @endif
 @endforeach
         ];

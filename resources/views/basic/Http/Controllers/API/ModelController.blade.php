@@ -26,8 +26,7 @@ class {{$model->name}}Controller extends Controller
 
     public function index()
     {
-        ${{CodeHelper::snake(CodeHelper::plural($model->name))}} = {{$model->name}}::all();
-        return ${{CodeHelper::snake(CodeHelper::plural($model->name))}};
+        return {{$model->name}}::all();
     }
 
     public function show(Request $request, {{$model->name}} ${{CodeHelper::snake($model->name)}})

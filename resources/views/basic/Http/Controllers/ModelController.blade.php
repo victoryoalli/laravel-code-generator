@@ -20,7 +20,6 @@ class {{$model->name}}Controller extends Controller
     {
         //parent::__construct();
         $this->middleware('auth');
-
     }
 @endif
 
