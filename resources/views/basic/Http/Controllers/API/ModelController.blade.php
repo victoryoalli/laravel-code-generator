@@ -26,41 +26,41 @@ class {{$model->name}}Controller extends Controller
 
     public function index()
     {
-        ${{CodeHelper::camel(CodeHelper::plural($model->name))}} = {{$model->name}}::all();
-        return ${{CodeHelper::camel(CodeHelper::plural($model->name))}};
+        ${{CodeHelper::snake(CodeHelper::plural($model->name))}} = {{$model->name}}::all();
+        return ${{CodeHelper::snake(CodeHelper::plural($model->name))}};
     }
 
-    public function show(Request $request, {{$model->name}} ${{CodeHelper::camel($model->name)}})
+    public function show(Request $request, {{$model->name}} ${{CodeHelper::snake($model->name)}})
     {
-        return ${{CodeHelper::camel($model->name)}};
+        return ${{CodeHelper::snake($model->name)}};
     }
 
     public function store({{$model->name}}PostRequest $request)
     {
         $data = $request->validated();
-        ${{CodeHelper::camel($model->name)}} = {{$model->name}}::create($data);
+        ${{CodeHelper::snake($model->name)}} = {{$model->name}}::create($data);
 @if($options->notification)
-        //auth()->user->notify(new {{$model->name}}Notification(${{CodeHelper::camel($model->name)}}));
+        //auth()->user->notify(new {{$model->name}}Notification(${{CodeHelper::snake($model->name)}}));
 @endif
 @if($options->event)
-        event(new New{{$model->name}}(${{CodeHelper::camel($model->name)}}));
+        event(new New{{$model->name}}(${{CodeHelper::snake($model->name)}}));
 @endif
-        return ${{CodeHelper::camel($model->name)}};
+        return ${{CodeHelper::snake($model->name)}};
     }
 
-    public function update({{$model->name}}PostRequest $request, {{$model->name}} ${{CodeHelper::camel($model->name)}})
+    public function update({{$model->name}}PostRequest $request, {{$model->name}} ${{CodeHelper::snake($model->name)}})
     {
         $data = $request->validated();
-        ${{CodeHelper::camel($model->name)}}->fill($data);
-        ${{CodeHelper::camel($model->name)}}->save();
+        ${{CodeHelper::snake($model->name)}}->fill($data);
+        ${{CodeHelper::snake($model->name)}}->save();
 
-        return ${{CodeHelper::camel($model->name)}};
+        return ${{CodeHelper::snake($model->name)}};
     }
 
-    public function destroy(Request $request, {{$model->name}} ${{CodeHelper::camel($model->name)}})
+    public function destroy(Request $request, {{$model->name}} ${{CodeHelper::snake($model->name)}})
     {
-        ${{CodeHelper::camel($model->name)}}->delete();
-        return ${{CodeHelper::camel($model->name)}};
+        ${{CodeHelper::snake($model->name)}}->delete();
+        return ${{CodeHelper::snake($model->name)}};
     }
 
 }
