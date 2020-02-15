@@ -19,7 +19,7 @@ class {{$model->name}}Controller extends Controller
     public function __construct()
     {
         //parent::__construct();
-        $this->middleware('auth');
+        $this->middleware('auth:api');
     }
 @endif
 
