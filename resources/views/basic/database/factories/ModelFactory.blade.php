@@ -4,6 +4,9 @@
 
 use {{$model->complete_name}};
 use Faker\Generator as Faker;
+@foreach($model->relations as $rel)
+use {{$rel->model->complete_name}};
+@endforeach
 
 @php
 

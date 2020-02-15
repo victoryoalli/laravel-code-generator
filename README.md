@@ -193,7 +193,7 @@ class CodeGeneratorCommand extends Command
             printif('API Controller', CodeGenerator::generate($m, $theme.'/Http/Controllers/API/ModelController', "app/Http/Controllers/API/{$m->name}Controller.php", $force, $options));
         }
         if ($request) {
-            printif('Form Request', CodeGenerator::generate($m, $theme.'/Http/Requests/ModelPostRequest', "app/Http/Requests/{$m->name}PostController.php", $force, $options));
+            printif('Form Request', CodeGenerator::generate($m, $theme.'/Http/Requests/ModelPostRequest', "app/Http/Requests/{$m->name}PostRequest.php", $force, $options));
         }
 
         if ($views) {
@@ -221,6 +221,7 @@ class CodeGeneratorCommand extends Command
         }
     }
 }
+
 
 
 ```

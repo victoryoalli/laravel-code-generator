@@ -53,9 +53,9 @@ class {{$model->name}}Controller extends Controller
         return redirect()->route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.index')->with('status', '{{$model->name}} created!');
     }
 
-    public function edit(Request $request, {{$model->name}} ${{CodeHelper::camel($model->name)}})
+    public function edit(Request $request, {{$model->name}} ${{CodeHelper::snake($model->name)}})
     {
-        return view('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.edit', compact('{{CodeHelper::camel($model->name)}}'));
+        return view('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.edit', compact('{{CodeHelper::snake($model->name)}}'));
     }
 
     public function update({{$model->name}}PostRequest $request, {{$model->name}} ${{CodeHelper::camel($model->name)}})

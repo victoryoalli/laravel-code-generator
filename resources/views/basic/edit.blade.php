@@ -11,7 +11,7 @@
 
     @@endif
 
-    <form action="{{CodeHelper::doubleCurlyOpen()}}route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.update',['{{CodeHelper::camel($model->name)}}'=>${{CodeHelper::camel($model->name)}}->id]){{CodeHelper::doubleCurlyClose()}}" method="POST" novalidate>
+    <form action="{{CodeHelper::doubleCurlyOpen()}}route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.update',['{{CodeHelper::snake($model->name)}}'=>${{CodeHelper::snake($model->name)}}->id]){{CodeHelper::doubleCurlyClose()}}" method="POST" novalidate>
         @@csrf
         @@method('PUT')
         @foreach($model->relations as $rel)
@@ -21,7 +21,7 @@
             <select class="form-control" name="{{$rel->local_key}}" id="{{$rel->local_key}}">
                 {{CodeHelper::arroba()}}foreach((\{{$rel->model->complete_name}}::all() ?? [] ) as ${{$rel->name}})
                 <option value="{{CodeHelper::doubleCurlyOpen()}}${{$rel->name}}->id{{CodeHelper::doubleCurlyClose()}}"
-                    {{CodeHelper::arroba()}}if(${{CodeHelper::camel($model->name)}}->{{$rel->local_key}} == old('{{$rel->local_key}}', ${{$rel->name}}->id))
+                    {{CodeHelper::arroba()}}if(${{CodeHelper::snake($model->name)}}->{{$rel->local_key}} == old('{{$rel->local_key}}', ${{$rel->name}}->id))
                     selected="selected"
                     @@endif
                 >{{CodeHelper::doubleCurlyOpen()}}${{$rel->name}}->{{collect($rel->model->table->columns)->filter(function($col,$key) {
@@ -39,9 +39,9 @@
         <div class="form-group">
             <label for="{{$column->name}}">{{CodeHelper::title($column->name)}}</label>
         @if($column->type=='Text')
-            <textarea class="form-control {{$column->type}}"  name="{{$column->name}}" id="{{$column->name}}" cols="30" rows="10">{{CodeHelper::doubleCurlyOpen()}}old('{{$column->name}}',${{CodeHelper::camel($model->name)}}->{{$column->name}}){{CodeHelper::doubleCurlyClose()}}</textarea>
+            <textarea class="form-control {{$column->type}}"  name="{{$column->name}}" id="{{$column->name}}" cols="30" rows="10">{{CodeHelper::doubleCurlyOpen()}}old('{{$column->name}}',${{CodeHelper::snake($model->name)}}->{{$column->name}}){{CodeHelper::doubleCurlyClose()}}</textarea>
         @else
-            <input class="form-control {{$column->type}}" type="text" name="{{$column->name}}" id="{{$column->name}}" value="{{CodeHelper::doubleCurlyOpen()}}old('{{$column->name}}',${{CodeHelper::camel($model->name)}}->{{$column->name}}){{CodeHelper::doubleCurlyClose()}}"
+            <input class="form-control {{$column->type}}" type="text" name="{{$column->name}}" id="{{$column->name}}" value="{{CodeHelper::doubleCurlyOpen()}}old('{{$column->name}}',${{CodeHelper::snake($model->name)}}->{{$column->name}}){{CodeHelper::doubleCurlyClose()}}"
             @if($column->type == '\String')
             maxlength="{{$column->length}}"
             @endif
