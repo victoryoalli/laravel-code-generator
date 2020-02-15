@@ -142,8 +142,12 @@ class CodeGeneratorCommand extends Command
             '{--r|routes : Display Routes} ' .
             '{--f|factory : Factory} ' .
             '{--t|tests : Feacture Test} ' .
-            '{--A|all : All Files}'.
-            '{--F|force : Overwrite files if exists} ' ;
+            '{--A|all : All Files}' .
+            '{--F|force : Overwrite files if exists} ' .
+            '{--auth : Auth (not included in all)} ' .
+            '{--event : Event (not included in all)} ' .
+            '{--notification : Notification (not included in all)} ' .
+            '{--theme=basic : Theme}' ;
 
     protected $description = 'Multiple files generation';
 
@@ -162,41 +166,58 @@ class CodeGeneratorCommand extends Command
         $folder = CodeHelper::plural(CodeHelper::slug($m->name));
         $force = $this->option('force');
 
-        $views = $this->option('views');
-        $controller = $this->option('controller');
-        $api = $this->option('api');
-        $routes = $this->option('routes');
+        //Options
         $factory = $this->option('factory');
+        $controller = $this->option('controller');
+        $routes = $this->option('routes');
+        $views = $this->option('views');
+        $api = $this->option('api');
         $tests = $this->option('tests');
+        $auth = $this->option('auth');
+        $event = $this->option('event');
+        $notification = $this->option('notification');
         $all = $this->option('all');
+        $theme = $this->option('theme');
         if ($all) {
-            $views = $routes = $api = $controller = $factory = $tests = $all;
+            $factory = $controller = $routes = $views = $api = $tests = $all;
         }
 
-        if($controller)
-        {
-            printif('Web Controller', CodeGenerator::generate($m, 'basic/Http/Controllers/ModelController', "app/Http/Controllers/{$m->name}Controller.php", $force));
+        $request = ($controller || $api);
+
+        $options = compact(['factory', 'controller', 'routes', 'views',  'api', 'tests', 'auth', 'request', 'notification', 'event']);
+
+        if ($controller) {
+            printif('Web Controller', CodeGenerator::generate($m, $theme.'/Http/Controllers/ModelController', "app/Http/Controllers/{$m->name}Controller.php", $force, $options));
         }
         if ($api) {
-            printif('API Controller', CodeGenerator::generate($m, 'basic/Http/Controllers/API/ModelController', "app/Http/Controllers/API/{$m->name}Controller.php", $force));
+            printif('API Controller', CodeGenerator::generate($m, $theme.'/Http/Controllers/API/ModelController', "app/Http/Controllers/API/{$m->name}Controller.php", $force, $options));
+        }
+        if ($request) {
+            printif('Form Request', CodeGenerator::generate($m, $theme.'/Http/Requests/ModelPostRequest', "app/Http/Requests/{$m->name}PostController.php", $force, $options));
         }
 
         if ($views) {
-            printif('Create View', CodeGenerator::generate($m, 'basic/create', "resources/views/{$folder}/create.blade.php", $force));
-            printif('Edit View', CodeGenerator::generate($m, 'basic/edit', "resources/views/{$folder}/edit.blade.php", $force));
-            printif('Index View', CodeGenerator::generate($m, 'basic/index', "resources/views/{$folder}/index.blade.php", $force));
-            printif('Show View', CodeGenerator::generate($m, 'basic/show', "resources/views/{$folder}/show.blade.php", $force));
+            printif('Create View', CodeGenerator::generate($m, $theme.'/create', "resources/views/{$folder}/create.blade.php", $force, $options));
+            printif('Edit View', CodeGenerator::generate($m, $theme.'/edit', "resources/views/{$folder}/edit.blade.php", $force, $options));
+            printif('Index View', CodeGenerator::generate($m, $theme.'/index', "resources/views/{$folder}/index.blade.php", $force, $options));
+            printif('Show View', CodeGenerator::generate($m, $theme.'/show', "resources/views/{$folder}/show.blade.php", $force, $options));
         }
 
         if ($factory) {
-            printif('Factory ', CodeGenerator::generate($m, 'basic/database/factories/ModelFactory', "database/factories/{$m->name}Factory.php", $force));
+            printif('Factory ', CodeGenerator::generate($m, $theme.'/database/factories/ModelFactory', "database/factories/{$m->name}Factory.php", $force, $options));
         }
         if ($tests) {
-            printif('Feature Test Controller', CodeGenerator::generate($m, 'basic/tests/Feature/Http/Controllers/ModelControllerTest', "tests/Feature/Http/Controllers/{$m->name}ControllerTest.php", $force));
-            printif('Feature Test Controller', CodeGenerator::generate($m, 'basic/tests/Feature/Http/Controllers/API/ModelControllerTest', "tests/Feature/Http/Controllers/API/{$m->name}ControllerTest.php", $force));
+            printif('Feature Test Controller', CodeGenerator::generate($m, $theme.'/tests/Feature/Http/Controllers/ModelControllerTest', "tests/Feature/Http/Controllers/{$m->name}ControllerTest.php", $force, $options));
+            printif('Feature Test Controller', CodeGenerator::generate($m, $theme.'/tests/Feature/Http/Controllers/API/ModelControllerTest', "tests/Feature/Http/Controllers/API/{$m->name}ControllerTest.php", $force, $options));
+        }
+        if($notification){
+            printif('Notification', CodeGenerator::generate($m, $theme.'/Notifications/ModelNotification', "app/Notifications/{$m->name}Notification.php", $force, $options));
+        }
+        if($event){
+            printif('Notification', CodeGenerator::generate($m, $theme.'/Events/NewModel', "app/Events/New{$m->name}.php", $force, $options));
         }
         if ($routes) {
-            print CodeGenerator::generate($m, 'basic/routes') . "\n";
+            print CodeGenerator::generate($m, $theme.'/routes') . "\n";
         }
     }
 }

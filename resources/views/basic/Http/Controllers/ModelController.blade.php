@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use App\Http\Requests\{{$model->name}}PostRequest;
+@if($options->notification)
+use App\Notifications\{{$model->name}}Notification;
+@endif
+@if($options->event)
+use App\Events\New{{$model->name}};
+@endif
 use {{$model->complete_name}};
 
 
@@ -39,7 +43,13 @@ class {{$model->name}}Controller extends Controller
     public function store({{$model->name}}PostRequest $request)
     {
         $data = $request->validated();
-        {{$model->name}}::create($data);
+        ${{CodeHelper::camel($model->name)}} = {{$model->name}}::create($data);
+@if($options->notification)
+        //auth()->user->notify(new {{$model->name}}Notification(${{CodeHelper::camel($model->name)}}));
+@endif
+@if($options->event)
+        event(new New{{$model->name}}(${{CodeHelper::camel($model->name)}}));
+@endif
         return redirect()->route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.index')->with('status', '{{$model->name}} created!');
     }
 

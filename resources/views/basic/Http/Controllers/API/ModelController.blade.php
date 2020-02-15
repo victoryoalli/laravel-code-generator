@@ -3,13 +3,15 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\Controller;
-use {{$model->namespace}}\User;
-use {{$model->complete_name}};
-@if($options->request)
 use App\Http\Requests\{{$model->name}}PostRequest;
+use App\Http\Controllers\Controller;
+@if($options->notification)
+use App\Notifications\{{$model->name}}Notification;
 @endif
+@if($options->event)
+use App\Events\New{{$model->name}};
+@endif
+use {{$model->complete_name}};
 
 class {{$model->name}}Controller extends Controller
 {
@@ -38,6 +40,12 @@ class {{$model->name}}Controller extends Controller
     {
         $data = $request->validated();
         ${{CodeHelper::camel($model->name)}} = {{$model->name}}::create($data);
+@if($options->notification)
+        //auth()->user->notify(new {{$model->name}}Notification(${{CodeHelper::camel($model->name)}}));
+@endif
+@if($options->event)
+        event(new New{{$model->name}}(${{CodeHelper::camel($model->name)}}));
+@endif
         return ${{CodeHelper::camel($model->name)}};
     }
 
