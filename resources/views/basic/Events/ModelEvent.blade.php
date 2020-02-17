@@ -11,7 +11,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use {{$model->complete_name}};
 
-class New{{$model->name}}
+class {{$options->event}}
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
