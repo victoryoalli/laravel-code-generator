@@ -31,7 +31,7 @@
         @if($column->type=='Text')
         <textarea class="form-control" name="{{$column->name}}" id="{{$column->name}}" cols="30" rows="10">{{CodeHelper::doubleCurlyOpen()}}old('{{$column->name}}'){{CodeHelper::doubleCurlyClose()}}</textarea>
         @else
-        <input class="form-control {{$column->type}}" type="text" name="{{$column->name}}" id="{{$column->name}}" value="{{CodeHelper::doubleCurlyOpen()}}old('{{$column->name}}'){{CodeHelper::doubleCurlyClose()}}" @if($column->type == '\String')
+        <input class="form-control {{$column->type}}" @if($column->type == 'Integer') type="number" @else type="text" @endif name="{{$column->name}}" id="{{$column->name}}" value="{{CodeHelper::doubleCurlyOpen()}}old('{{$column->name}}'){{CodeHelper::doubleCurlyClose()}}" @if($column->type == 'String')
         maxlength="{{$column->length}}"
         @endif
         @if(!$column->nullable)

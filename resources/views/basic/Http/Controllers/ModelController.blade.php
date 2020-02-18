@@ -26,17 +26,17 @@ class {{$model->name}}Controller extends Controller
     public function index()
     {
         ${{CodeHelper::snake(CodeHelper::plural($model->name))}} = {{$model->name}}::all();
-        return view('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.index', compact('{{CodeHelper::snake(CodeHelper::plural($model->name))}}'));
+        return view('{{CodeHelper::snake(CodeHelper::plural($model->name))}}.index', compact('{{CodeHelper::snake(CodeHelper::plural($model->name))}}'));
     }
 
     public function show(Request $request, {{$model->name}} ${{CodeHelper::snake($model->name)}})
     {
-        return view('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.show', compact('{{CodeHelper::snake($model->name)}}'));
+        return view('{{CodeHelper::snake(CodeHelper::plural($model->name))}}.show', compact('{{CodeHelper::snake($model->name)}}'));
     }
 
     public function create()
     {
-        return view('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.create');
+        return view('{{CodeHelper::snake(CodeHelper::plural($model->name))}}.create');
     }
 
     public function store({{$model->name}}PostRequest $request)
@@ -54,7 +54,7 @@ class {{$model->name}}Controller extends Controller
 
     public function edit(Request $request, {{$model->name}} ${{CodeHelper::snake($model->name)}})
     {
-        return view('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.edit', compact('{{CodeHelper::snake($model->name)}}'));
+        return view('{{CodeHelper::snake(CodeHelper::plural($model->name))}}.edit', compact('{{CodeHelper::snake($model->name)}}'));
     }
 
     public function update({{$model->name}}PostRequest $request, {{$model->name}} ${{CodeHelper::snake($model->name)}})

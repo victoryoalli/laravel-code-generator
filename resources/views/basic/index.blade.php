@@ -12,7 +12,7 @@
         <a href="{{CodeHelper::doubleCurlyOpen()}}route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.create'){{CodeHelper::doubleCurlyClose()}}">New</a>
     </div>
     <table class="table table-striped">
-        @@if(count(${{CodeHelper::camel(CodeHelper::plural($model->name))}}))
+        @@if(count(${{CodeHelper::snake(CodeHelper::plural($model->name))}}))
         <thead>
             <tr>
                 <th>&nbsp;</th>
@@ -27,7 +27,7 @@
         </thead>
         @@endif
         <tbody>
-            @@forelse(${{CodeHelper::camel(CodeHelper::plural($model->name))}} as ${{CodeHelper::snake($model->name)}})
+            @@forelse(${{CodeHelper::snake(CodeHelper::plural($model->name))}} as ${{CodeHelper::snake($model->name)}})
             <tr>
                 <td>
                     <a href="{{CodeHelper::doubleCurlyOpen()}}route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.show',['{{CodeHelper::snake($model->name)}}'=>${{CodeHelper::snake($model->name)}}] ){{CodeHelper::doubleCurlyClose()}}">Show</a>

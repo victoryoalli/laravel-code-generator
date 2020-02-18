@@ -35,7 +35,7 @@ function fakerType($column){
         elseif(CodeHelper::contains('/first.?name/',$column->name) ){
             $result = 'firstName';
         }
-        elseif(CodeHelper::contains('/phone/',$column->name) ){
+        elseif(CodeHelper::contains('/phone|mobile/',$column->name) ){
             $result = 'phoneNumber';
         }
         elseif(CodeHelper::contains('/photo/',$column->name) ){
@@ -48,7 +48,7 @@ function fakerType($column){
             $result = 'imageUrl()';
         }
         elseif(CodeHelper::contains('/image|img/',$column->name) ){
-            $result = 'image()';
+            $result = 'imageUrl()';
         }
         elseif(CodeHelper::contains('/file|path/',$column->name) ){
             $result = 'file()';
