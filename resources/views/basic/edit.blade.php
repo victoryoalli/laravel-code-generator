@@ -1,7 +1,13 @@
 @@extends('layouts.app')
 @@section('content')
 <div class="container">
-    <h1> {{CodeHelper::title($model->name)}} Edit </h1>
+    <div class="card">
+
+        <div class="card-header">
+            <h1> {{CodeHelper::title($model->name)}} Edit </h1>
+        </div>
+        <div class="card-body">
+
     @@if ($errors->any())
     <ul>
         @@foreach ($errors->all() as $error)
@@ -61,6 +67,8 @@
             <a href="@{{ url()->previous() }}">Back</a>
         </div>
     </form>
+    </div>
+        </div>
 
 </div>
 @@endsection

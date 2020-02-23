@@ -7,7 +7,12 @@
         @{{ session('status') }}
     </div>
     @@endif
-    <h1> {{CodeHelper::title(CodeHelper::plural($model->name))}} </h1>
+    <div class="card">
+        <div class="card-header">
+            <h1> {{CodeHelper::title(CodeHelper::plural($model->name))}} </h1>
+        </div>
+    <div class="card-body">
+
     <div>
         <a href="{{CodeHelper::doubleCurlyOpen()}}route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.create'){{CodeHelper::doubleCurlyClose()}}">New</a>
     </div>
@@ -53,6 +58,8 @@
             @@endforelse
         </tbody>
     </table>
+    </div>
+    </div>
 
 </div>
 
