@@ -228,7 +228,7 @@ class CodeGeneratorCommand extends Command
 
 #### Execute custom command
 ```bash
-php artisan code:generator 'App\Models\User' -FA
+php artisan code:generator 'App\User' -FA
 ```
 
 ## Templates & Customization
