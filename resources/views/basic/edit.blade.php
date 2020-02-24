@@ -41,13 +41,13 @@
 
 
         @foreach($model->table->columns as $column)
-        @if(!CodeHelper::contains('/id$/',$column->name) && !CodeHelper::contains('/_at$/',$column->name))
+        @if(!CodeHelper::contains('/id$/',$column->name) && !CodeHelper::contains('/created_at$/',$column->name) && !CodeHelper::contains('/updated_at$/',$column->name) && !CodeHelper::contains('/deleted_at$/',$column->name))
         <div class="form-group">
             <label for="{{$column->name}}">{{CodeHelper::title($column->name)}}</label>
         @if($column->type=='Text')
             <textarea class="form-control {{$column->type}}"  name="{{$column->name}}" id="{{$column->name}}" cols="30" rows="10">{{CodeHelper::doubleCurlyOpen()}}old('{{$column->name}}',${{CodeHelper::snake($model->name)}}->{{$column->name}}){{CodeHelper::doubleCurlyClose()}}</textarea>
         @else
-            <input class="form-control {{$column->type}}" type="text" name="{{$column->name}}" id="{{$column->name}}" value="{{CodeHelper::doubleCurlyOpen()}}old('{{$column->name}}',${{CodeHelper::snake($model->name)}}->{{$column->name}}){{CodeHelper::doubleCurlyClose()}}"
+            <input class="form-control {{$column->type}}" @if($column->type == 'Integer') type="number" @elseif($column->type == 'Date') type="date" @else type="text" @endif name="{{$column->name}}" id="{{$column->name}}" value="{{CodeHelper::doubleCurlyOpen()}}old('{{$column->name}}',${{CodeHelper::snake($model->name)}}->{{$column->name}}){{CodeHelper::doubleCurlyClose()}}"
             @if($column->type == '\String')
             maxlength="{{$column->length}}"
             @endif
