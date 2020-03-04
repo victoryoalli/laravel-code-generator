@@ -6,6 +6,10 @@ Laravel Code Generator is a PHP Laravel Package that uses Blade template engine 
 
 The difference between other code generators is that this one will generate the code exactly as you want it to be, same design, same lines of code.
 
+## Demo
+
+* [Video Tutorial Introduction (English) ](https://youtu.be/CgI7eixFexg)
+
 ## Installation
 
 Use composer to install Laravel Code Generator.
