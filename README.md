@@ -215,10 +215,10 @@ class CodeGeneratorCommand extends Command
         }
 
         if ($option->views) {
-            printif('Create View', CodeGenerator::generate($m, $theme . '/tw/create', "resources/views/{$folder}/create.blade.php", $force, $options));
-            printif('Edit View', CodeGenerator::generate($m, $theme . '/tw/edit', "resources/views/{$folder}/edit.blade.php", $force, $options));
-            printif('Index View', CodeGenerator::generate($m, $theme . '/tw/index', "resources/views/{$folder}/index.blade.php", $force, $options));
-            printif('Show View', CodeGenerator::generate($m, $theme . '/tw/show', "resources/views/{$folder}/show.blade.php", $force, $options));
+            printif('Create View', CodeGenerator::generate($m, $theme . '/create', "resources/views/{$folder}/create.blade.php", $force, $options));
+            printif('Edit View', CodeGenerator::generate($m, $theme . '/edit', "resources/views/{$folder}/edit.blade.php", $force, $options));
+            printif('Index View', CodeGenerator::generate($m, $theme . '/index', "resources/views/{$folder}/index.blade.php", $force, $options));
+            printif('Show View', CodeGenerator::generate($m, $theme . '/show', "resources/views/{$folder}/show.blade.php", $force, $options));
         }
         if ($option->lang) {
             printif('Lang', CodeGenerator::generate($m, $theme . '/lang/en/Models', "resources/lang/en/{$folder}.php", $force, $options));
