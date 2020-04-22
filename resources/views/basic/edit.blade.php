@@ -1,3 +1,4 @@
+@include('laravel-code-generator::shared.helpers')
 @@extends('layouts.app')
 @@section('content')
 <div class="container">

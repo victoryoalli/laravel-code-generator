@@ -5,14 +5,14 @@
     "table":{
         "name":"{{$model->table->name}}",
         "colums":[
-        @foreach($model->table->columns as $col)
-            { "name":"{{$col->name}}", "type":"{{$col->type}}", "length":"{{$col->length}}", "nullable":"{{$col->nullable}}", "autoincrement":"{{$col->autoincrement}}", "default":"{{$col->default}}" }@if(!$loop->last),
-            @endif
-        @endforeach
+@foreach($model->table->columns as $col)
+            { "name":"{{$col->name}}", "type":"{{$col->type}}", "length":"{{$col->length}}", "nullable":"{{$col->nullable}}", "autoincrement":"{{$col->autoincrement}}", "default":"{{$col->default}}" } @if(!$loop->last),
+@endif
+@endforeach
         ]
     },
     "relations": [
-        @foreach($model->relations as $r)
+@foreach($model->relations as $r)
         {
             "name":"{{$r->name}}",
             "type":"{{$r->type}}",
@@ -23,16 +23,15 @@
                 "table":{
                     "name":"{{$r->model->table->name}}",
                     "colums": [
-                @foreach($model->table->columns as $col)
+@foreach($model->table->columns as $col)
                 { "name":"{{$col->name}}", "type":"{{$col->type}}", "length":"{{$col->length}}", "nullable":"{{$col->nullable}}", "autoincrement":"{{$col->autoincrement}}", "default":"{{$col->default}}" } @if(!$loop->last) ,
-                @endif
-                @endforeach
+@endif
+@endforeach
             ]
                 }
             }
         }@if(!$loop->last) ,
-                @endif
-
-        @endforeach
+@endif
+@endforeach
     ]
 }

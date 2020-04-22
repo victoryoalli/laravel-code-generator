@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\{{$model->name}}PostRequest;
 @if($options->notification)
-use App\Notifications\{{$options->notification}};
+use App\Notifications\{{$model->name}}{{$options->notification}};
 @endif
 @if($options->event)
-use App\Events\{{$options->event}};
+use App\Events\{{$model->name}}{{$options->event}};
 @endif
 use {{$model->complete_name}};
 
@@ -44,10 +44,10 @@ class {{$model->name}}Controller extends Controller
         $data = $request->validated();
         ${{CodeHelper::snake($model->name)}} = {{$model->name}}::create($data);
 @if($options->notification)
-        //auth()->user->notify(new {{$options->notification}}(${{CodeHelper::snake($model->name)}}));
+        //auth()->user->notify(new {{$model->name}}{{$options->notification}}(${{CodeHelper::snake($model->name)}}));
 @endif
 @if($options->event)
-        event(new {{$options->event}}(${{CodeHelper::snake($model->name)}}));
+        event(new {{$model->name}}{{$options->event}}(${{CodeHelper::snake($model->name)}}));
 @endif
         return redirect()->route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.index')->with('status', '{{$model->name}} created!');
     }

@@ -8,7 +8,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use {{$model->complete_name}};
 
-class {{$model->name}}Notification extends Notification
+class {{$model->name}}{{$options->notification}} extends Notification
 {
     use Queueable;
 
