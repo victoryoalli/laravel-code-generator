@@ -13,6 +13,12 @@ class ModelLoader
         $this->app = app();
     }
 
+    /**
+     * Model loader
+     * @param string $model_name
+     * @param boolean $recursive
+     * @return void
+     */
     public function load(string $model_name, $recursive = true)
     {
         if (!class_exists($model_name)) {
