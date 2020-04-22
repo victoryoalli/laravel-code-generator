@@ -55,7 +55,7 @@ class {{$model->name}}ControllerTest extends TestCase
         $response->assertStatus(200)->assertJson(['deleted_at'=>true]);
         ${{CodeHelper::camel($model->name)}}->refresh();
 @if(collect($model->table->columns)->contains('name','deleted_at'))
-        $this->assertSoftDeleted('{{CodeHelper::plural(CodeHelper::snake($model->name))}}',${{CodeHelper::camel($model->name)}}->toArray());
+        $this->assertSoftDeleted('{{CodeHelper::plural(CodeHelper::snake($model->name))}}',['id' => ${{CodeHelper::camel($model->name)}}->id]);
 @else
         $this->assertDatabaseMissing('{{CodeHelper::plural(CodeHelper::snake($model->name))}}',['id' => ${{CodeHelper::camel($model->name)}}->id]);
 @endif
