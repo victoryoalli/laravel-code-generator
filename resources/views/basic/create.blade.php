@@ -13,7 +13,7 @@
             @@foreach ($errors->all() as $error)
             <li class="text-danger">@{{ $error }}</li>
             @@endforeach
-        </ul @@endif <form action="{{CodeHelper::doubleCurlyOpen()}}route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.store'){{CodeHelper::doubleCurlyClose()}}" method="POST" novalidate>
+        </ul> @@endif <form action="{{CodeHelper::doubleCurlyOpen()}}route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.store'){{CodeHelper::doubleCurlyClose()}}" method="POST" novalidate>
         @@csrf
         @foreach($model->relations as $rel)
         @if($rel->type === 'BelongsTo')
