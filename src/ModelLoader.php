@@ -41,7 +41,7 @@ class ModelLoader
                 $this->model->relations = $finder->getModelRelations($model_name);
             }
         } catch (\Exception $e) {
-            print_r('Exception: ' . $e->getMessage() . "\nCould not analyze class {$this->model->name}.");
+            print_r('Exception: ' . $e->getMessage() . "\nCould not analyze class {$model_name}.");
         }
 
         return $this->model;
