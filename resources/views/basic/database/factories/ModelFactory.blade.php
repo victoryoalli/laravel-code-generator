@@ -16,52 +16,52 @@ $columns = $columns->filter(function($c){
 
 function fakerType($column){
     if($column->type == 'String'){
-        if(CodeHelper::contains('/password/',$column->name) ){
+        if(str($column->name)->match('/password/') ){
             $result = 'bcrypt($this->faker->password)';
         }
-        elseif(CodeHelper::contains('/slug/',$column->name) ){
+        elseif(str($column->name)->match('/slug/') ){
             $result = 'slug';
         }
-        elseif(CodeHelper::contains('/email/',$column->name) ){
+        elseif(str($column->name)->match('/email/') ){
             $result = 'safeEmail';
         }
-        elseif(CodeHelper::contains('/username/',$column->name) ){
+        elseif(str($column->name)->match('/username/') ){
             $result = 'userName';
         }
-        elseif(CodeHelper::contains('/last.*name/',$column->name) ){
+        elseif(str($column->name)->match('/last.*name/') ){
             $result = 'lastName';
         }
-        elseif(CodeHelper::contains('/first.?name/',$column->name) ){
+        elseif(str($column->name)->match('/first.?name/') ){
             $result = 'firstName';
         }
-        elseif(CodeHelper::contains('/phone|mobile/',$column->name) ){
+        elseif(str($column->name)->match('/phone|mobile/') ){
             $result = 'phoneNumber';
         }
-        elseif(CodeHelper::contains('/photo/',$column->name) ){
+        elseif(str($column->name)->match('/photo/') ){
             $result = "imageUrl(640,480,'people')";
         }
-        elseif(CodeHelper::contains('/name/',$column->name) ){
+        elseif(str($column->name)->match('/name/') ){
             $result = 'name';
         }
-        elseif(CodeHelper::contains('/img.*url|image.*url/',$column->name) ){
+        elseif(str($column->name)->match('/img.*url|image.*url/') ){
             $result = 'imageUrl()';
         }
-        elseif(CodeHelper::contains('/image|img/',$column->name) ){
+        elseif(str($column->name)->match('/image|img/') ){
             $result = 'imageUrl()';
         }
-        elseif(CodeHelper::contains('/file|path/',$column->name) ){
+        elseif(str($column->name)->match('/file|path/') ){
             $result = 'file()';
         }
-        elseif(CodeHelper::contains('/url/',$column->name) ){
+        elseif(str($column->name)->match('/url/') ){
             $result = 'url';
         }
-        elseif(CodeHelper::contains('/domain/',$column->name) ){
+        elseif(str($column->name)->match('/domain/') ){
             $result = 'domainName';
         }
-        elseif(CodeHelper::contains('/color/',$column->name) ){
+        elseif(str($column->name)->match('/color/') ){
             $result = 'hexcolor';
         }
-        elseif(CodeHelper::contains('/token/',$column->name) ){
+        elseif(str($column->name)->match('/token/') ){
             $result = 'md5';
         }
         elseif($column->length > 255){

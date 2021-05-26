@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\{{$model->name}}Request;
 @if($options->notification)
-use App\Notifications\{{$options->notification}};
+use App\Notifications\{{$model->name}}{{$options->notification}};
 @endif
 @if($options->event)
 use App\Events\{{$options->event}};
@@ -44,7 +44,7 @@ class {{$model->name}}Controller extends Controller
         $data = $request->validated();
         ${{str($model->name)->snake()}} = {{$model->name}}::create($data);
 @if($options->notification)
-        //auth()->user->notify(new {{$options->notification}}(${{str($model->name)->snake()}}));
+        //auth()->user->notify(new {{$model->name}}{{$options->notification}}(${{str($model->name)->snake()}}));
 @endif
 @if($options->event)
         event(new {{$options->event}}(${{str($model->name)->snake()}}));

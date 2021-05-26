@@ -153,7 +153,7 @@ class CodeGeneratorCommand extends Command
             '{--F|force : Overwrite files if exists} ' .
             '{--auth : Auth (not included in all)} ' .
             '{--event= : Event (not included in all)} ' .
-            '{--notification= : Notification (not included in all)} ' .
+            '{--notification=Notification : Notification (not included in all)} ' .
             '{--theme=basic : Theme}';
 
     protected $description = 'Multiple files generation';
