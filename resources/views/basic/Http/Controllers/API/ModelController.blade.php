@@ -1,9 +1,9 @@
-{!! CodeHelper::PHPSOL() !!}
+{!! code()->PHPSOL() !!}
 
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\{{$model->name}}PostRequest;
+use App\Http\Requests\{{$model->name}}Request;
 use App\Http\Controllers\Controller;
 @if($options->notification)
 use App\Notifications\{{$options->notification}};
@@ -29,37 +29,37 @@ class {{$model->name}}Controller extends Controller
         return {{$model->name}}::all();
     }
 
-    public function show(Request $request, {{$model->name}} ${{CodeHelper::snake($model->name)}})
+    public function show(Request $request, {{$model->name}} ${{str($model->name)->snake()}})
     {
-        return ${{CodeHelper::snake($model->name)}};
+        return ${{str($model->name)->snake()}};
     }
 
-    public function store({{$model->name}}PostRequest $request)
+    public function store({{$model->name}}Request $request)
     {
         $data = $request->validated();
-        ${{CodeHelper::snake($model->name)}} = {{$model->name}}::create($data);
+        ${{str($model->name)->snake()}} = {{$model->name}}::create($data);
 @if($options->notification)
-        //auth()->user->notify(new {{$options->notification}}(${{CodeHelper::snake($model->name)}}));
+        //auth()->user->notify(new {{$options->notification}}(${{str($model->name)->snake()}}));
 @endif
 @if($options->event)
-        event(new {{$options->event}}(${{CodeHelper::snake($model->name)}}));
+        event(new {{$options->event}}(${{str($model->name)->snake()}}));
 @endif
-        return ${{CodeHelper::snake($model->name)}};
+        return ${{str($model->name)->snake()}};
     }
 
-    public function update({{$model->name}}PostRequest $request, {{$model->name}} ${{CodeHelper::snake($model->name)}})
+    public function update({{$model->name}}Request $request, {{$model->name}} ${{str($model->name)->snake()}})
     {
         $data = $request->validated();
-        ${{CodeHelper::snake($model->name)}}->fill($data);
-        ${{CodeHelper::snake($model->name)}}->save();
+        ${{str($model->name)->snake()}}->fill($data);
+        ${{str($model->name)->snake()}}->save();
 
-        return ${{CodeHelper::snake($model->name)}};
+        return ${{str($model->name)->snake()}};
     }
 
-    public function destroy(Request $request, {{$model->name}} ${{CodeHelper::snake($model->name)}})
+    public function destroy(Request $request, {{$model->name}} ${{str($model->name)->snake()}})
     {
-        ${{CodeHelper::snake($model->name)}}->delete();
-        return ${{CodeHelper::snake($model->name)}};
+        ${{str($model->name)->snake()}}->delete();
+        return ${{str($model->name)->snake()}};
     }
 
 }

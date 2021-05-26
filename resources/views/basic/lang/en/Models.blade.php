@@ -1,15 +1,15 @@
-{!! CodeHelper::PHPSOL() !!}
+{!! code()->PHPSOL() !!}
 
 return [
-    'singular' => '{{CodeHelper::title($model->name)}}',
-    'plural' => '{{CodeHelper::title(CodeHelper::plural($model->name))}}',
+    'singular' => '{{str($model->name)->human()->title()}}',
+    'plural' => '{{str($model->name)->plural()->human()->title()}}',
 //Fields
 @foreach($model->table->columns as $column)
-    '{{CodeHelper::snake($column->name)}}' => '{{CodeHelper::title($column->name)}}',
+    '{{str($column->name)->snake()}}' => '{{str($column->name)->human()->title()}}',
 @endforeach
 //Relations
 @foreach($model->relations as $rel)
-    '{{CodeHelper::snake($rel->name)}}' => '{{CodeHelper::title($rel->name)}}',
+    '{{str($rel->name)->snake()}}' => '{{str($rel->name)->human()->title()}}',
 @endforeach
 //Custom
 ];

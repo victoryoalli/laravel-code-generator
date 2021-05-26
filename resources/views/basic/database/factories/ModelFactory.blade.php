@@ -1,15 +1,14 @@
-{!!CodeHelper::PHPSOL()!!}
+{!!code()->PHPSOL()!!}
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use {{$model->complete_name}};
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 @foreach($model->relations as $rel)
 use {{$rel->model->complete_name}};
 @endforeach
 
 @php
-
 $columns  = collect($model->table->columns);
 $columns = $columns->filter(function($c){
     return ($c->name != 'id' && $c->name != 'created_at' && $c->name != 'updated_at' && $c->name != 'deleted_at');
@@ -18,7 +17,7 @@ $columns = $columns->filter(function($c){
 function fakerType($column){
     if($column->type == 'String'){
         if(CodeHelper::contains('/password/',$column->name) ){
-            $result = 'bcrypt($faker->password)';
+            $result = 'bcrypt($this->faker->password)';
         }
         elseif(CodeHelper::contains('/slug/',$column->name) ){
             $result = 'slug';
@@ -97,18 +96,34 @@ function fakerType($column){
         $result = 'optional()->'.$result;
 
     }
-    return '$faker->'.$result;
+    return '$this->faker->'.$result;
 }
-
 @endphp
 
-$factory->define({{$model->name}}::class, function (Faker $faker) {
-    return [
-@foreach($columns as $column)
-        '{{$column->name}}' => {!!fakerType($column)!!},
-@endforeach
-@foreach($model->relations as $rel)
-        //{{$rel->name}} {{$rel->type}} {{$rel->model->name}} {{$rel->local_key}}
-@endforeach
-    ];
-});
+class {{$model->name}}Factory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = {{$model->name}}::class;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+    @foreach($columns as $column)
+            '{{$column->name}}' => {!!fakerType($column)!!},
+    @endforeach
+    @foreach($model->relations as $rel)
+            //{{$rel->name}} {{$rel->type}} {{$rel->model->name}} {{$rel->local_key}}
+    @endforeach
+        ];
+
+    }
+}
