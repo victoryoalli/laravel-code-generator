@@ -25,7 +25,7 @@ class {{$model->name}}Request extends FormRequest
     {
         return [
 @foreach($model->table->columns as $col)
-@if(!str($col->name)->match('/^id$/') && !str($col->name)->match('/created_at$/') && !str($col->name)->match('/updated_at$/') && !str($col->name)->match('/deleted_at$/'))
+@if(!str($col->name)->matches('/^id$/') && !str($col->name)->matches('/created_at$/') && !str($col->name)->matches('/updated_at$/') && !str($col->name)->matches('/deleted_at$/'))
 @if(!$col->nullable)
             '{{$col->name}}' => [
                 'required',

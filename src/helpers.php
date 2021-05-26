@@ -15,26 +15,6 @@ if (! function_exists('str')) {
         return Str::of($expression);
     }
 }
-if (! function_exists('literal')) {
-    function literal(string $str='{{')
-    {
-        return $str;
-    }
-}
-
-if (! function_exists('openDoubleCurly')) {
-    function openDoubleCurly()
-    {
-        return '{{';
-    }
-}
-
-if (! function_exists('str_match')) {
-    function str_match(string $expression, string $regex)
-    {
-        return Str::of($expression)->match($regex)->__toString();
-    }
-}
 
 if (! function_exists('code')) {
     function code()

@@ -29,7 +29,6 @@ class LaravelCodeGeneratorServiceProvider extends ServiceProvider
             $this->commands([
                 GenerateCommand::class,
             ]);
-            BladeDirectives::boot();
         }
     }
 

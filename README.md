@@ -325,7 +325,7 @@ return [
 
 #### Example
 ```php
-{!!CodeHelper::PHPSOL()!!}
+{!!code()->PHPSOL()!!}
 
 namespace App\Http\Controllers\API;
 
@@ -355,16 +355,16 @@ class {{$model->name}}Controller extends Controller
     {
         $this->validate($request, [
             @foreach($model->table->columns as $col)
-            @if(!CodeHelper::contains('/_at$/',$col->name) && !CodeHelper::contains('/^id$/',$col->name))
+            @if(!str($col->name)->matches('/_at$/') && !str($col->name)->matches('/^id$/'))
             @if(!$col->nullable) '{{$col->name}}' => 'required',
             @endif
             @endif
             @endforeach
         ]);
 
-        ${{CodeHelper::camel($model->name)}} = {{$model->name}}::create($request->all());
+        ${{str($model->name)->camel()}} = {{$model->name}}::create($request->all());
 
-        return ${{CodeHelper::camel($model->name)}};
+        return ${{str($model->name)->camel()}};
     }
 
 ...
@@ -423,7 +423,7 @@ class UserController extends Controller
 `PHPSOL()`: PHP Start Of Line
 
 ```php
-{!!CodeHelper::PHPSOL()!!}
+{!!code->PHPSOL()!!}
 ```
 Will print
 ```php

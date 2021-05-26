@@ -16,52 +16,52 @@ $columns = $columns->filter(function($c){
 
 function fakerType($column){
     if($column->type == 'String'){
-        if(str($column->name)->match('/password/') ){
+        if(str($column->name)->matches('/password/') ){
             $result = 'bcrypt($this->faker->password)';
         }
-        elseif(str($column->name)->match('/slug/') ){
+        elseif(str($column->name)->matches('/slug/') ){
             $result = 'slug';
         }
-        elseif(str($column->name)->match('/email/') ){
+        elseif(str($column->name)->matches('/email/') ){
             $result = 'safeEmail';
         }
-        elseif(str($column->name)->match('/username/') ){
+        elseif(str($column->name)->matches('/username/') ){
             $result = 'userName';
         }
-        elseif(str($column->name)->match('/last.*name/') ){
+        elseif(str($column->name)->matches('/last.*name/') ){
             $result = 'lastName';
         }
-        elseif(str($column->name)->match('/first.?name/') ){
+        elseif(str($column->name)->matches('/first.?name/') ){
             $result = 'firstName';
         }
-        elseif(str($column->name)->match('/phone|mobile/') ){
+        elseif(str($column->name)->matches('/phone|mobile/') ){
             $result = 'phoneNumber';
         }
-        elseif(str($column->name)->match('/photo/') ){
+        elseif(str($column->name)->matches('/photo/') ){
             $result = "imageUrl(640,480,'people')";
         }
-        elseif(str($column->name)->match('/name/') ){
+        elseif(str($column->name)->matches('/name/') ){
             $result = 'name';
         }
-        elseif(str($column->name)->match('/img.*url|image.*url/') ){
+        elseif(str($column->name)->matches('/img.*url|image.*url/') ){
             $result = 'imageUrl()';
         }
-        elseif(str($column->name)->match('/image|img/') ){
+        elseif(str($column->name)->matches('/image|img/') ){
             $result = 'imageUrl()';
         }
-        elseif(str($column->name)->match('/file|path/') ){
+        elseif(str($column->name)->matches('/file|path/') ){
             $result = 'file()';
         }
-        elseif(str($column->name)->match('/url/') ){
+        elseif(str($column->name)->matches('/url/') ){
             $result = 'url';
         }
-        elseif(str($column->name)->match('/domain/') ){
+        elseif(str($column->name)->matches('/domain/') ){
             $result = 'domainName';
         }
-        elseif(str($column->name)->match('/color/') ){
+        elseif(str($column->name)->matches('/color/') ){
             $result = 'hexcolor';
         }
-        elseif(str($column->name)->match('/token/') ){
+        elseif(str($column->name)->matches('/token/') ){
             $result = 'md5';
         }
         elseif($column->length > 255){
