@@ -1,4 +1,4 @@
-{!!CodeHelper::PHPSOL()!!}
+{!!code()->PHPSOL()!!}
 
 namespace App\Notifications;
 
@@ -12,15 +12,15 @@ class {{$model->name}}{{$options->notification}} extends Notification
 {
     use Queueable;
 
-    protected ${{CodeHelper::camel($model->name)}};
+    protected ${{str($model->name)->camel()}};
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct({{$model->name}} ${{CodeHelper::camel($model->name)}})
+    public function __construct({{$model->name}} ${{str($model->name)->camel()}})
     {
-        $this->${{CodeHelper::camel($model->name)}} = ${{CodeHelper::camel($model->name)}};
+        $this->${{str($model->name)->camel()}} = ${{str($model->name)->camel()}};
     }
 
     /**
@@ -42,7 +42,7 @@ class {{$model->name}}{{$options->notification}} extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage($this->{{CodeHelper::camel($model->name)}}))
+        return (new MailMessage($this->{{str($model->name)->camel()}}))
                     ->line('The introduction to the notification.')
                     ->action('Notification Action', url('/'))
                     ->line('Thank you for using our application!');

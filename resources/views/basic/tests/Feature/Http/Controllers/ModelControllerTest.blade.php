@@ -1,4 +1,4 @@
-{!!CodeHelper::PHPSOL()!!}
+{!!code()->PHPSOL()!!}
 
 namespace Tests\Feature\Http\Controllers;
 
@@ -16,48 +16,48 @@ class {{$model->name}}ControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_{{CodeHelper::snake($model->name)}}_and_redirects()
+    public function it_stores_{{str($model->name)->snake()}}_and_redirects()
     {
 @if($options->auth)
         $user = factory(User::class)->create();
         $response = $this->actingAs($user);
 @endif
 
-        ${{CodeHelper::camel($model->name)}} = factory({{$model->name}}::class)->make();
-        $data = ${{CodeHelper::camel($model->name)}}->attributesToArray();
-        $response = $this->post(route('{{CodeHelper::plural(CodeHelper::slug($model->name))}}.store'), $data);
-        $response->assertRedirect(route('{{CodeHelper::plural(CodeHelper::slug($model->name))}}.index'));
+        ${{str($model->name)->camel()}} = factory({{$model->name}}::class)->make();
+        $data = ${{str($model->name)->camel()}}->attributesToArray();
+        $response = $this->post(route('{{str($model->name)->plural()->slug()}}.store'), $data);
+        $response->assertRedirect(route('{{str($model->name)->plural()->slug()}}.index'));
         $response->assertSessionHas('status', '{{$model->name}} created!');
     }
 
     /**
      * @test
      */
-    public function it_updates_{{CodeHelper::snake($model->name)}}_and_redirects()
+    public function it_updates_{{str($model->name)->snake()}}_and_redirects()
     {
 @if($options->auth)
         $user = factory(User::class)->create();
         $response = $this->actingAs($user);
 @endif
-        ${{CodeHelper::camel($model->name)}} = factory({{$model->name}}::class)->create();
+        ${{str($model->name)->camel()}} = factory({{$model->name}}::class)->create();
         $data = factory({{$model->name}}::class)->make()->attributesToArray();
-        $response = $this->put(route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.update', ['{{CodeHelper::snake($model->name)}}' => ${{CodeHelper::camel($model->name)}}]), $data);
-        $response->assertRedirect(route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.index'));
+        $response = $this->put(route('{{str($model->name)->slug()->plural()}}.update', ['{{str($model->name)->snake()}}' => ${{str($model->name)->camel()}}]), $data);
+        $response->assertRedirect(route('{{str($model->name)->slug()->plural()}}.index'));
         $response->assertSessionHas('status', '{{$model->name}} updated!');
     }
 
     /**
      * @test
      */
-    public function it_destroys_{{CodeHelper::snake($model->name)}}_and_redirects()
+    public function it_destroys_{{str($model->name)->snake()}}_and_redirects()
     {
 @if($options->auth)
         $user = factory(User::class)->create();
         $response = $this->actingAs($user);
 @endif
-        ${{CodeHelper::camel($model->name)}} = factory({{$model->name}}::class)->create();
-        $response = $this->delete(route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.destroy', ['{{CodeHelper::snake($model->name)}}' => ${{CodeHelper::camel($model->name)}}]));
-        $response->assertRedirect(route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.index'));
+        ${{str($model->name)->camel()}} = factory({{$model->name}}::class)->create();
+        $response = $this->delete(route('{{str($model->name)->slug()->plural()}}.destroy', ['{{str($model->name)->snake()}}' => ${{str($model->name)->camel()}}]));
+        $response->assertRedirect(route('{{str($model->name)->slug()->plural()}}.index'));
         $response->assertSessionHas('status', '{{$model->name}} destroyed!');
     }
 }
