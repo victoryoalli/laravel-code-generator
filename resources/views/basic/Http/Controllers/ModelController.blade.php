@@ -1,9 +1,9 @@
-{!! CodeHelper::PHPSOL() !!}
+{!! code()->PHPSOL() !!}
 
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\{{$model->name}}PostRequest;
+use App\Http\Requests\{{$model->name}}Request;
 @if($options->notification)
 use App\Notifications\{{$options->notification}};
 @endif
@@ -25,49 +25,49 @@ class {{$model->name}}Controller extends Controller
 
     public function index()
     {
-        ${{CodeHelper::snake(CodeHelper::plural($model->name))}} = {{$model->name}}::all();
-        return view('{{CodeHelper::snake(CodeHelper::plural($model->name))}}.index', compact('{{CodeHelper::snake(CodeHelper::plural($model->name))}}'));
+        ${{str($model->name)->snake()->plural()}} = {{$model->name}}::all();
+        return view('{{str($model->name)->snake()->plural()}}.index', compact('{{str($model->name)->snake()->plural()}}'));
     }
 
-    public function show(Request $request, {{$model->name}} ${{CodeHelper::snake($model->name)}})
+    public function show(Request $request, {{$model->name}} ${{str($model->name)->snake()}})
     {
-        return view('{{CodeHelper::snake(CodeHelper::plural($model->name))}}.show', compact('{{CodeHelper::snake($model->name)}}'));
+        return view('{{str($model->name)->snake()->plural()}}.show', compact('{{str($model->name)->snake()}}'));
     }
 
     public function create()
     {
-        return view('{{CodeHelper::snake(CodeHelper::plural($model->name))}}.create');
+        return view('{{str($model->name)->snake()->plural()}}.create');
     }
 
-    public function store({{$model->name}}PostRequest $request)
+    public function store({{$model->name}}Request $request)
     {
         $data = $request->validated();
-        ${{CodeHelper::snake($model->name)}} = {{$model->name}}::create($data);
+        ${{str($model->name)->snake()}} = {{$model->name}}::create($data);
 @if($options->notification)
-        //auth()->user->notify(new {{$options->notification}}(${{CodeHelper::snake($model->name)}}));
+        //auth()->user->notify(new {{$options->notification}}(${{str($model->name)->snake()}}));
 @endif
 @if($options->event)
-        event(new {{$options->event}}(${{CodeHelper::snake($model->name)}}));
+        event(new {{$options->event}}(${{str($model->name)->snake()}}));
 @endif
-        return redirect()->route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.index')->with('status', '{{$model->name}} created!');
+        return redirect()->route('{{str($model->name)->slug()->plural()}}.index')->with('status', '{{$model->name}} created!');
     }
 
-    public function edit(Request $request, {{$model->name}} ${{CodeHelper::snake($model->name)}})
+    public function edit(Request $request, {{$model->name}} ${{str($model->name)->snake()}})
     {
-        return view('{{CodeHelper::snake(CodeHelper::plural($model->name))}}.edit', compact('{{CodeHelper::snake($model->name)}}'));
+        return view('{{str($model->name)->snake()->plural()}}.edit', compact('{{str($model->name)->snake()}}'));
     }
 
-    public function update({{$model->name}}PostRequest $request, {{$model->name}} ${{CodeHelper::snake($model->name)}})
+    public function update({{$model->name}}Request $request, {{$model->name}} ${{str($model->name)->snake()}})
     {
         $data = $request->validated();
-        ${{CodeHelper::snake($model->name)}}->fill($data);
-        ${{CodeHelper::snake($model->name)}}->save();
-        return redirect()->route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.index')->with('status', '{{$model->name}} updated!');
+        ${{str($model->name)->snake()}}->fill($data);
+        ${{str($model->name)->snake()}}->save();
+        return redirect()->route('{{str($model->name)->slug()->plural()}}.index')->with('status', '{{$model->name}} updated!');
     }
 
-    public function destroy(Request $request, {{$model->name}} ${{CodeHelper::snake($model->name)}})
+    public function destroy(Request $request, {{$model->name}} ${{str($model->name)->snake()}})
     {
-        ${{CodeHelper::snake($model->name)}}->delete();
-        return redirect()->route('{{CodeHelper::slug(CodeHelper::plural($model->name))}}.index')->with('status', '{{$model->name}} destroyed!');
+        ${{str($model->name)->snake()}}->delete();
+        return redirect()->route('{{str($model->name)->slug()->plural()}}.index')->with('status', '{{$model->name}} destroyed!');
     }
 }

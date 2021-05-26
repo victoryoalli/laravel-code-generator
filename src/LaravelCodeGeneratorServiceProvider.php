@@ -2,8 +2,10 @@
 
 namespace VictorYoalli\LaravelCodeGenerator;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use VictorYoalli\LaravelCodeGenerator\Console\GenerateCommand;
+use Illuminate\Support\Str;
 
 class LaravelCodeGeneratorServiceProvider extends ServiceProvider
 {
@@ -27,6 +29,7 @@ class LaravelCodeGeneratorServiceProvider extends ServiceProvider
             $this->commands([
                 GenerateCommand::class,
             ]);
+            BladeDirectives::boot();
         }
     }
 

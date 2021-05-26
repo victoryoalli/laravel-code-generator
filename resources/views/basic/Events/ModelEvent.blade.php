@@ -11,19 +11,19 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use {{$model->complete_name}};
 
-class {{$options->event}}
+class {{$model->name}}{{$options->event}}
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    protected ${{CodeHelper::camel($model->name)}};
+    protected ${{str($model->name)->camel()}};
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct({{$model->name}} ${{CodeHelper::camel($model->name)}})
+    public function __construct({{$model->name}} ${{str($model->name)->camel()}})
     {
-        $this->{{CodeHelper::camel($model->name)}} = ${{CodeHelper::camel($model->name)}};
+        $this->{{str($model->name)->camel()}} = ${{str($model->name)->camel()}};
     }
 
     /**

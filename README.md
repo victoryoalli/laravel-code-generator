@@ -22,8 +22,8 @@ composer require --dev victoryoalli/laravel-code-generator
 
 ### Single file generation
 ```php
-php artisan code:generate 'App\User' -t 'schema' //prints to command line
-php artisan code:generate 'App\User' -t 'schema' -o 'user-schema.json'
+php artisan code:generate 'App\Models\User' -t 'schema' //prints to command line
+php artisan code:generate 'App\Models\User' -t 'schema' -o 'user-schema.json'
 ```
 
 **Example Output**
@@ -141,7 +141,7 @@ class CodeGeneratorCommand extends Command
      * @var string
      */
     protected $signature = 'code:generator {model : Model(s) separated by commas: i.e: \'User, Post, Section\' } ' .
-            '{--namespace=App : Models Namesspace} ' .
+            '{--namespace=App\Models : Models Namesspace} ' .
             '{--w|views : View files} ' .
             '{--c|controller : Controller} ' .
             '{--a|api : Creates API Controller} ' .
@@ -211,7 +211,7 @@ class CodeGeneratorCommand extends Command
             printif('API Controller', CodeGenerator::generate($m, $theme . '/Http/Controllers/API/ModelController', "app/Http/Controllers/API/{$m->name}Controller.php", $force, $options));
         }
         if ($option->request) {
-            printif('Form Request', CodeGenerator::generate($m, $theme . '/Http/Requests/ModelPostRequest', "app/Http/Requests/{$m->name}PostRequest.php", $force, $options));
+            printif('Form Request', CodeGenerator::generate($m, $theme . '/Http/Requests/ModelRequest', "app/Http/Requests/{$m->name}Request.php", $force, $options));
         }
 
         if ($option->views) {

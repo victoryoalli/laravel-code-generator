@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class {{$model->name}}PostRequest extends FormRequest
+class {{$model->name}}Request extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
