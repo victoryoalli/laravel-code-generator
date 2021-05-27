@@ -17,7 +17,7 @@
             @@endif
         </div>
 
-        <div class="col-span-2 bg-white shadow rounded overflow-hidden">
+        <div class="col-span-2 bg-white shadow rounded-lg overflow-hidden">
             <form action="{{code()->doubleCurlyOpen()}}route('{{str($model->name)->slug()->plural()}}.store'){{code()->doubleCurlyClose()}}" method="POST" novalidate>
                 <div class="space-y-3 p-4">
 
@@ -29,8 +29,8 @@
                         <select class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                             @@foreach((\{{$rel->model->complete_name}}::all() ?? [] ) as ${{$rel->name}})
                             <option value="@{{${{$rel->name}}->id@}}">
-                                {{CodeHelper::doubleCurlyOpen()}}${{$rel->name}}->{{collect($rel->model->table->columns)->filter(function($col,$key){
-                                return $col->type == 'String'; })->map(function($col) { return $col->name;})->first() }}{{CodeHelper::doubleCurlyClose()}}</option>
+                                {{code()->doubleCurlyOpen()}}${{$rel->name}}->{{collect($rel->model->table->columns)->filter(function($col,$key){
+                                return $col->type == 'String'; })->map(function($col) { return $col->name;})->first() }}{{code()->doubleCurlyClose()}}</option>
                             @@endforeach
                         </select>
                     </div>
@@ -42,20 +42,24 @@
                     <div class="">
                         <label class="block text-sm font-medium text-gray-700" for="{{$column->name}}">{{str($column->name)->human()->title()}}</label>
                         @if($column->type=='Text')
-                        <textarea class="">{{CodeHelper::doubleCurlyOpen()}}old('{{$column->name}}'){{CodeHelper::doubleCurlyClose()}}</textarea>
+                        <textarea name="{{$column->name}}" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded {{$column->type}}">{{code()->doubleCurlyOpen()}}old('{{$column->name}}'){{code()->doubleCurlyClose()}}</textarea>
                         @else
-                        <input @if($column->type == 'String')
+                        <input
+                        name="{{$column->name}}"
+                        @if($column->type == 'String')
                         type="text"
-                        class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded {{$column->type}}"
                         maxlength="{{$column->length}}"
+                        @elseif($column->type == 'DateTime')
+                        type="date"
                         @endif
+                        class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded {{$column->type}}"
                         @if(!$column->nullable)
                         required="required"
                         @endif
                         >
                         @endif
                         @@if($errors->has('{{$column->name}}'))
-                        <p class="mt-0.5 text-sm text-red-500">{{CodeHelper::doubleCurlyOpen()}}$errors->first('{{$column->name}}'){{CodeHelper::doubleCurlyClose()}}</p>
+                        <p class="mt-0.5 text-sm text-red-500">{{code()->doubleCurlyOpen()}}$errors->first('{{$column->name}}'){{code()->doubleCurlyClose()}}</p>
                         @@endif
                     </div>
                     @endif

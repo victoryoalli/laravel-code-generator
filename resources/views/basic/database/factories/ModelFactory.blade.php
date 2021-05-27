@@ -80,13 +80,13 @@ function fakerType($column){
     elseif($column->type == 'DateTime'){
         $result = 'dateTime()';
     }
-    elseif($column->type == 'BigInt' && CodeHelper::contains('/_id$/',$column->name)){
-        return 'factory('.CodeHelper::pascal(CodeHelper::replace('/_id$/','',$column->name)).'::class)';
+    elseif($column->type == 'BigInt' && str($column->name)->matches('/_id$/')){
+        return 'factory('.str($column->name)->replace('_id','')->camel()->ucfirst().'::class)';
     }
-    elseif(CodeHelper::contains('/Int/',$column->type)){
+    elseif(str($column->type)->matches('/Int/')){
         $result = 'randomDigit';
     }
-    elseif(CodeHelper::contains('/Float|Decimal/',$column->type)){
+    elseif(str($column->type)->matches('/Float|Decimal/')){
         $result = 'randomFloat()';
     }
     else {
