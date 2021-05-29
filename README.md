@@ -117,13 +117,13 @@ php artisan make:command CodeGeneratorCommand --command='code:generator'
 #### Custom Command
 
 ```php
-
 <?php
 
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use VictorYoalli\LaravelCodeGenerator\Facades\CodeGenerator;
+use VictorYoalli\LaravelCodeGenerator\Facades\CodeHelper;
 use VictorYoalli\LaravelCodeGenerator\Facades\ModelLoader;
 use VictorYoalli\LaravelCodeGenerator\Structure\Model;
 
@@ -146,13 +146,13 @@ class CodeGeneratorCommand extends Command
             '{--a|api : Creates API Controller} ' .
             '{--r|routes : Display Routes} ' .
             '{--l|lang : Language} ' .
+            '{--A|all : All Files (views, controller, api, routes, lang)}' .
             '{--f|factory : Factory} ' .
             '{--t|tests : Feacture Test} ' .
-            '{--A|all : All Files}' .
+            '{--auth : Auth } ' .
+            '{--event= : Event } ' .
+            '{--notification=Notification : Notification } ' .
             '{--F|force : Overwrite files if exists} ' .
-            '{--auth : Auth (not included in all)} ' .
-            '{--event= : Event (not included in all)} ' .
-            '{--notification=Notification : Notification (not included in all)} ' .
             '{--theme=blade : Theme}';
 
     protected $description = 'Multiple files generation';
@@ -180,7 +180,7 @@ class CodeGeneratorCommand extends Command
         $all = $this->option('all');
         $theme = $this->option('theme');
         if ($all) {
-            $lang = $factory = $controller = $routes = $views = $api = $tests = $all;
+            $lang = $controller = $routes = $views = $api = $all;
         }
         $request = ($controller || $api);
 
@@ -214,10 +214,10 @@ class CodeGeneratorCommand extends Command
         }
 
         if ($option->views) {
-            printif('Create View', CodeGenerator::generate($m, $theme . '/create', "resources/views/{$folder}/create.blade.php", $force, $options));
-            printif('Edit View', CodeGenerator::generate($m, $theme . '/edit', "resources/views/{$folder}/edit.blade.php", $force, $options));
-            printif('Index View', CodeGenerator::generate($m, $theme . '/index', "resources/views/{$folder}/index.blade.php", $force, $options));
-            printif('Show View', CodeGenerator::generate($m, $theme . '/show', "resources/views/{$folder}/show.blade.php", $force, $options));
+            printif('Create View', CodeGenerator::generate($m, $theme . '/views/create', "resources/views/{$folder}/create.blade.php", $force, $options));
+            printif('Edit View', CodeGenerator::generate($m, $theme . '/views/edit', "resources/views/{$folder}/edit.blade.php", $force, $options));
+            printif('Index View', CodeGenerator::generate($m, $theme . '/views/index', "resources/views/{$folder}/index.blade.php", $force, $options));
+            printif('Show View', CodeGenerator::generate($m, $theme . '/views/show', "resources/views/{$folder}/show.blade.php", $force, $options));
         }
         if ($option->lang) {
             printif('Lang', CodeGenerator::generate($m, $theme . '/lang/en/Models', "resources/lang/en/{$folder}.php", $force, $options));
@@ -240,7 +240,6 @@ class CodeGeneratorCommand extends Command
         }
     }
 }
-
 
 ```
 

@@ -13,15 +13,15 @@
     </div>
     @@endif
     <div class="py-8">
-        <div class="max-w-screen-xl mx-auto">
+        <div class=" mx-auto">
             <h1 class="text-3xl text-blue-500 font-bold"> {{str($model->name)->human()->title()->plural()}} </h1>
             {!!code()->tag('x-slot name="header"')!!} {{str($model->name)->human()->plural()->title()}} {!! code()->tag('/x-slot') !!}
         </div>
-        <div class="max-w-screen-xl mx-auto flex justify-end my-8">
+        <div class=" mx-auto flex justify-end my-8">
             <a class="text-blue-50 bg-blue-500 px-5 py-1.5 rounded hover:bg-blue-700" href="{{code()->doubleCurlyOpen()}}route('{{str($model->name)->slug()->plural()}}.create'){{code()->doubleCurlyClose()}}">Create {{str($model->name)->human()->title()}}</a>
         </div>
 
-        <div class="max-w-screen-xl mx-auto">
+        <div class=" mx-auto">
             <table class="w-full border-gray-200 rounded shadow overflow-hidden mx-auto">
                 @@if(count(${{str($model->name)->snake()->plural()}}))
                 <thead class="bg-gray-200 uppercase text-sm text-gray-500">
@@ -65,7 +65,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="max-w-screen-xl mx-auto my-8">
+        <div class=" mx-auto my-8">
             {{code()->doubleCurlyOpen()}} ${{str($model->name)->plural->snake()}}->links() {{code()->doubleCurlyClose()}}
         </div>
     </div>
