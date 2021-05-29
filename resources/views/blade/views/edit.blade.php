@@ -25,8 +25,8 @@
         @foreach($model->relations as $rel)
         @if($rel->type === 'BelongsTo')
         <div class="">
-            <label class="block text-sm font-medium text-gray-700" for="{{$rel->local_key}}">{{str($rel->name)->title()}}</label>
-            <select name="{{$rel->local_key}}" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+            <label class="block text-sm font-semibold text-gray-700" for="{{$rel->local_key}}">{{str($rel->name)->title()}}</label>
+            <select name="{{$rel->local_key}}" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                 @@foreach((\{{$rel->model->complete_name}}::all() ?? [] ) as ${{$rel->name}})
                 <option value="{{code()->doubleCurlyOpen()}}${{$rel->name}}->id{{code()->doubleCurlyClose()}}"
                     @@if(${{str($model->name)->snake()}}->{{$rel->local_key}} == old('{{$rel->local_key}}', ${{$rel->name}}->id))
@@ -45,7 +45,7 @@
         @foreach($model->table->columns as $column)
         @if(!str($column->name)->matches('/id$/') && !str($column->name)->matches('/created_at$/') && !str($column->name)->matches('/updated_at$/') && !str($column->name)->matches('/deleted_at$/'))
         <div class="">
-            <label class="block text-sm font-medium text-gray-700" for="{{$column->name}}">{{str($column->name)->title()}}</label>
+            <label class="block text-sm font-semibold text-gray-700" for="{{$column->name}}">{{str($column->name)->title()}}</label>
         @if($column->type=='Text')
             <textarea name="{{$column->name}}" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded {{$column->type}}">{{code()->doubleCurlyOpen()}}old('{{$column->name}}',${{str($model->name)->snake()}}->{{$column->name}}){{code()->doubleCurlyClose()}}</textarea>
         @else
@@ -76,9 +76,9 @@
         @endif
         @endforeach
         </div>
-        <div class="bg-gray-100 flex items-center justify-end px-4 py-3 space-x-3">
+        <div class="bg-gray-100 flex items-center justify-between px-4 py-5 space-x-3">
             <a class="text-blue-500"  href="@{{ url()->previous() }}">Back</a>
-            <button class="px-3 py-1.5 border-lg bg-blue-500 text-blue-50 font-medium rounded">Save</button>
+            <button class="px-4 py-1.5 border-lg bg-blue-500 text-blue-50 font-semibold rounded hover:bg-blue-700">Update {{str($model->name)->human()->title()}}</button>
         </div>
     </form>
     </div>

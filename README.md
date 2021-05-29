@@ -448,6 +448,15 @@ Will print:
 }}
 ```
 
+`tag('x-component-name')`: Closing Double Curly Braces
+```php
+{{code()->tag('x-component-name)}}
+```
+Will print:
+```php
+<x-component-name>
+```
+
 
 
 

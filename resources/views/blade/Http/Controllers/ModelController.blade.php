@@ -25,7 +25,7 @@ class {{$model->name}}Controller extends Controller
 
     public function index()
     {
-        ${{str($model->name)->snake()->plural()}} = {{$model->name}}::all();
+        ${{str($model->name)->snake()->plural()}} = {{$model->name}}::paginate(25);
         return view('{{str($model->name)->snake()->plural()}}.index', compact('{{str($model->name)->snake()->plural()}}'));
     }
 
