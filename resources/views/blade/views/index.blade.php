@@ -6,8 +6,10 @@
 
 <div class="container mx-auto">
     @@if (session('status'))
-    <div class="bg-blue-100 font-medium max-w-4xl mx-auto my-4 px-8 py-4 rounded shadow text-blue-700 text-center text-sm ">
-        @{{ session('status') }}
+    <div class="fixed z-20 inset-x-0" x-data="{show:true}" x-show="show" x-cloak>
+        <div class="bg-blue-100 font-medium max-w-4xl mx-auto my-4 px-8 py-4 rounded shadow text-blue-700 text-center text-sm" @click.away="show=false">
+            @{{ session('status') }}
+        </div>
     </div>
     @@endif
     <div class="py-8">
@@ -22,7 +24,7 @@
         <div class="max-w-screen-xl mx-auto">
             <table class="w-full border-gray-200 rounded shadow overflow-hidden mx-auto">
                 @@if(count(${{str($model->name)->snake()->plural()}}))
-                <thead class="bg-gray-100 uppercase text-sm text-gray-500">
+                <thead class="bg-gray-200 uppercase text-sm text-gray-500">
                     <tr class="">
                         <th>&nbsp;</th>
                         @foreach($model->table->columns as $column)

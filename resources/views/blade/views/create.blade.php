@@ -4,7 +4,7 @@
 {!!code()->tag('x-guest-layout')!!}
 @endif
 
-<div class="container mx-auto my-8">
+<div class="container mx-auto py-8">
     <div class="grid lg:grid-cols-3">
         <div class="mb-4 mx-4 ">
             <h1 class="mb-4 text-blue-500 text-3xl font-bold"> {{str($model->name)->human()->title()}} </h1>
