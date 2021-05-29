@@ -12,10 +12,10 @@ class ModelRelation
     public $foreign_key;
     public $name;
 
-    public function __construct($name, $type, $model, $localKey = null, $foreignKey)
+    public function __construct($name, $type, $model, $localKey = null, $foreignKey = null)
     {
         $model = app($model);
-        $this->model = new Model($model,false);
+        $this->model = new Model($model, false);
         $this->type = $type;
         $this->local_key = $localKey;
         $this->foreign_key = $foreignKey;
@@ -26,31 +26,33 @@ class ModelRelation
     {
     }
 
-    public function getModelNodeName()
-    {
-        return str_slug($this->_model);
-    }
+    // public function getModelNodeName()
+    // {
+    //     return str_slug($this->_model);
+    // }
 
     public function getType()
     {
         return $this->_type;
     }
 
-    public function hasOne(){
+    public function hasOne()
+    {
         return ($this->_type === 'HasOne');
     }
 
-    public function hasMany(){
+    public function hasMany()
+    {
         return ($this->_type === 'HasMany');
     }
 
-    public function belongsTo(){
+    public function belongsTo()
+    {
         return ($this->_type === 'BelongsTo');
     }
 
-    public function belongsToMany(){
+    public function belongsToMany()
+    {
         return ($this->_type === 'BelongsToMany');
     }
-
-
 }

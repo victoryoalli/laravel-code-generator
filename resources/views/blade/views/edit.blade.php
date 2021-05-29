@@ -26,7 +26,7 @@
         @if($rel->type === 'BelongsTo')
         <div class="">
             <label class="block text-sm font-medium text-gray-700" for="{{$rel->local_key}}">{{str($rel->name)->title()}}</label>
-            <select name="{{$rel->name}}" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+            <select name="{{$rel->local_key}}" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                 @@foreach((\{{$rel->model->complete_name}}::all() ?? [] ) as ${{$rel->name}})
                 <option value="{{code()->doubleCurlyOpen()}}${{$rel->name}}->id{{code()->doubleCurlyClose()}}"
                     @@if(${{str($model->name)->snake()}}->{{$rel->local_key}} == old('{{$rel->local_key}}', ${{$rel->name}}->id))
@@ -56,6 +56,11 @@
             maxlength="{{$column->length}}"
             @elseif($column->type == 'DateTime')
             type="date"
+            @elseif(str($column->type)->matches('/Int/'))
+            type="number"
+            @elseif(str($column->type)->matches('/Decimal|Float/'))
+            type="number"
+            step="0.01"
             @endif
             class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded {{$column->type}}"
             @if(!$column->nullable)

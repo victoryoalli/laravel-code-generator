@@ -16,7 +16,8 @@
         "illuminate/filesystem": "^5.5|^6.0|^7.0|^8.0",
         "illuminate/support": "^5.5|^6.0|^7.0|^8.0",
         "doctrine/dbal": "^2.9|^3.0",
-        "victoryoalli/laravel-string-macros": "^0.2.0"
+        "victoryoalli/laravel-string-macros": "^0.2.0",
+        "spatie/laravel-ray": "^1.18"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.5.8|^9.3.3",

@@ -124,7 +124,6 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use VictorYoalli\LaravelCodeGenerator\Facades\CodeGenerator;
-use VictorYoalli\LaravelCodeGenerator\Facades\CodeHelper;
 use VictorYoalli\LaravelCodeGenerator\Facades\ModelLoader;
 use VictorYoalli\LaravelCodeGenerator\Structure\Model;
 
@@ -154,7 +153,7 @@ class CodeGeneratorCommand extends Command
             '{--auth : Auth (not included in all)} ' .
             '{--event= : Event (not included in all)} ' .
             '{--notification=Notification : Notification (not included in all)} ' .
-            '{--theme=basic : Theme}';
+            '{--theme=blade : Theme}';
 
     protected $description = 'Multiple files generation';
 
@@ -203,7 +202,7 @@ class CodeGeneratorCommand extends Command
     public function generate(Model $m, $options, $theme, $force)
     {
         $option = (object) $options;
-        $folder = CodeHelper::plural(CodeHelper::snake($m->name));
+        $folder = str($m->name)->plural()->snake();
         if ($option->controller) {
             printif('Web Controller', CodeGenerator::generate($m, $theme . '/Http/Controllers/ModelController', "app/Http/Controllers/{$m->name}Controller.php", $force, $options));
         }
@@ -430,22 +429,9 @@ Will print
 <?php
 ```
 
-`arroba()` arroba @
-
-```php
-{{CodeHelper::arroba()}}foreach($foos as $foo)
-{{CodeHelper::arroba()}}endforeach
-```
-Will print
-```php
-@foreach($foos as $foo)
-@endforeach
-```
-
-
 `doubleCurlyOpen()`: Opening Double Curly Braces
 ```php
-{{CodeHelper::doubleCurlyOpen()}}
+{{code()->doubleCurlyOpen()}}
 ```
 Will print:
 ```php
@@ -455,7 +441,7 @@ Will print:
 
 `doubleCurlyClose()`: Closing Double Curly Braces
 ```php
-{{CodeHelper::doubleCurlyClose()}}
+{{code()->doubleCurlyClose()}}
 ```
 Will print:
 ```php
@@ -464,168 +450,14 @@ Will print:
 
 
 
-`contains($regex, $text)`: Returns true when a match is found.
-```
-@if( CodeHelper::contains('/_at$/','created_at') )
-    it's a date!
-@else
-    it´s not a date
-@endif
-```
-Will print:
-```
-    it's a date!
-```
-
-
-`replace($pattern, $replacement, $subject)`: Replaces subject match with replacement text.
-```php
-{{CodeHelper::replace('/_id$/','','field_id')}}
-```
-Will print:
-```php
-
-```
-
-
-`human($text)`: Converts text to readable words.
-```php
-{{CodeHelper::human('hello_world')}}!
-
-{{CodeHelper::human('helloWorld')}}!
-```
-
-Will print:
-```php
-hello world!
-
-hello world!
-```
-
-
-
-`title($text)`: Converts text to capitalize readable words.
-```php
-{{CodeHelper::human('hello_world')}}!
-
-{{CodeHelper::human('helloWorld')}}!
-```
-
-Will print:
-```php
-Hello World!
-
-Hello World!
-```
-
-
-
-
-`slug($text)`: Converts text to slug.
-```php
-{{CodeHelper::slug('hello_world')}}
-
-{{CodeHelper::slug('Hello World')}!
-```
-
-Will print:
-```php
-hello-world
-
-hello-world
-```
-
-
-
-
-`camel($text)`: Converts text camel case.
-```php
-{{CodeHelper::camel('hello_world')}}
-
-{{CodeHelper::camel('Hello World')}!
-```
-
-Will print:
-```php
-helloWorld
-
-helloWorld
-```
-
-
-`snake($text)`: Converts text snake case.
-```php
-{{CodeHelper::snake('helloWorld')}}
-
-{{CodeHelper::snake('Hello World')}!
-```
-
-Will print:
-```php
-hello_world
-
-hello_world
-```
-
-
-
-
-
-`pascal($text)`: Converts text pascal case.
-```php
-{{CodeHelper::pascal('hello_world')}}
-
-{{CodeHelper::pascal('Hello World')}!
-```
-
-Will print:
-```php
-HelloWorld
-
-HelloWorld
-```
-
-
-
-`singular($text)`: Converts text pascal case.
-```php
-{{CodeHelper::singular('people')}}
-
-{{CodeHelper::singular('dogs')}!
-```
-
-Will print:
-```php
-person
-
-dog
-```
-
-
-
-
-`plural($text)`: Converts text pascal case.
-```php
-{{CodeHelper::plural('hello_world')}}
-
-{{CodeHelper::plural('helloWorld')}!
-```
-
-Will print:
-```php
-hello_worlds
-
-helloWorlds
-```
-
 
 ## CodeGenerator::generate Facade
 
 This is how you can use the Facade when you want to create your own Code Generator.
 
 ```php
-    $filename = CodeGenerator::generate('App\Models\User', 'basic/show', "resources/views/{$folder}/show.blade.php", false);
-    $generatedCodeString = CodeGenerator::generate($m, 'basic/routes' );
+    $filename = CodeGenerator::generate('App\Models\User', 'blade/show', "resources/views/{$folder}/show.blade.php", false);
+    $generatedCodeString = CodeGenerator::generate($m, 'blade/routes' );
 ```
 
 

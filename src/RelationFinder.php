@@ -9,14 +9,15 @@ use Illuminate\Support\Collection;
 use ReflectionClass;
 use ReflectionMethod;
 
-class RelationFinder {
- /**
-     * Return all relations from a fully qualified model class name.
-     *
-     * @param string $model
-     * @return Collection
-     * @throws \ReflectionException
-     */
+class RelationFinder
+{
+    /**
+        * Return all relations from a fully qualified model class name.
+        *
+        * @param string $model
+        * @return Collection
+        * @throws \ReflectionException
+        */
     public function getModelRelations(string $model)
     {
         $class = new ReflectionClass($model);
@@ -66,7 +67,6 @@ class RelationFinder {
             $return = $method->invoke(app($model));
 
             if ($return instanceof Relation) {
-            // print_r(['method'=>$method,'model'=>$model]);
                 $localKey = null;
                 $foreignKey = null;
 
@@ -83,6 +83,7 @@ class RelationFinder {
                 $model_name = (new ReflectionClass($return->getRelated()))->getName();
                 // return ModelLoader::load($model_name,false);
 
+                ray($return);
                 $result =  [
                     $method->getName() => new ModelRelation(
                         $method->getShortName(),
@@ -94,8 +95,8 @@ class RelationFinder {
                 ];
                 return $result;
             }
-
         } catch (\Throwable $e) {
+            ray($e);
         }
         return null;
     }
