@@ -151,7 +151,7 @@ class CodeGeneratorCommand extends Command
             '{--t|tests : Feacture Test} ' .
             '{--auth : Auth (not included in all)} ' .
             '{--event= : Event (not included in all)} ' .
-            '{--notification=Notification : Notification (not included in all)} ' .
+            '{--notification= : Notification (not included in all)} ' .
             '{--F|force : Overwrite files if exists} ' .
             '{--theme=blade : Theme}';
 

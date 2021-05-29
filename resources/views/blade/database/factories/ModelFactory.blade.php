@@ -20,28 +20,28 @@ function fakerType($column){
             $result = 'bcrypt($this->faker->password)';
         }
         elseif(str($column->name)->matches('/slug/') ){
-            $result = 'slug';
+            $result = 'slug()';
         }
         elseif(str($column->name)->matches('/email/') ){
-            $result = 'safeEmail';
+            $result = 'safeEmail()';
         }
         elseif(str($column->name)->matches('/username/') ){
-            $result = 'userName';
+            $result = 'userName()';
         }
         elseif(str($column->name)->matches('/last.*name/') ){
-            $result = 'lastName';
+            $result = 'lastName()';
         }
         elseif(str($column->name)->matches('/first.?name/') ){
-            $result = 'firstName';
+            $result = 'firstName()';
         }
         elseif(str($column->name)->matches('/phone|mobile/') ){
-            $result = 'phoneNumber';
+            $result = 'phoneNumber()';
         }
         elseif(str($column->name)->matches('/photo/') ){
             $result = "imageUrl(640,480,'people')";
         }
         elseif(str($column->name)->matches('/name/') ){
-            $result = 'name';
+            $result = 'name()';
         }
         elseif(str($column->name)->matches('/img.*url|image.*url/') ){
             $result = 'imageUrl()';
@@ -68,7 +68,7 @@ function fakerType($column){
             $result = 'sentence';
         }
         else {
-            $result = 'text';
+            $result = 'text()';
         }
     }
     elseif($column->type == 'Text'){
