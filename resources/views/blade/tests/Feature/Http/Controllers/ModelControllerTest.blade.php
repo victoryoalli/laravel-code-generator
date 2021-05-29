@@ -16,14 +16,14 @@ class {{$model->name}}ControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_stores_{{str($model->name)->snake()}}_and_redirects()
+    public function it_stores_{{str($model->name)->snake()}}_and_redirects_web()
     {
 @if($options->auth)
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $response = $this->actingAs($user);
 @endif
 
-        ${{str($model->name)->camel()}} = factory({{$model->name}}::class)->make();
+        ${{str($model->name)->camel()}} = {{$model->name}}::factory()->make();
         $data = ${{str($model->name)->camel()}}->attributesToArray();
         $response = $this->post(route('{{str($model->name)->plural()->slug()}}.store'), $data);
         $response->assertRedirect(route('{{str($model->name)->plural()->slug()}}.index'));
@@ -33,14 +33,14 @@ class {{$model->name}}ControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_updates_{{str($model->name)->snake()}}_and_redirects()
+    public function it_updates_{{str($model->name)->snake()}}_and_redirects_web()
     {
 @if($options->auth)
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $response = $this->actingAs($user);
 @endif
-        ${{str($model->name)->camel()}} = factory({{$model->name}}::class)->create();
-        $data = factory({{$model->name}}::class)->make()->attributesToArray();
+        ${{str($model->name)->camel()}} = {{$model->name}}::factory()->create();
+        $data = {{$model->name}}::factory()->make()->attributesToArray();
         $response = $this->put(route('{{str($model->name)->slug()->plural()}}.update', ['{{str($model->name)->snake()}}' => ${{str($model->name)->camel()}}]), $data);
         $response->assertRedirect(route('{{str($model->name)->slug()->plural()}}.index'));
         $response->assertSessionHas('status', '{{$model->name}} updated!');
@@ -49,13 +49,13 @@ class {{$model->name}}ControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_destroys_{{str($model->name)->snake()}}_and_redirects()
+    public function it_destroys_{{str($model->name)->snake()}}_and_redirects_web()
     {
 @if($options->auth)
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $response = $this->actingAs($user);
 @endif
-        ${{str($model->name)->camel()}} = factory({{$model->name}}::class)->create();
+        ${{str($model->name)->camel()}} = {{$model->name}}::factory()->create();
         $response = $this->delete(route('{{str($model->name)->slug()->plural()}}.destroy', ['{{str($model->name)->snake()}}' => ${{str($model->name)->camel()}}]));
         $response->assertRedirect(route('{{str($model->name)->slug()->plural()}}.index'));
         $response->assertSessionHas('status', '{{$model->name}} destroyed!');

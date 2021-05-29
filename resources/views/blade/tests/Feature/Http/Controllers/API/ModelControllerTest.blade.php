@@ -20,9 +20,9 @@ class {{$model->name}}ControllerTest extends TestCase
     public function it_stores_{{str($model->name)->snake()}}_api()
     {
 @if($options->auth)
-        Passport::actingAs(factory(User::class)->create(), ['api/{{str($model->name)->plural()->slug()}}']);
+        Passport::actingAs(User::factory()->create(), ['api/{{str($model->name)->plural()->slug()}}']);
 @endif
-        ${{str($model->name)->camel()}} = factory({{$model->name}}::class)->make();
+        ${{str($model->name)->camel()}} = {{$model->name}}::factory()->make();
         $data = ${{str($model->name)->camel()}}->attributesToArray();
         $response = $this->json('POST','api/{{str($model->name)->plural()->slug()}}',$data);
         $response->assertStatus(201)->assertJson(['created_at'=>true]);
@@ -34,10 +34,10 @@ class {{$model->name}}ControllerTest extends TestCase
     public function it_updates_{{str($model->name)->snake()}}_api()
     {
 @if($options->auth)
-        Passport::actingAs(factory(User::class)->create(), ['api/{{str($model->name)->plural()->slug()}}']);
+        Passport::actingAs(User::factory()->create(), ['api/{{str($model->name)->plural()->slug()}}']);
 @endif
-        ${{str($model->name)->camel()}} = factory({{$model->name}}::class)->create();
-        $data = factory({{$model->name}}::class)->make()->attributesToArray();
+        ${{str($model->name)->camel()}} = {{$model->name}}::factory()->create();
+        $data = {{$model->name}}::factory()->make()->attributesToArray();
         $response = $this->json('PUT','api/{{str($model->name)->plural()->slug()}}/'.${{str($model->name)->camel()}}->id,$data);
         $response->assertStatus(200)->assertJson(['updated_at'=>true]);
     }
@@ -48,9 +48,9 @@ class {{$model->name}}ControllerTest extends TestCase
     public function it_destroys_{{str($model->name)->snake()}}_api()
     {
 @if($options->auth)
-        Passport::actingAs(factory(User::class)->create(), ['api/{{str($model->name)->plural()->slug()}}']);
+        Passport::actingAs(User::factory()->create(), ['api/{{str($model->name)->plural()->slug()}}']);
 @endif
-        ${{str($model->name)->camel()}} = factory({{$model->name}}::class)->create();
+        ${{str($model->name)->camel()}} = {{$model->name}}::factory()->create();
         $response = $this->json('DELETE','api/{{str($model->name)->plural()->slug()}}/'.${{str($model->name)->camel()}}->id);
         $response->assertStatus(200)->assertJson(['deleted_at'=>true]);
         ${{str($model->name)->camel()}}->refresh();

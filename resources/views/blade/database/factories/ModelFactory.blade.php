@@ -81,7 +81,7 @@ function fakerType($column){
         $result = 'dateTime()';
     }
     elseif($column->type == 'BigInt' && str($column->name)->matches('/_id$/')){
-        return 'factory('.str($column->name)->replace('_id','')->camel()->ucfirst().'::class)';
+        return str($column->name)->replace('_id','')->camel()->ucfirst().'::factory()->create()->id';
     }
     elseif(str($column->type)->matches('/Int/')){
         $result = 'randomDigit';

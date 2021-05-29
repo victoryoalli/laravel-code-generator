@@ -146,12 +146,12 @@ class CodeGeneratorCommand extends Command
             '{--a|api : Creates API Controller} ' .
             '{--r|routes : Display Routes} ' .
             '{--l|lang : Language} ' .
-            '{--A|all : All Files (views, controller, api, routes, lang)}' .
+            '{--A|all : All Files}' .
             '{--f|factory : Factory} ' .
             '{--t|tests : Feacture Test} ' .
-            '{--auth : Auth } ' .
-            '{--event= : Event } ' .
-            '{--notification=Notification : Notification } ' .
+            '{--auth : Auth (not included in all)} ' .
+            '{--event= : Event (not included in all)} ' .
+            '{--notification=Notification : Notification (not included in all)} ' .
             '{--F|force : Overwrite files if exists} ' .
             '{--theme=blade : Theme}';
 
@@ -180,7 +180,7 @@ class CodeGeneratorCommand extends Command
         $all = $this->option('all');
         $theme = $this->option('theme');
         if ($all) {
-            $lang = $controller = $routes = $views = $api = $all;
+            $lang = $controller = $routes = $views = $all;
         }
         $request = ($controller || $api);
 
@@ -226,8 +226,12 @@ class CodeGeneratorCommand extends Command
             printif('Factory ', CodeGenerator::generate($m, $theme . '/database/factories/ModelFactory', "database/factories/{$m->name}Factory.php", $force, $options));
         }
         if ($option->tests) {
-            printif('Feature Test Controller', CodeGenerator::generate($m, $theme . '/tests/Feature/Http/Controllers/ModelControllerTest', "tests/Feature/Http/Controllers/{$m->name}ControllerTest.php", $force, $options));
-            printif('Feature Test API Controller', CodeGenerator::generate($m, $theme . '/tests/Feature/Http/Controllers/API/ModelControllerTest', "tests/Feature/Http/Controllers/API/{$m->name}ControllerTest.php", $force, $options));
+            if ($option->controller) {
+                printif('Feature Test Controller', CodeGenerator::generate($m, $theme . '/tests/Feature/Http/Controllers/ModelControllerTest', "tests/Feature/Http/Controllers/{$m->name}ControllerTest.php", $force, $options));
+            }
+            if ($option->api) {
+                printif('Feature Test API Controller', CodeGenerator::generate($m, $theme . '/tests/Feature/Http/Controllers/API/ModelControllerTest', "tests/Feature/Http/Controllers/API/{$m->name}ControllerTest.php", $force, $options));
+            }
         }
         if ($option->notification) {
             printif('Notification', CodeGenerator::generate($m, $theme . '/Notifications/ModelNotification', "app/Notifications/{$m->name}{$option->notification}.php", $force, $options));
@@ -240,6 +244,7 @@ class CodeGeneratorCommand extends Command
         }
     }
 }
+
 
 ```
 
