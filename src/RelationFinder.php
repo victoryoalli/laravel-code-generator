@@ -83,7 +83,6 @@ class RelationFinder
                 $model_name = (new ReflectionClass($return->getRelated()))->getName();
                 // return ModelLoader::load($model_name,false);
 
-                ray($return);
                 $result =  [
                     $method->getName() => new ModelRelation(
                         $method->getShortName(),
@@ -96,7 +95,6 @@ class RelationFinder
                 return $result;
             }
         } catch (\Throwable $e) {
-            ray($e);
         }
         return null;
     }

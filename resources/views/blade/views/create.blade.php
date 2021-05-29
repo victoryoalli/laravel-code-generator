@@ -26,7 +26,7 @@
                     @if($rel->type === 'BelongsTo')
                     <div class="">
                         <label class="block text-sm font-semibold text-gray-700" for="{{$rel->local_key}}">{{str($rel->name)->human()->title()}}</label>
-                        <select class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <select  name="{{$rel->local_key}}" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                             @@foreach((\{{$rel->model->complete_name}}::all() ?? [] ) as ${{$rel->name}})
                             <option value="{{code()->doubleCurlyOpen()}}${{$rel->name}}->id{{code()->doubleCurlyClose()}}">
                                 {{code()->doubleCurlyOpen()}}${{$rel->name}}->{{collect($rel->model->table->columns)->filter(function($col,$key){
