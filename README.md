@@ -128,11 +128,7 @@ use VictorYoalli\LaravelCodeGenerator\Structure\Model;
 
 class CodeGeneratorCommand extends Command
 {
-    public function printif($type, $filename)
-    {
-        $text = empty($filename) ? '<fg=red> ✖ </> '. $type . '<fg=yellow> already exists </>' : '<fg=green>✔</> <fg=white>' . $filename . '<fg=magenta> created. </>';
-        $this->line($text);
-    }
+
     /**
      * The name and signature of the console command.
      *
@@ -205,7 +201,6 @@ class CodeGeneratorCommand extends Command
 
         $this->info('🚀 Starting code generation');
         $this->newLine();
-
         if ($option->controller) {
             $this->printif('Web Controller', CodeGenerator::generate($m, $theme . '/Http/Controllers/ModelController', "app/Http/Controllers/{$m->name}Controller.php", $force, $options));
         }
@@ -252,8 +247,13 @@ class CodeGeneratorCommand extends Command
         $this->newLine();
         $this->info('🎉 Finished!');
     }
-}
 
+    public function printif($type, $filename)
+    {
+        $text = empty($filename) ? '<fg=red> ✖ </> '. $type . '<fg=yellow> already exists </>' : '<fg=green>✔</> <fg=default>' . $filename . '<fg=magenta> created. </>';
+        $this->line($text);
+    }
+}
 
 ```
 
