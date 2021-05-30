@@ -60,5 +60,6 @@ class CodeGenerator
             file_put_contents($outputFile, $result);
             return $outputFile;
         }
+        return null;
     }
 }

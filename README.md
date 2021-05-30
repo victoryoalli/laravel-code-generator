@@ -123,17 +123,16 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use VictorYoalli\LaravelCodeGenerator\Facades\CodeGenerator;
-use VictorYoalli\LaravelCodeGenerator\Facades\CodeHelper;
 use VictorYoalli\LaravelCodeGenerator\Facades\ModelLoader;
 use VictorYoalli\LaravelCodeGenerator\Structure\Model;
 
-function printif($type, $filename, $msg = '✖ Not generated ')
-{
-    echo($filename === '' ? $msg . ' : ' . $type : "✔ {$filename}") . "\n";
-}
-
 class CodeGeneratorCommand extends Command
 {
+    public function printif($type, $filename)
+    {
+        $text = empty($filename) ? '<fg=red> ✖ </> '. $type . '<fg=yellow> already exists </>' : '<fg=green>✔</> <fg=white>' . $filename . '<fg=magenta> created. </>';
+        $this->line($text);
+    }
     /**
      * The name and signature of the console command.
      *
@@ -203,45 +202,55 @@ class CodeGeneratorCommand extends Command
     {
         $option = (object) $options;
         $folder = str($m->name)->plural()->snake();
+
+        $this->info('🚀 Starting code generation');
+        $this->newLine();
+
         if ($option->controller) {
-            printif('Web Controller', CodeGenerator::generate($m, $theme . '/Http/Controllers/ModelController', "app/Http/Controllers/{$m->name}Controller.php", $force, $options));
+            $this->printif('Web Controller', CodeGenerator::generate($m, $theme . '/Http/Controllers/ModelController', "app/Http/Controllers/{$m->name}Controller.php", $force, $options));
         }
         if ($option->api) {
-            printif('API Controller', CodeGenerator::generate($m, $theme . '/Http/Controllers/API/ModelController', "app/Http/Controllers/API/{$m->name}Controller.php", $force, $options));
+            $this->printif('API Controller', CodeGenerator::generate($m, $theme . '/Http/Controllers/API/ModelController', "app/Http/Controllers/API/{$m->name}Controller.php", $force, $options));
         }
         if ($option->request) {
-            printif('Form Request', CodeGenerator::generate($m, $theme . '/Http/Requests/ModelRequest', "app/Http/Requests/{$m->name}Request.php", $force, $options));
+            $this->printif('Form Request', CodeGenerator::generate($m, $theme . '/Http/Requests/ModelRequest', "app/Http/Requests/{$m->name}Request.php", $force, $options));
         }
 
         if ($option->views) {
-            printif('Create View', CodeGenerator::generate($m, $theme . '/views/create', "resources/views/{$folder}/create.blade.php", $force, $options));
-            printif('Edit View', CodeGenerator::generate($m, $theme . '/views/edit', "resources/views/{$folder}/edit.blade.php", $force, $options));
-            printif('Index View', CodeGenerator::generate($m, $theme . '/views/index', "resources/views/{$folder}/index.blade.php", $force, $options));
-            printif('Show View', CodeGenerator::generate($m, $theme . '/views/show', "resources/views/{$folder}/show.blade.php", $force, $options));
+            $this->printif('Index View', CodeGenerator::generate($m, $theme . '/views/index', "resources/views/{$folder}/index.blade.php", $force, $options));
+            $this->printif('Create View', CodeGenerator::generate($m, $theme . '/views/create', "resources/views/{$folder}/create.blade.php", $force, $options));
+            $this->printif('Show View', CodeGenerator::generate($m, $theme . '/views/show', "resources/views/{$folder}/show.blade.php", $force, $options));
+            $this->printif('Edit View', CodeGenerator::generate($m, $theme . '/views/edit', "resources/views/{$folder}/edit.blade.php", $force, $options));
         }
         if ($option->lang) {
-            printif('Lang', CodeGenerator::generate($m, $theme . '/lang/en/Models', "resources/lang/en/{$folder}.php", $force, $options));
+            $this->printif('Lang', CodeGenerator::generate($m, $theme . '/lang/en/Models', "resources/lang/en/{$folder}.php", $force, $options));
         }
         if ($option->factory) {
-            printif('Factory ', CodeGenerator::generate($m, $theme . '/database/factories/ModelFactory', "database/factories/{$m->name}Factory.php", $force, $options));
+            $this->printif('Factory ', CodeGenerator::generate($m, $theme . '/database/factories/ModelFactory', "database/factories/{$m->name}Factory.php", $force, $options));
         }
         if ($option->tests) {
+            $this->printif('Feature Test Controller', CodeGenerator::generate($m, $theme . '/tests/Feature/Http/Controllers/ModelControllerTest', "tests/Feature/Http/Controllers/{$m->name}ControllerTest.php", $force, $options));
             if ($option->controller) {
-                printif('Feature Test Controller', CodeGenerator::generate($m, $theme . '/tests/Feature/Http/Controllers/ModelControllerTest', "tests/Feature/Http/Controllers/{$m->name}ControllerTest.php", $force, $options));
+                $this->printif('Feature Test Controller', CodeGenerator::generate($m, $theme . '/tests/Feature/Http/Controllers/ModelControllerTest', "tests/Feature/Http/Controllers/{$m->name}ControllerTest.php", $force, $options));
             }
             if ($option->api) {
-                printif('Feature Test API Controller', CodeGenerator::generate($m, $theme . '/tests/Feature/Http/Controllers/API/ModelControllerTest', "tests/Feature/Http/Controllers/API/{$m->name}ControllerTest.php", $force, $options));
+                $this->printif('Feature Test API Controller', CodeGenerator::generate($m, $theme . '/tests/Feature/Http/Controllers/API/ModelControllerTest', "tests/Feature/Http/Controllers/API/{$m->name}ControllerTest.php", $force, $options));
             }
         }
         if ($option->notification) {
-            printif('Notification', CodeGenerator::generate($m, $theme . '/Notifications/ModelNotification', "app/Notifications/{$m->name}{$option->notification}.php", $force, $options));
+            $this->printif('Notification', CodeGenerator::generate($m, $theme . '/Notifications/ModelNotification', "app/Notifications/{$m->name}{$option->notification}.php", $force, $options));
         }
         if ($option->event) {
-            printif('Event', CodeGenerator::generate($m, $theme . '/Events/ModelEvent', "app/Events/{$m->name}{$option->event}.php", $force, $options));
+            $this->printif('Event', CodeGenerator::generate($m, $theme . '/Events/ModelEvent', "app/Events/{$m->name}{$option->event}.php", $force, $options));
         }
         if ($option->routes) {
-            echo CodeGenerator::generate($m, $theme . '/routes') . "\n";
+            $this->newLine();
+            $this->line('------------------------------8<----------------------------');
+            $this->line('<fg=cyan>'.CodeGenerator::generate($m, $theme . '/routes').'</>');
+            $this->line('------------------------------8<----------------------------');
         }
+        $this->newLine();
+        $this->info('🎉 Finished!');
     }
 }
 

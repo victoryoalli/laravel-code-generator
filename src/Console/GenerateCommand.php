@@ -35,7 +35,7 @@ class GenerateCommand extends Command
             return;
         } else {
             $result = $generator->generate($m, $template, $outputFile, $force);
-            print $result . "\n";
+            $this->line($result);
         }
     }
 }
