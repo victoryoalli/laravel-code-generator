@@ -7,7 +7,7 @@
 <div class="container mx-auto">
     @@if (session('status'))
     <div class="fixed z-20 inset-x-0" x-data="{show:true}" x-show="show" x-cloak>
-        <div class="bg-blue-100 font-medium max-w-4xl mx-auto my-4 px-8 py-4 rounded shadow text-blue-700 text-center text-sm" @click.away="show=false">
+        <div class="bg-gradient-to-r font-medium font-semibold from-green-500 max-w-4xl mx-auto my-4 px-8 py-4 rounded shadow text-center text-green-50 to-green-600" @click.away="show=false">
             @{{ session('status') }}
         </div>
     </div>

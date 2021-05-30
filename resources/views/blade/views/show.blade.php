@@ -42,8 +42,8 @@
                     @if(!str($column->name)->matches('/id$/') && !str($column->name)->matches('/created_at$/') && !str($column->name)->matches('/updated_at$/') && !str($column->name)->matches('/deleted_at$/'))
                     <div class="">
                         <label class="block text-sm font-semibold text-gray-700" for="{{$column->name}}">{{str($column->name)->title()}}</label>
-                        @if($column->type=='Text')
-                        <textarea readonly name="{{$column->name}}" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded {{$column->type}}">{{code()->doubleCurlyOpen()}}old('{{$column->name}}',${{str($model->name)->snake()}}->{{$column->name}}){{code()->doubleCurlyClose()}}</textarea>
+                        @if(str($column->type)->matches('/Text/'))
+                        <textarea readonly name="{{$column->name}}" class="mt-1 focus:outline-none focus:ring-transparent focus:border-transparent block w-full  sm:text-sm border-transparent {{$column->type}}">{{code()->doubleCurlyOpen()}}old('{{$column->name}}',${{str($model->name)->snake()}}->{{$column->name}}){{code()->doubleCurlyClose()}}</textarea>
                         @else
                         <input readonly name="{{$column->name}}" @if($column->type == 'String')
                         type="text"
