@@ -239,10 +239,8 @@ class CodeGeneratorCommand extends Command
             $this->printif('Event', CodeGenerator::generate($m, $theme . '/Events/ModelEvent', "app/Events/{$m->name}{$option->event}.php", $force, $options));
         }
         if ($option->routes) {
-            $this->newLine();
-            $this->line('------------------------------8<----------------------------');
+            $this->newLine(3);
             $this->line('<fg=cyan>'.CodeGenerator::generate($m, $theme . '/routes').'</>');
-            $this->line('------------------------------8<----------------------------');
         }
         $this->newLine();
         $this->info('🎉 Finished!');
