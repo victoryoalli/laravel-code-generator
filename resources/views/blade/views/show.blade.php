@@ -25,7 +25,7 @@
                         <label class="block text-sm font-semibold text-gray-700" for="{{$rel->local_key}}">{{str($rel->name)->title()}}</label>
                         @@foreach((\{{$rel->model->complete_name}}::all() ?? [] ) as ${{$rel->name}})
                         @@if(${{str($model->name)->snake()}}->{{$rel->local_key}} == ${{$rel->name}}->id)
-                        <a class="px-3 py-1.5 mt-1 block w-full text-blue-500 hover:text-blue-700 hover:underline sm:text-sm border-transparent focus:ring-transparent focus:outline-none focus:border-transparent rounded">
+                        <a href="{{code()->doubleCurlyOpen()}}route('{{str($rel->name)->plural()->slug()}}.show',['{{str($rel->name)->slug()}}'=>${{str($rel->name)->snake()}}->id]){{code()->doubleCurlyClose()}}" class="px-3 py-1.5 mt-1 block w-full text-blue-500 hover:text-blue-700 hover:underline sm:text-sm border-transparent focus:ring-transparent focus:outline-none focus:border-transparent rounded">
                             {{code()->doubleCurlyOpen()}}${{$rel->name}}->{{collect($rel->model->table->columns)->filter(fn($col,$key) => ($col->type == 'String') )->map(function($col){ return $col->name;})->first()}}{{code()->doubleCurlyClose()}}
                         </a>
                         @@endif

@@ -27,6 +27,7 @@
         <div class="">
             <label class="block text-sm font-semibold text-gray-700" for="{{$rel->local_key}}">{{str($rel->name)->title()}}</label>
             <select name="{{$rel->local_key}}" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                <option value="">Select</option>
                 @@foreach((\{{$rel->model->complete_name}}::all() ?? [] ) as ${{$rel->name}})
                 <option value="{{code()->doubleCurlyOpen()}}${{$rel->name}}->id{{code()->doubleCurlyClose()}}"
                     @@if(${{str($model->name)->snake()}}->{{$rel->local_key}} == old('{{$rel->local_key}}', ${{$rel->name}}->id))

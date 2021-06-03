@@ -32,7 +32,7 @@ class {{$model->name}}Request extends FormRequest
             ],
 @else
             '{{$col->name}}' => [
-                'present',
+                'nullable',
             ],
 @endif
 @endif
