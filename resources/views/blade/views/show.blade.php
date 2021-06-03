@@ -7,7 +7,7 @@
 <div class="container mx-auto py-8">
     <div class="grid md:grid-cols-3">
         <div class="mb-4 mx-4">
-            <h1 class="mb-4 text-blue-500 text-3xl font-bold"> {{str($model->name)->title()}}</h1>
+            <h1 class="mb-4 text-blue-500 text-3xl font-bold"> {{str($model->name)->human()->title()}}</h1>
             @@if ($errors->any())
             <ul class="list-disc list-inside text-sm text-red-500">
                 @@foreach ($errors->all() as $error)
@@ -19,32 +19,29 @@
         <div class="col-span-2 bg-white shadow rounded-lg overflow-auto">
             <form action="{{code()->doubleCurlyOpen()}}route('{{str($model->name)->slug()->plural()}}.update',['{{str($model->name)->snake()}}'=>${{str($model->name)->snake()}}->id]){{code()->doubleCurlyClose()}}" method="POST" novalidate>
                 <div class="space-y-3 p-4">
-
-                    @@csrf
-                    @@method('PUT')
-                    @foreach($model->relations as $rel)
-                    @if($rel->type === 'BelongsTo')
-                    <div class="">
+@foreach($model->relations as $rel)
+@if($rel->type === 'BelongsTo')
+                    <div class="{{$rel->type}}">
                         <label class="block text-sm font-semibold text-gray-700" for="{{$rel->local_key}}">{{str($rel->name)->title()}}</label>
                         @@foreach((\{{$rel->model->complete_name}}::all() ?? [] ) as ${{$rel->name}})
                         @@if(${{str($model->name)->snake()}}->{{$rel->local_key}} == ${{$rel->name}}->id)
-                        <a href="{{code()->doubleCurlyOpen()}}route('{{str($rel->model->name)->plural()->slug()}}.show',${{str($rel->model->name)->snake()}}){{code()->doubleCurlyClose()}}" class="px-3 py-1.5 mt-1 block w-full text-blue-500 hover:text-blue-700 hover:underline sm:text-sm border-transparent focus:ring-transparent focus:outline-none focus:border-transparent rounded">
+                        <a class="px-3 py-1.5 mt-1 block w-full text-blue-500 hover:text-blue-700 hover:underline sm:text-sm border-transparent focus:ring-transparent focus:outline-none focus:border-transparent rounded">
                             {{code()->doubleCurlyOpen()}}${{$rel->name}}->{{collect($rel->model->table->columns)->filter(fn($col,$key) => ($col->type == 'String') )->map(function($col){ return $col->name;})->first()}}{{code()->doubleCurlyClose()}}
-                            @@endif
-                            @@endforeach
                         </a>
+                        @@endif
+                        @@endforeach
 
                     </div>
-                    @endif
-                    @endforeach
+@endif
+@endforeach
 
-                    @foreach($model->table->columns as $column)
-                    @if(!str($column->name)->matches('/id$/') && !str($column->name)->matches('/created_at$/') && !str($column->name)->matches('/updated_at$/') && !str($column->name)->matches('/deleted_at$/'))
+@foreach($model->table->columns as $column)
+@if(!str($column->name)->matches('/id$/') && !str($column->name)->matches('/created_at$/') && !str($column->name)->matches('/updated_at$/') && !str($column->name)->matches('/deleted_at$/'))
                     <div class="">
                         <label class="block text-sm font-semibold text-gray-700" for="{{$column->name}}">{{str($column->name)->title()}}</label>
                         @if(str($column->type)->matches('/Text/'))
                         <textarea readonly name="{{$column->name}}" class="mt-1 focus:outline-none focus:ring-transparent focus:border-transparent block w-full  sm:text-sm border-transparent {{$column->type}}">{{code()->doubleCurlyOpen()}}old('{{$column->name}}',${{str($model->name)->snake()}}->{{$column->name}}){{code()->doubleCurlyClose()}}</textarea>
-                        @else
+@else
                         <input readonly name="{{$column->name}}" @if($column->type == 'String')
                         type="text"
                         maxlength="{{$column->length}}"
@@ -62,13 +59,13 @@
                         @endif
                         value="{{code()->doubleCurlyOpen()}}old('{{$column->name}}',${{str($model->name)->snake()}}->{{$column->name}}){{code()->doubleCurlyClose()}}"
                         >
-                        @endif
+@endif
                         @@if($errors->has('{{$column->name}}'))
                         <p class="mt-0.5 text-sm text-red-500">{{code()->doubleCurlyOpen()}}$errors->first('{{$column->name}}'){{code()->doubleCurlyClose()}}</p>
-                        @@endif
+@@endif
                     </div>
-                    @endif
-                    @endforeach
+@endif
+@endforeach
                 </div>
                 <div class="bg-gray-100 flex items-center justify-between px-4 py-5 space-x-3">
                     <a class="text-blue-500" href="@{{ url()->previous() }}">Back</a>
@@ -122,9 +119,8 @@
                 </table>
             @endif
             @endforeach
-
-        <!-- //Relations -->
     </div>
+        <!-- //Relations -->
     @if($options->auth)
     {!!code()->tag('/x-app-layout')!!}
     @else

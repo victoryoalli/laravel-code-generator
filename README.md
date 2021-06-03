@@ -148,6 +148,7 @@ class CodeGeneratorCommand extends Command
             '{--event= : Event (not included in all)} ' .
             '{--notification= : Notification (not included in all)} ' .
             '{--F|force : Overwrite files if exists} ' .
+            '{--livewire : Add livewire files}' .
             '{--theme=blade : Theme}';
 
     protected $description = 'Multiple files generation';
@@ -173,13 +174,14 @@ class CodeGeneratorCommand extends Command
         $event = $this->option('event');
         $notification = $this->option('notification');
         $all = $this->option('all');
+        $livewire = $this->option('livewire');
         $theme = $this->option('theme');
         if ($all) {
             $lang = $controller = $routes = $views = $all;
         }
         $request = ($controller || $api);
 
-        $options = compact(['factory', 'controller', 'routes', 'views',  'api', 'tests', 'auth', 'request', 'notification', 'event', 'lang']);
+        $options = compact(['factory', 'controller', 'routes', 'views',  'api', 'tests', 'auth', 'request', 'notification', 'event', 'lang','livewire']);
         $namespace = rtrim($this->option('namespace'), '\\');
         $models = collect(explode(',', $this->argument('model')));
 
@@ -238,10 +240,19 @@ class CodeGeneratorCommand extends Command
         if ($option->event) {
             $this->printif('Event', CodeGenerator::generate($m, $theme . '/Events/ModelEvent', "app/Events/{$m->name}{$option->event}.php", $force, $options));
         }
+        if ($option->livewire) {
+            $plural = str($m->name)->plural();
+            $this->printif('Livewire Component ', CodeGenerator::generate($m, "/livewire/Http/Index", "app/Http/Livewire/{$plural}/Index.php", $force, $options));
+            $this->printif('Livewire index view ', CodeGenerator::generate($m, "/livewire/views/index", "resources/views/livewire/{$folder}/index.blade.php", $force, $options));
+            $this->printif('Livewire list view ', CodeGenerator::generate($m, "/livewire/views/list", "resources/views/livewire/{$folder}/list.blade.php", $force, $options));
+            $this->printif('Livewire edit view ', CodeGenerator::generate($m, "/livewire/views/edit", "resources/views/livewire/{$folder}/edit.blade.php", $force, $options));
+            $this->printif('Livewire show view ', CodeGenerator::generate($m, "/livewire/views/show", "resources/views/livewire/{$folder}/show.blade.php", $force, $options));
+        }
         if ($option->routes) {
             $this->newLine(3);
-            $this->line('<fg=cyan>'.CodeGenerator::generate($m, $theme . '/routes').'</>');
+            $this->line('<fg=cyan>'.CodeGenerator::generate($m, $theme . '/routes', null, $force, $options).'</>');
         }
+
         $this->newLine();
         $this->info('🎉 Finished!');
     }
