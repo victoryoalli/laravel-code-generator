@@ -13,7 +13,6 @@ use App\Notifications\{{$model->name}}{{$options->notification}};
 @if($options->event)
 use App\Events\{{$options->event}};
 @endif
-use {{$model->complete_name}};
 
 class {{$model->name}}Controller extends Controller
 {
@@ -26,7 +25,7 @@ class {{$model->name}}Controller extends Controller
 
     public function index()
     {
-        return Inertia::render('{{str($model->name)->plural()}}/Index', ['{{str($)->snake()}}'=>{{$model->name}}::paginate(25)]);
+        return Inertia::render('{{str($model->name)->plural()}}/Index', ['{{str($model->name)->snake()->plural()}}'=>{{$model->name}}::paginate(25)]);
     }
 
     public function create()
@@ -46,7 +45,7 @@ class {{$model->name}}Controller extends Controller
         event(new {{$options->event}}(${{str($model->name)->snake()}}));
 @endif
 
-        return redirect()->route('{{str($model->name)->slug()->plural()}}.index')->with('status', '{{str($model->name)->human()}} created!');
+        return redirect()->route('{{str($model->name)->snake()->slug()->plural()}}.index')->with('status', '{{str($model->name)->human()}} created!');
     }
 
     public function edit(Request $request, {{$model->name}} ${{str($model->name)->snake()}})
@@ -61,13 +60,13 @@ class {{$model->name}}Controller extends Controller
         ${{str($model->name)->snake()}}->fill($data);
         ${{str($model->name)->snake()}}->save();
 
-        return redirect()->route('{{str($model->name)->slug()->plural()}}.index')->with('status', '{{str($model->name)->human()}} updated!');
+        return redirect()->route('{{str($model->name)->snake()->slug()->plural()}}.index')->with('status', '{{str($model->name)->human()}} updated!');
     }
 
     public function destroy(Request $request, {{$model->name}} ${{str($model->name)->snake()}})
     {
         ${{str($model->name)->snake()}}->delete();
 
-        return redirect()->route('{{str($model->name)->slug()->plural()}}.index')->with('status', '{{str($model->name)->human()}} deleted!');
+        return redirect()->route('{{str($model->name)->snake()->slug()->plural()}}.index')->with('status', '{{str($model->name)->human()}} deleted!');
     }
 }

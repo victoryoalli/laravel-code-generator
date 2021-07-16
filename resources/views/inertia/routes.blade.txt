@@ -1,0 +1,10 @@
+# {{str($model->name)->title()}} Routes for web.php
+use App\Http\Controllers;
+
+Route::resource('{{str($model->name)->plural()->slug()}}', Controllers\{{$model->name}}Controller::class);
+
+#--------------------------------------------------#
+# {{str($model->name)->title()}} Routes for api.php
+use App\Http\Controllers\API;
+
+Route::apiResource('{{str($model->name)->plural()->slug()}}', API\{{$model->name}}Controller::class);
