@@ -51,14 +51,37 @@ class CodeGenerator
             return $this->render($model, $template, $options);
         }
         $filepath = base_path($outputFile);
-        $dirname = dirname($filepath);
-        if (!file_exists($filepath) || $overwrite) {
-            if (!file_exists($dirname)) {
-                mkdir($dirname, 0755, true);
-            }
+        if (!$this->files->exists($filepath) || $overwrite) {
+            $this->files->ensureDirectoryExists(dirname($filepath), null, true);
             $result = $this->render($model, $template, $options);
-            file_put_contents($outputFile, $result);
+            $this->files->put($outputFile, $result);
             return $outputFile;
+        }
+
+        return null;
+    }
+
+    public function copy(string $inputPath, string $outputPath, bool $overwrite = false)
+    {
+        $inputPath = resource_path('views/vendor/laravel-code-generator/'.$inputPath);
+        $outputPath = base_path($outputPath);
+        if (!$this->files->exists($inputPath)) {
+            throw new \Exception("File $inputPath does not exist.");
+        }
+
+        $this->files->ensureDirectoryExists(dirname($outputPath));
+        dump($inputPath);
+        dump($outputPath);
+        if (!$this->files->exists($outputPath) && $this->files->isDirectory($outputPath)   || $overwrite) {
+            print "Copying $inputPath to $outputPath\n";
+            $this->files->copyDirectory($inputPath, $outputPath);
+            $files = collect($this->files->files($inputPath));
+            dd($files);
+
+            return $outputPath;
+        } elseif ($this->files->isFile($outputPath) && !$this->files->exists($outputPath) || $overwrite) {
+            $this->files->copy($inputPath, $outputPath);
+            return $outputPath;
         }
         return null;
     }

@@ -1,5 +1,6 @@
 @php
-    $columns = collect($model->table->columns)->filter(function($col){ return !str($col->name)->matches('/id|created_at|updated_at/');});
+    $columns = collect($model->table->columns)->filter(function($col){ return !str($col->name)->matches('/id|created_at|updated_at|deleted_at/');});
+    $m = $model;
 @endphp
 <template>
 	<app-layout>
@@ -9,7 +10,7 @@
                 <div class="px-4 py-5 bg-white shadow sm:rounded-lg sm:p-6">
                     <div class="md:grid md:grid-cols-3 md:gap-6">
                         <div class="md:col-span-1">
-                            <h3 class="text-lg font-medium leading-6 text-gray-900">
+                            <h3 class="text-lg font-medium text-gray-900">
                                 {{str($model->name)->human()->title()}} Information
                             </h3>
                             <p class="mt-1 text-sm text-gray-500">
@@ -19,17 +20,38 @@
                         <div class="mt-5 md:mt-0 md:col-span-2">
                             <form @submit.prevent="update">
                                 <div class="grid grid-cols-6 gap-6">
+@foreach($model->relations as $rel)
+@if($rel->type === 'BelongsTo')
+                                    <div class="col-span-6 sm:col-span-6">
+                                        <select-input
+                                            :value="form.{{$rel->local_key}}"
+                                            @update:value="form.{{$rel->local_key}} = $event"
+                                            :error="errors.{{$rel->local_key}}"
+                                            class="block w-full px-3 py-2.5 mt-1 bg-white border rounded"
+                                            label="{{str($rel->name)->title()}}"
+                                        >
+                                        <option value="null">-</option>
+                                        <option
+                                            :value="{{$rel->name}}.id"
+                                            v-for="({{$rel->name}}, idx) in {{str($rel->name)->snake()->plural()}}"
+                                            :key="idx"
+                                        >
+                                            {{code()->doubleCurlyOpen()}}{{$rel->name}}.{{collect($rel->model->table->columns)->filter(function($col,$key) {
+                                                return $col->type == 'String'; })->map(function($col){ return $col->name;})->first()}}{{code()->doubleCurlyClose()}}
+                                        </option>
+                                        </select-input>
+                                    </div>
+@endif
+@endforeach
 @foreach($columns->pluck('name') as $col)
                                     <div class="col-span-6 sm:col-span-6">
-                                        <label for="name" class="block text-sm font-medium text-gray-700" >{{str($col)->human()->title()}}</label>
-                                        <input
-                                            v-model="form.{{$col}}"
-                                            type="text"
-                                            name="{{$col}}"
-                                            id="{{$col}}"
-                                            class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                                        <text-input
+                                            :value="form.{{$col}}"
+                                            @update:value="form.{{$col}}= $event"
+                                            :error="errors.{{$col}}"
+                                            class="shadow"
+                                            label="{{str($col)->human()->title()}}"
                                         />
-                                        <div class="text-xs text-red-500" v-if="errors.{{$col}}">{{code()->doubleCurlyOpen()}}errors.{{$col}}{{code()->doubleCurlyClose()}}</div>
                                     </div>
 @endforeach
                                 </div>
@@ -37,14 +59,14 @@
                                     <inertia-link
                                         :href="route('{{str($model->name)->snake()->slug()->plural()}}.index')"
                                         type="button"
-                                        class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                                        class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded shadow hover:bg-gray-50"
                                     >
                                         Cancelar
                                     </inertia-link>
                                     <button
                                         :disabled="form.processing"
                                         type="submit"
-                                        class="inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white border border-transparent rounded-md shadow-sm bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                                        class="inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white border border-transparent rounded shadow bg-primary-600 hover:bg-primary-700"
                                     >
                                         Guardar
                                     </button>
@@ -58,36 +80,31 @@
 @foreach($model->relations as $rel)
 @if($rel->type === 'HasMany')
 @php
-    $columns = collect($rel->model->table->columns)->filter(function($col){ return !str($col->name)->matches('/id|created_at|updated_at/');});
+    $columns = collect($rel->model->table->columns)->filter(function($col){ return !str($col->name)->matches('/id|created_at|updated_at|deleted_at/');});
+    $col_names = $columns->map(function($col) { return "'".str($col->name)->human()->title()."'"; })->implode(",");
     $model = $rel->model;
 @endphp
             <h2 class="mt-12 font-bold text-2xl">{{str($rel->name)->human()->title()}}</h2>
             <div class="bg-white rounded-md shadow overflow-x-auto">
-                <table class="w-full whitespace-nowrap">
-                    <tr class="text-left font-bold">
-@foreach($columns as $col)
-                    <th class="px-6 pt-6 pb-4">{{str($col->name)->human()->title()}}</th>
-@endforeach
-                    <th class="px-6 pt-6 pb-4"></th>
-                    </tr>
+                <table-base :headers="[{!!$col_names!!}, '']">
 
                     <tr v-for="{{str($model->name)->snake()}} in {{str($rel->name)->snake()}}.data" :key="{{str($model->name)->snake()}}.id" class="bg-white even:bg-gray-50 hover:bg-gray-100">
 @foreach($columns->pluck('name') as $col)
                         <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                            {{code()->doubleCurlyOpen()}}item.{{ $col }}{{code()->doubleCurlyClose()}}
+                            {{code()->doubleCurlyOpen()}}{{str($model->name)->snake()}}.{{ $col }}{{code()->doubleCurlyClose()}}
                         </td>
 @endforeach
                         <td class="px-6 py-4 text-sm font-semibold text-right whitespace-nowrap">
                             <div class="inline-flex space-x-1.5">
-                                <inertia-link :href="route('{{str($model->name)->snake()->slug()->plural()}}.edit',item.id)">
+                                <inertia-link :href="route('{{str($model->name)->snake()->slug()->plural()}}.edit',{{str($model->name)->snake()}}.id)">
                                     <PencilAltIcon
-                                        class="w-5 h-5 cursor-pointer text-primary-500 hover:text-primary-600"
+                                        class="w-5 h-5 cursor-pointer text-gray-300 hover:text-primary-600"
                                         aria-hidden="true"
                                     />
                                 </inertia-link>
                                 <inertia-link
                                     method="delete"
-                                    :href="route('{{str($model->name)->snake()->slug()->plural()}}.destroy', item.id)"
+                                    :href="route('{{str($model->name)->snake()->slug()->plural()}}.destroy', {{str($model->name)->snake()}}.id)"
                                 >
                                 <TrashIcon
                                     class="w-5 h-5 text-gray-300 hover:text-red-400"
@@ -97,25 +114,40 @@
                             </div>
                         </td>
                     </tr>
-                    <tr v-if="organizations.data.length === 0">
-                    <td class="border-t px-6 py-4" colspan="4">No organizations found.</td>
-                    </tr>
-                </table>
+                     <template #pagination>
+                        <pagination :items="{{str($rel->name)->snake()}}"></pagination>
+                    </template>
+                </table-base>
             </div>
-            <pagination class="mt-6" :links="{{str($model->name)->plural()->snake()}}" />
 @endif
 @endforeach
         </container>
     </app-layout>
 </template>
-
+@php
+    $rels = collect($m->relations);
+    $rel_belongs_to = $rels
+        ->filter(function($rel){ return $rel->type === 'BelongsTo'; })
+        ->map(function($rel){ return str($rel->name)->snake()->plural().":Object"; })
+        ->implode(",");
+    $rel_has_many = $rels
+        ->filter(function($rel){ return $rel->type === 'HasMany'; })
+        ->map(function($rel){ return str($rel->name)->snake().":Object"; })
+        ->implode(",");
+@endphp
 <script>
+import { TrashIcon,PencilAltIcon, } from "@heroicons/vue/outline"
 import { useForm } from "@inertiajs/inertia-vue3";
 import AppLayout from "@/Layouts/AppLayout";
-import Container from "@/Components/Container";
+import Container from "@/Shared/Container";
+import TableBase from "@/Shared/TableBase"
+import Pagination from "@/Shared/Pagination";
+import TextInput from "@/Shared/TextInput"
+import SelectInput from "@/Shared/SelectInput"
+import CheckboxInput from "@/Shared/CheckboxInput"
 export default {
-    props:{ {{str($model->name)->snake()}}: Object ,errors: Object },
-    components: { AppLayout, Container },
+    props:{ {{str($model->name)->snake()}}: Object ,errors: Object, {{$rel_belongs_to}}, {{$rel_has_many}} },
+    components: { AppLayout, Container, TableBase, Pagination, TextInput, SelectInput, CheckboxInput, PencilAltIcon, TrashIcon },
     setup(props) {
         const form = useForm(props.{{str($model->name)->snake()}});
         function update() {

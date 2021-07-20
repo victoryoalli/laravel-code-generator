@@ -45,13 +45,21 @@ class {{$model->name}}Controller extends Controller
         event(new {{$options->event}}(${{str($model->name)->snake()}}));
 @endif
 
-        return redirect()->route('{{str($model->name)->snake()->slug()->plural()}}.index')->with('status', '{{str($model->name)->human()}} created!');
+        return Redirect::route('{{str($model->name)->snake()->slug()->plural()}}.index')->with('status', '{{str($model->name)->human()}} created!');
     }
 
     public function edit(Request $request, {{$model->name}} ${{str($model->name)->snake()}})
     {
-        return Inertia::render('{{str($model->name)->plural()}}/Edit', ['{{str($model->name)->snake()}}'=>${{str($model->name)->snake()}}]);
-        return view('{{str($model->name)->plural()}}.edit', compact('{{str($model->name)->snake()}}'));
+@php
+        $rels = collect($model->relations)->filter(function($rel){ return $rel->type === 'HasMany'; });
+        $rels_names = $rels->pluck('name');
+        $relations = $rels->map(function($rel){ return "'".$rel->name."' => $".$rel->name; })->implode(', ');
+@endphp
+@foreach($rels_names as $name)
+        ${{$name}} = {{$model->name}}::find(${{str($model->name)->snake()}}->id)->{{$name}}()->paginate(25);
+@endforeach
+
+        return Inertia::render('{{str($model->name)->plural()}}/Edit', ['{{str($model->name)->snake()}}'=>${{str($model->name)->snake()}}, {!!$relations!!}]);
     }
 
     public function update({{$model->name}}Request $request, {{$model->name}} ${{str($model->name)->snake()}})
@@ -60,13 +68,13 @@ class {{$model->name}}Controller extends Controller
         ${{str($model->name)->snake()}}->fill($data);
         ${{str($model->name)->snake()}}->save();
 
-        return redirect()->route('{{str($model->name)->snake()->slug()->plural()}}.index')->with('status', '{{str($model->name)->human()}} updated!');
+        return Redirect::route('{{str($model->name)->snake()->slug()->plural()}}.index')->with('status', '{{str($model->name)->human()}} updated!');
     }
 
     public function destroy(Request $request, {{$model->name}} ${{str($model->name)->snake()}})
     {
         ${{str($model->name)->snake()}}->delete();
 
-        return redirect()->route('{{str($model->name)->snake()->slug()->plural()}}.index')->with('status', '{{str($model->name)->human()}} deleted!');
+        return Redirect::route('{{str($model->name)->snake()->slug()->plural()}}.index')->with('status', '{{str($model->name)->human()}} deleted!');
     }
 }

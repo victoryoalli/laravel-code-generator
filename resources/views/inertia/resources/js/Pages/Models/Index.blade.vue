@@ -1,24 +1,20 @@
 @php
-    $columns = collect($model->table->columns)->filter(function($col){ return !str($col->name)->matches('/id|created_at|updated_at/');});
+    $columns = collect($model->table->columns)->filter(function($col){ return !str($col->name)->matches('/id|created_at|updated_at|deleted_at/');});
     $col_names = $columns->map(function($col) { return "'".str($col->name)->human()->title()."'"; })->implode(",");
 @endphp
 <template>
     <app-layout>
-        <template #search>
-            <search url_search="{{str($model->name)->snake()->slug()->plural()}}.search"></search>
-        </template>
         <template #header> {{str($model->name)->plural()->human()->title()}} </template>
         <container>
             <div class="space-y-2">
                 <div class="flex justify-end">
                     <inertia-link
                         :href="route('{{str($model->name)->snake()->slug()->plural()}}.create')"
-                        class="px-4 py-2 text-white rounded bg-primary-500 hover:bg-primary-600"
-                    >
-                    <span> Nuevo </span>
+                        class="px-4 py-2 text-white rounded bg-primary-600 hover:bg-primary-600 text-sm font-medium">
+                    New
                     </inertia-link>
                 </div>
-                <base-table :headers="[{{$col_names}}, '']">
+                <table-base :headers="[{!!$col_names!!}, '']">
                     <tr
                         v-for="(item, idx) in {{str($model->name)->plural()->snake()}}.data"
                         :key="idx"
@@ -34,7 +30,7 @@
                             <div class="inline-flex space-x-1.5">
                                 <inertia-link :href="route('{{str($model->name)->snake()->slug()->plural()}}.edit',item.id)">
                                     <PencilAltIcon
-                                        class="w-5 h-5 cursor-pointer text-primary-500 hover:text-primary-600"
+                                        class="w-5 h-5 cursor-pointer text-gray-300 hover:text-primary-500"
                                         aria-hidden="true"
                                     />
                                 </inertia-link>
@@ -53,21 +49,20 @@
                     <template #pagination>
                         <pagination :items="{{str($model->name)->plural()->snake()}}"></pagination>
                     </template>
-                </base-table>
+                </table-base>
             </div>
         </container>
     </app-layout>
 </template>
 <script>
 import { TrashIcon,PencilAltIcon, } from "@heroicons/vue/outline"
-import BaseTable from "../../Components/BaseTable.vue";
+import TableBase from "@/Shared/TableBase.vue";
 import AppLayout from "@/Layouts/AppLayout";
-import Container from "@/Components/Container";
-import Pagination from "@/Components/Pagination";
-import Search from "@/Components/Search";
+import Container from "@/Shared/Container";
+import Pagination from "@/Shared/Pagination";
 export default {
     name: "Index",
-    components: { AppLayout, Container,BaseTable,TrashIcon,PencilAltIcon,Pagination,Search },
+    components: { AppLayout, Container, TableBase, TrashIcon, PencilAltIcon, Pagination },
     props: { {{str($model->name)->plural()->snake()}}: Object },
     setup() {},
 };
