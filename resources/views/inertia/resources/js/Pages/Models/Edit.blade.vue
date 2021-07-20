@@ -125,14 +125,14 @@
     </app-layout>
 </template>
 @php
-    $rels = collect($m->relations);
-    $rel_belongs_to = $rels
-        ->filter(function($rel){ return $rel->type === 'BelongsTo'; })
-        ->map(function($rel){ return str($rel->name)->snake()->plural().":Object"; })
-        ->implode(",");
-    $rel_has_many = $rels
-        ->filter(function($rel){ return $rel->type === 'HasMany'; })
-        ->map(function($rel){ return str($rel->name)->snake().":Object"; })
+    $rels = collect($m->relations)
+    ->filter(function($rel){ return $rel->type === 'BelongsTo'; })
+        ->map(function($rel){
+            if($rel->type === 'BelongsTo')
+                return str($rel->name)->snake()->plural().":Object";
+            elseif($rel->type === 'HasMany')
+                return str($rel->name)->snake().":Object";
+            })
         ->implode(",");
 @endphp
 <script>
@@ -146,7 +146,7 @@ import TextInput from "@/Shared/TextInput"
 import SelectInput from "@/Shared/SelectInput"
 import CheckboxInput from "@/Shared/CheckboxInput"
 export default {
-    props:{ {{str($model->name)->snake()}}: Object ,errors: Object, {{$rel_belongs_to}}, {{$rel_has_many}} },
+    props:{ {{str($model->name)->snake()}}: Object ,errors: Object, {{$rels}} },
     components: { AppLayout, Container, TableBase, Pagination, TextInput, SelectInput, CheckboxInput, PencilAltIcon, TrashIcon },
     setup(props) {
         const form = useForm(props.{{str($model->name)->snake()}});

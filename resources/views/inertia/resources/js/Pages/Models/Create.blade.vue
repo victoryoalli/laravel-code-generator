@@ -70,7 +70,7 @@ export default {
             {!!$form_cols!!},
         });
         function store() {
-            form.post(route('size-scales.store'));
+            form.post(route('{{str($model->name)->snake()->slug()->plural()}}.store'));
         }
         return { form, store };
     },
