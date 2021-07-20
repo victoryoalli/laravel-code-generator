@@ -52,7 +52,7 @@ class CodeGenerator
         }
         $filepath = base_path($outputFile);
         if (!$this->files->exists($filepath) || $overwrite) {
-            $this->files->ensureDirectoryExists(dirname($filepath), null, true);
+            $this->files->ensureDirectoryExists(dirname($filepath), 0775, true);
             $result = $this->render($model, $template, $options);
             $this->files->put($outputFile, $result);
             return $outputFile;
@@ -68,21 +68,32 @@ class CodeGenerator
         if (!$this->files->exists($inputPath)) {
             throw new \Exception("File $inputPath does not exist.");
         }
-
-        $this->files->ensureDirectoryExists(dirname($outputPath));
-        dump($inputPath);
-        dump($outputPath);
-        if (!$this->files->exists($outputPath) && $this->files->isDirectory($outputPath)   || $overwrite) {
-            print "Copying $inputPath to $outputPath\n";
+        return true;
+        if (($this->isFilename($inputPath) && $this->isFilename($outputPath)
+            && (!$this->files->exists($outputPath)) || ($overwrite))
+            ) {
+            $this->files->ensureDirectoryExists(dirname($outputPath), 0755, true);
+            $this->files->copy($inputPath, $outputPath);
+            return $outputPath;
+        } elseif ($this->isDirName($inputPath)
+        && $this->isDirName($outputPath)
+        && !$this->files->exists($outputPath)
+        || $overwrite) {
             $this->files->copyDirectory($inputPath, $outputPath);
             $files = collect($this->files->files($inputPath));
             dd($files);
 
             return $outputPath;
-        } elseif ($this->files->isFile($outputPath) && !$this->files->exists($outputPath) || $overwrite) {
-            $this->files->copy($inputPath, $outputPath);
-            return $outputPath;
         }
         return null;
+    }
+    protected function isFilename($filename)
+    {
+        return strlen($this->files->extension($filename)) > 0;
+    }
+
+    protected function isDirName($directory_name)
+    {
+        return !$this->isFilename($directory_name);
     }
 }
