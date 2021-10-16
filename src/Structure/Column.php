@@ -24,7 +24,7 @@ class Column
         $this->autoincrement = $this->_column->getAutoincrement();
         $this->default = $this->_column->getDefault();
     }
-    private function getTypeString(string|Type $type)
+    private function getTypeString($type)
     {
         return is_object($type)?preg_replace(
             "/Doctrine\\\\DBAL\\\\Types\\\\([a-zA-B]+)Type/i",
