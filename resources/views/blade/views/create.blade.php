@@ -48,7 +48,7 @@
                         <input name="{{$column->name}}" @if($column->type == 'String')
                         type="text"
                         maxlength="{{$column->length}}"
-                        @elseif($column->type == 'DateTime')
+                        @elseif(str($column->type)->matches('/Date/'))
                         type="date"
                         @elseif(str($column->type)->matches('/Int/'))
                         type="number"
