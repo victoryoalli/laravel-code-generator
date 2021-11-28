@@ -2,7 +2,7 @@
 
 # ![Laravel Code Generator](laravel-codegenerator.png)
 
-![Packagist Version](https://img.shields.io/packagist/v/victoryoalli/laravel-code-generator)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/victoryoalli/laravel-code-generator)
 ![Packagist Downloads](https://img.shields.io/packagist/dt/victoryoalli/laravel-code-generator)
 
 
