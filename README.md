@@ -4,6 +4,7 @@
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/victoryoalli/laravel-code-generator)
 ![Packagist Downloads](https://img.shields.io/packagist/dt/victoryoalli/laravel-code-generator)
+![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/victoryoalli/laravel-code-generator)
 
 
 Laravel Code Generator is a PHP Laravel Package that uses [Blade template](https://laravel.com/docs/8.x/blade) engine to generate code for you.
