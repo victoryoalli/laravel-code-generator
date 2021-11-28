@@ -4,6 +4,7 @@
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/victoryoalli/laravel-code-generator)
 ![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/victoryoalli/laravel-code-generator)
+[![GitHub stars](https://img.shields.io/github/stars/victoryoalli/laravel-code-generator)](https://github.com/victoryoalli/laravel-code-generator/stargazers)
 ![Packagist Downloads](https://img.shields.io/packagist/dt/victoryoalli/laravel-code-generator)
 
 
