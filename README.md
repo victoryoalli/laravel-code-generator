@@ -2,6 +2,13 @@
 
 # ![Laravel Code Generator](laravel-codegenerator.png)
 
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/victoryoalli/laravel-code-generator)
+![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/victoryoalli/laravel-code-generator)
+[![GitHub forks](https://img.shields.io/github/forks/victoryoalli/laravel-code-generator)](https://github.com/victoryoalli/laravel-code-generator/network)
+[![GitHub stars](https://img.shields.io/github/stars/victoryoalli/laravel-code-generator)](https://github.com/victoryoalli/laravel-code-generator/stargazers)
+![Packagist Downloads](https://img.shields.io/packagist/dt/victoryoalli/laravel-code-generator)
+
+
 Laravel Code Generator is a PHP Laravel Package that uses [Blade template](https://laravel.com/docs/8.x/blade) engine to generate code for you.
 
 The difference between other code generators is that this one will generate the code exactly as you want it to be, same design, same lines of code.
@@ -33,7 +40,7 @@ php artisan code:generate 'App\Models\User' -t 'schema' -o 'user-schema.json'
   "complete_name": "App\\Models\\User",
   "table": {
     "name": "users",
-    "colums": [
+    "columns": [
       {
         "name": "id",
         "type": "BigInt",
@@ -143,7 +150,7 @@ class CodeGeneratorCommand extends Command
             '{--l|lang : Language} ' .
             '{--A|all : All Files}' .
             '{--f|factory : Factory} ' .
-            '{--t|tests : Feacture Test} ' .
+            '{--t|tests : Feature Test} ' .
             '{--auth : Auth (not included in all)} ' .
             '{--event= : Event (not included in all)} ' .
             '{--notification= : Notification (not included in all)} ' .
@@ -276,7 +283,7 @@ php artisan code:generator 'App\User' -FA
 Templates are located at `resources/vendor/laravel-code-generator`.
 For example once you publish the views the file `schema.blade.json`  will be located at the relative path is `resources/vendor/laravel-code-generator\schema.blade.json` .
 
-The path `resources/views/vendor/laravel-code-generator` is where you can create your own new templates, or custimize the existing ones.
+The path `resources/views/vendor/laravel-code-generator` is where you can create your own new templates, or customize the existing ones.
 
 #### Publish template views & Config
 
@@ -295,7 +302,7 @@ php artisan vendor:publish --provider="VictorYoalli\LaravelCodeGenerator\Laravel
 This is the contents of the published config file
 `config/laravel-code-generator.php`:
 
-By default you can use as templates files with following extensions, if you need to generate or use different files as templates you can added to the config file.
+By default you can use as templates files with following extensions, if you need to generate or use different files as templates you can add to the config file.
 
 ```php
 <?php
